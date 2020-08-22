@@ -4,7 +4,9 @@
         private $routes;
 
         public function __construct() {
-            include_once("./");
+			include_once("./config/routes.php");
+			
+			$this->routes = $routes;
         }
 
         public function run():void {
