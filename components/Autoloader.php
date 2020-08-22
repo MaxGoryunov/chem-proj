@@ -1,7 +1,7 @@
 <?php
 
 	spl_autoload_register(function(string $className):void {
-        $dirs = array('components', 'controllers', 'models', 'views');
+        $dirs = array("components", "controllers", "models", "views");
         
 		foreach ($dirs as $dir) {
             $filePath = "./$dir/$className.php";
