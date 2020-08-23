@@ -4,6 +4,10 @@
     include_once("./config/constants.php");
 
     $autoloader = new Autoloader();
+
+    /**
+     * Registering an autoloader function
+     */
     $autoloader->register();
 
     $router = new Router();
