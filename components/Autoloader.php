@@ -1,17 +1,19 @@
 <?php
 
 	class Autoloader {
+		private $dirs = [];
+		
+		private function initDirs():void {
+			if (empty($this->dirs)) {
+                $this->dirs = array("components", "controllers", "models", "views");
+            }
+		}
 
-		public static function register():void {
+		public function register():void {
+			$this->initDirs();
+			
 			spl_autoload_register(function(string $className):void {
-				/**
-				 * Directories in which the class, interface or trait file is present
-				 * 
-				 * @var string[]
-				 */
-				$dirs = array("components", "controllers", "models", "views");
-				
-				foreach ($dirs as $dir) {
+				foreach ($this->dirs as $dir) {
 					$filePath = "./$dir/$className.php";
 					
 					if (file_exists($filePath)) {

@@ -3,7 +3,8 @@
     include_once("./components/Autoloader.php");
     include_once("./config/constants.php");
 
-    Autoloader::register();
+    $autoloader = new Autoloader();
+    $autoloader->register();
 
     $router = new Router();
 
