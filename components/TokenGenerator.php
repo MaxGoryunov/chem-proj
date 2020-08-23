@@ -35,15 +35,17 @@
          * @return string
          */
         public function generateToken(int $length = 32):string {
+            $this->initSymbols();
+
             $token = "";
 
             for ($i = 0; $i < $length; $i++) {
                 /**
                  * One is subtracted from Length in order to avoid LengthException
                  */
-                $this->token .= $this->symbols[mt_rand(0, $this->length - 1)];
+                $token .= $this->symbols[mt_rand(0, $this->length - 1)];
             }
 
-            return $this->token;
+            return $token;
         }
     }
