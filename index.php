@@ -1,5 +1,11 @@
 <?php
 
+    /**
+     * @author Max Goriunov
+     */
+    /**
+     * @todo Add working email address
+     */
     include_once("./components/Autoloader.php");
     include_once("./config/constants.php");
 

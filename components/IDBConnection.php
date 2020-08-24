@@ -1,6 +1,14 @@
 <?php
 
+    /**
+     * Interface for various Database Connections such as MySQL, PostgreSQL etc.
+     */
     interface IDBConnection {
 
-        public function getConnection():mysqli;
+        /**
+         * Returns a Database Connection
+         *
+         * @return mixed
+         */
+        public function getConnection();
     }

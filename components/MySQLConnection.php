@@ -38,6 +38,8 @@
 
         /**
          * Restricting the creation of class instance outside of class
+         * 
+         * @throws Exception if the connection to MySQL failed
          */
         private function __construct() {
             include_once("./config/dbConfig.php");
