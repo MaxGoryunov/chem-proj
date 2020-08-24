@@ -8,6 +8,9 @@
     $routes = array(
         "UsersController" => array(
             "users/list" => "index"
+        ),
+        "AddressesController" => array(
+            "addresses/list" => "index"
         )
     );
 
