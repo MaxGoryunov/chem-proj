@@ -3,6 +3,6 @@
     /**
      * Base class for implementing other ProxyControllers
      */
-    abstract class AbstractProxyController {
+    abstract class AbstractProxyController implements IController {
         
     }
