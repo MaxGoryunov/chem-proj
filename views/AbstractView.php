@@ -3,6 +3,6 @@
     /**
      * Base class for implementing other Views
      */
-    abstract class AbstractView {
+    abstract class AbstractView implements IView {
         
     }

@@ -3,6 +3,6 @@
     /**
      * Base class for implementing other Controllers
      */
-    abstract class AbstractController {
+    abstract class AbstractController implements IController {
         
     }

@@ -16,7 +16,7 @@
         /**
          * Function shortcuts the accessing of Database Connection with the help of the specified class
          *
-         * @param string - type of connection, supposed to be the Connection Interface
+         * @param string $connectionType - type of connection, supposed to be the Connection Interface
          * 
          * @return mixed
          */
