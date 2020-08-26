@@ -31,7 +31,7 @@
         /**
          * Function returns a token, user can specify the token length if needed
          *
-         * @param integer $length - length of the token
+         * @param int $length - length of the token
          * @return string
          */
         public function generateToken(int $length = 32):string {
