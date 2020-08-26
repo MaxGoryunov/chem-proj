@@ -1,2 +1,5 @@
+#Ignore vscode settings.json file
 .vscode/
+
+#Ignore all the libraries (some time ago it was not ignored and created a big mess)
 assets/libs/
