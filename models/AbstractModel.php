@@ -1,5 +1,8 @@
 <?php
 
-    abstract class AbstractModel {
+    /**
+     * Base class for implementing other Models
+     */
+    abstract class AbstractModel implements IModel {
         
     }

@@ -1,5 +1,8 @@
 <?php
 
+	/**
+	 * Class for providing routing within the site
+	 */
     class Router {
 		/**
 		 * Routes for controller actions
@@ -8,12 +11,23 @@
 		 */
         private $routes;
 
+		/**
+		 * Constructor assigns the routes to the inner routes property
+		 */
         public function __construct() {
 			include_once("./config/routes.php");
 			
 			$this->routes = $routes;
         }
 
+		/**
+		 * @todo Extract the calling of controller action into another method
+		 */
+		/**
+		 * This function looks finds the controller using the routes and executes the associated action
+		 *
+		 * @return void
+		 */
         public function run():void {
 			$userUri = $_SERVER['REQUEST_URI'];
 
