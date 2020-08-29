@@ -22,9 +22,7 @@
         }
 
         /**
-         * Returns a query string
-         *
-         * @return string
+         * {@inheritDoc}
          */
         public function getQueryString():string {
             return $this->queryString;

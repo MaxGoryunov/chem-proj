@@ -18,7 +18,7 @@
 		 */
 		private function initDirs():void {
 			if (empty($this->dirs)) {
-                $this->dirs = array("components", "controllers", "models", "views");
+                $this->dirs = array("components", "controllers", "models", "views", "dbQueries", "traits");
             }
 		}
 
