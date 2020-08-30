@@ -20,7 +20,7 @@
          *
          * @param string $condition
          * 
-         * @return SelectQueryBuilder
+         * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
          */
         public function where(string $condition):IQueryBuilder {
             $this->where = "WHERE 1 AND " . $condition;

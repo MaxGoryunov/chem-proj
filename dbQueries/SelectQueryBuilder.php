@@ -35,7 +35,7 @@
          */
         private $orderBy = "";
 
-        use LimitTrait;
+        use OffsetLimitTrait;
 
         /**
          * The JOIN statements
