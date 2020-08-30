@@ -6,3 +6,9 @@ assets/libs/
 
 #Ignore tests folder
 tests/
+
+#Ignore composer files
+composer.*
+
+#Ignore vendor/files
+vendor/
