@@ -4,5 +4,8 @@
 #Ignore all the libraries (some time ago it was not ignored and created a big mess)
 assets/libs/
 
-#Ignore tests folder
-tests/
+#Ignore composer files
+composer.*
+
+#Ignore vendor/files
+vendor/
