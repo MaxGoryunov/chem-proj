@@ -17,9 +17,9 @@
          *
          * @param array $values
          * 
-         * @return self
+         * @return UpdateQueryBuilder|InsertQueryBuilder
          */
-        public function set(array $values = []):self {
+        public function set(array $values = []):IQueryBuilder {
             $set = "";
 
             foreach ($values as $columnName => $value) {
