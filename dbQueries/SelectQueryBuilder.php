@@ -92,9 +92,6 @@
         }
 
         /**
-         * @todo Implement a stricter version of the algorithm so that it does not just simply accept the string $condition
-         */
-        /**
          * Constructs a HAVING statement
          *
          * @param string $condition
