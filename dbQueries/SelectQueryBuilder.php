@@ -35,7 +35,12 @@
          */
         private $orderBy = "";
 
-        use OffsetLimitTrait;
+        /**
+         * The LIMIT string
+         *
+         * @var string
+         */
+        private $limit = "";
 
         /**
          * The JOIN statements
@@ -125,6 +130,20 @@
 
             $orderBy       = rtrim($orderBy, ", ");
             $this->orderBy = $orderBy;
+
+            return $this;
+        }
+
+        /**
+         * Constructs a LIMIT statement
+         *
+         * @param int $limit - max number of rows in query
+         * @param int $offset - offset for operation, rows before $offset will not be affected
+         * 
+         * @return self
+         */
+        public function limit(int $limit, int $offset = 0):self {
+            $this->limit = "LIMIT $offset, $limit";
 
             return $this;
         }
