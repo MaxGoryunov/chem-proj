@@ -44,7 +44,7 @@
 						 * 
 						 * @var string $id
 						 */
-						$id = isset($matches[1]) ? $matches[1] : '';
+						$id = $matches[1] ?? '';
 						
 						$controllerObj = new $controller();
 
