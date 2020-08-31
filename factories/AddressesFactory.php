@@ -3,7 +3,7 @@
     /**
      * Factory for getting classes from Addresses Domain
      */
-    class AddressesFactory implements IMVCPDMCompleteFactory {
+    class AddressesFactory implements IMVCPDMFactory {
         
         public function getModel():AddressesModel {
             return new AddressesModel();
@@ -19,5 +19,9 @@
 
         public function getProxy():AddressesProxyController {
             return new AddressesProxyController();
+        }
+
+        public function getDataMapper():AddressesMapper {
+            return new AddressesMapper();
         }
     }
