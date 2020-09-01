@@ -18,7 +18,17 @@
 		 */
 		private function initDirs():void {
 			if (empty($this->dirs)) {
-                $this->dirs = array("components", "controllers", "models", "views");
+                $this->dirs = array(
+					"Components" => "components",
+					"Controller" => "controllers",
+					"Mapper" => "dataMappers",
+					"Query" => "dbQueries",
+					"Entity" => "entities",
+					"Factory" => "factories",
+					"Model" => "models",
+					"Trait" => "traits",
+					"View" => "views"
+				);
             }
 		}
 
