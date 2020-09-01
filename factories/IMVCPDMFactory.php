@@ -41,4 +41,5 @@
          * @return IDataMapper
          */
         public function getDataMapper():IDataMapper;
+        
     }
