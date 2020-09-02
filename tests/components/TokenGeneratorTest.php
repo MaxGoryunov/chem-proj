@@ -1,6 +1,6 @@
 <?php
 
-    include_once("./config/autoload.php");
+    //include_once("./config/autoload.php");
     
     use PHPUnit\Framework\TestCase;
 
