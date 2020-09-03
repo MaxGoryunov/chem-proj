@@ -9,7 +9,7 @@
         "UsersController" => array(
             "users/list" => "index"
         ),
-        "AddressesController" => array(
+        "AddressesProxyController" => array(
             "addresses/list" => "index"
         )
     );

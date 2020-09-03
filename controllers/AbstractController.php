@@ -27,7 +27,7 @@
         protected $relatedView;
 
         /**
-         * Accepts the Factory to delegate it the creation of other Factories
+         * Accepts the Factory to delegate it the creation of MVCPDM components
          *
          * @param IMVCPDMFactory $relatedFactory
          */

@@ -9,3 +9,5 @@ composer.*
 
 #Ignore vendor/files
 vendor/
+
+*.cache
