@@ -22,9 +22,11 @@
 					"Components" => "components",
 					"Controller" => "controllers",
 					"Mapper" => "dataMappers",
+					"Query" => "dbQueries",
 					"Entity" => "entities",
 					"Factory" => "factories",
 					"Model" => "models",
+					"Trait" => "traits",
 					"View" => "views"
 				);
             }

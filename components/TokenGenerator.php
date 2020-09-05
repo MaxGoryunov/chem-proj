@@ -22,11 +22,13 @@
          *
          * @return void
          */
-        private function initSymbols():void {
+        public function initSymbols():int {
             if (empty($this->symbols)) {
-                $this->symbols = array_merge(range(0, 9), range("a", "z"));
+                $this->symbols = array_merge(range(0, 9), range("a", "z"), range("A", "Z"));
                 $this->length  = count($this->symbols);
             }
+
+            return $this->length;
         }
         /**
          * Function returns a token, user can specify the token length if needed
