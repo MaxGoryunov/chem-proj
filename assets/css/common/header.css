@@ -1,0 +1,50 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow: auto;
+  background: #faf8f8;
+}
+
+.header {
+  width: 80px;
+  position: fixed;
+  border-radius: 0 25px 25px 0;
+  height: 100vh;
+  color: #eee;
+  -webkit-transition: 0.5s cubic-bezier(0.5, 1.56, 0.6, 0.8);
+  transition: 0.5s cubic-bezier(0.5, 1.56, 0.6, 0.8);
+  overflow: hidden;
+  z-index: 3;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background: #f5f4f4;
+  -webkit-box-shadow: 34px 34px 68px #eeeded,  -34px -34px 68px #fcfbfb;
+          box-shadow: 34px 34px 68px #eeeded,  -34px -34px 68px #fcfbfb;
+}
+
+.header:hover {
+  width: 300px;
+  background: #f5f4f4;
+  -webkit-box-shadow: 30px 30px 60px #e6e5e5,  -30px -30px 60px #ffffff;
+          box-shadow: 30px 30px 60px #e6e5e5,  -30px -30px 60px #ffffff;
+}
+
+.header__navblock {
+  width: 300px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  -ms-grid-rows: (60px)[4];
+      grid-template-rows: repeat(4, 60px);
+}
+
+.header__navitem {
+  color: #bababa;
+  font-weight: 500;
+  margin: auto 0;
+  padding: 15px;
+}
+/*# sourceMappingURL=header.css.map */

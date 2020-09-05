@@ -10,4 +10,13 @@
     <title><?= $title; ?></title>
 </head>
 <body>
-    
+    <header class="header">
+        <div class="header__logoblock"></div>
+        <form action="" class="header__form"></form>
+        <div class="header__navblock">
+            <div class="header__navitem">Lorem, ipsum.</div>
+            <div class="header__navitem">Eum, ipsum.</div>
+            <div class="header__navitem">Reprehenderit, alias.</div>
+            <div class="header__navitem">Laborum, doloribus?</div>
+        </div>
+    </header>
