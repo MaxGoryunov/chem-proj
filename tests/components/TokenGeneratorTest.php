@@ -57,6 +57,11 @@
             $this->assertEquals($expected, strlen($this->tokenGenerator->generateToken($length)));
         }
 
+        /**
+         * Provides Lengths and expected results for test
+         *
+         * @return int[][]
+         */
         public function provideTokenLengths():array {
             return [
                 "negative" => [-3, 0],
