@@ -18,9 +18,11 @@
         private $length;
 
         /**
+         * Controls creation of symbols used in tokens
+         * 
          * The initialization of the symbols is done in Lazy Load manner so that the array is not created during the creation of the object
          *
-         * @return void
+         * @return int
          */
         public function initSymbols():int {
             if (empty($this->symbols)) {
