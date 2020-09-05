@@ -4,6 +4,8 @@
 
     /**
      * Testing TokenGenerator class
+     * 
+     * @coversDefaultClass TokenGenerator
      */
     class TokenGeneratorTest extends TestCase {
 
@@ -33,6 +35,8 @@
         }
 
         /**
+         * @covers :initSymbols
+         * 
          * @return void
          */
         public function testInitSymbolsReturnsActualNumberOfSymbols():void {
@@ -40,6 +44,9 @@
         }
         
         /**
+         * @covers ::initSymbols
+         * @covers ::generateToken
+         * 
          * @dataProvider provideTokenLengths
          *
          * @param int $length - length of the Token
