@@ -29,6 +29,8 @@
 
                 return $connection->getConnection();
             }
+
+            throw new InvalidArgumentException("Supplied argument of unknown type");
         }
 
     }
