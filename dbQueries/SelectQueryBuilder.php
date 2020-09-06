@@ -50,6 +50,60 @@
         private $joins = "";
 
         /**
+         * Returns a statement with the selected columns
+         *
+         * @return string
+         */
+        public function getWhat():string {
+            return $this->what;
+        }
+
+        /**
+         * Returns a GROUP BY statement
+         *
+         * @return string
+         */
+        public function getGroupBy():string {
+            return $this->groupBy;
+        }
+
+        /**
+         * Returns a HAVING statement
+         *
+         * @return string
+         */
+        public function getHaving():string {
+            return $this->having;
+        }
+
+        /**
+         * Returns an ORDER BY statement
+         *
+         * @return string
+         */
+        public function getOrderBy():string {
+            return $this->orderBy;
+        }
+
+        /**
+         * Returns a LIMIT ... statement
+         *
+         * @return string
+         */
+        public function getLimit():string {
+            return $this->limit;
+        }
+
+        /**
+         * Returns JOIN statements
+         *
+         * @return string
+         */
+        public function getJoins():string {
+            return $this->joins;
+        }
+
+        /**
          * Constructs a statement with the selected columns
          *
          * @param string[] $columns - columns to be selected
@@ -175,14 +229,14 @@
          */
         public function build():IQuery {
             return new Query("
-                SELECT {$this->what}
-                FROM `{$this->tableName}`
-                {$this->joins}
-                {$this->where}
-                {$this->groupBy}
-                {$this->having}
-                {$this->orderBy}
-                {$this->limit};
+                SELECT {$this->getWhat()}
+                FROM `{$this->getTableName()}`
+                {$this->getJoins()}
+                {$this->getWhere()}
+                {$this->getGroupBy()}
+                {$this->getHaving()}
+                {$this->getOrderBy()}
+                {$this->getLimit()};
             ");
         }
 
