@@ -13,6 +13,15 @@
         private $where = "WHERE 1";
 
         /**
+         * Returns WHERE statement
+         *
+         * @return string
+         */
+        public function getWhere():string {
+            return $this->where;
+        }
+
+        /**
          * Specifies the WHERE ... AND ... statement
          *
          * @param string $condition  - condition to be added
