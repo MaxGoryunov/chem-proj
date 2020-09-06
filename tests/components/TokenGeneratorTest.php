@@ -1,38 +1,68 @@
 <?php
-
-    //include_once("./config/autoload.php");
     
     use PHPUnit\Framework\TestCase;
 
+    /**
+     * Testing TokenGenerator class
+     * 
+     * @coversDefaultClass TokenGenerator
+     */
     class TokenGeneratorTest extends TestCase {
 
         /**
-         * Contains tested class
+         * Contains tested class object
          *
          * @var TokenGenerator
          */
         protected $tokenGenerator;
         
+        /**
+         * Creates tested class object
+         *
+         * @return void
+         */
         protected function setUp():void {
             $this->tokenGenerator = new TokenGenerator();
         }
 
+        /**
+         * Removes tested class object
+         *
+         * @return void
+         */
         protected function tearDown():void {
             $this->tokenGenerator = null;
         }
+
+        /**
+         * @covers :initSymbols
+         * 
+         * @return void
+         */
+        public function testInitSymbolsReturnsActualNumberOfSymbols():void {
+            $this->assertEquals(62, $this->tokenGenerator->initSymbols());
+        }
         
         /**
-         * @dataProvider provideTokenLength
+         * @covers ::initSymbols
+         * @covers ::generateToken
+         * 
+         * @dataProvider provideTokenLengths
          *
          * @param int $length - length of the Token
          * @param int $expected - expected Token length
          * @return void
          */
-        public function testTokenLength(int $length, int $expected):void {
-            self::assertEquals($expected, strlen($this->tokenGenerator->generateToken($length)));
+        public function testGeneratorReturnsTokenOfSuppliedLength(int $length, int $expected):void {
+            $this->assertEquals($expected, strlen($this->tokenGenerator->generateToken($length)));
         }
 
-        public function provideTokenLength():array {
+        /**
+         * Provides Lengths and expected results for test
+         *
+         * @return int[][]
+         */
+        public function provideTokenLengths():array {
             return [
                 "negative" => [-3, 0],
                 "zero"     => [0, 0],
