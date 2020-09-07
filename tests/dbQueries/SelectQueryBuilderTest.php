@@ -45,7 +45,7 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected string
          * @return void
          */
-        public function testClassMethodWhatBuildsCorrectWhatStatement(array $columns, string $expected):void {
+        public function testWhatBuildsCorrectWhatStatement(array $columns, string $expected):void {
             $this->selectBuilder->what($columns);
 
             $this->assertEquals($expected, $this->selectBuilder->getWhat());
@@ -57,7 +57,7 @@ use Prophecy\Util\StringUtil;
 
          * @return void
          */
-        public function testClassMethodWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
+        public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
             $this->selectBuilder->whereAnd("");
 
             $this->assertEquals("WHERE 1", $this->selectBuilder->getWhere());
@@ -69,7 +69,7 @@ use Prophecy\Util\StringUtil;
 
          * @return void
          */
-        public function testClassMethodWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
+        public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
             $this->selectBuilder->whereOr("");
 
             $this->assertEquals("WHERE 1", $this->selectBuilder->getWhere());
@@ -86,7 +86,7 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodsWhereBuildCorrectWhereStatement(array $statements, string $expected):void {
+        public function testsWhereBuildCorrectWhereStatement(array $statements, string $expected):void {
             foreach ($statements as $statement) {
                 if ($statement["type"] == "and") {
                     $this->selectBuilder->whereAnd($statement["condition"]);
@@ -108,7 +108,7 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodGroupByBuildsCorrectGroupByStatement(string $columnName, string $expected):void {
+        public function testGroupByBuildsCorrectGroupByStatement(string $columnName, string $expected):void {
             $this->selectBuilder->groupBy($columnName);
 
             $this->assertEquals($expected, $this->selectBuilder->getGroupBy());
@@ -124,7 +124,7 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodHavingBuildsCorrectHavingStatement(string $condition, string $expected):void {
+        public function testHavingBuildsCorrectHavingStatement(string $condition, string $expected):void {
             $this->selectBuilder->having($condition);
 
             $this->assertEquals($expected, $this->selectBuilder->getHaving());
@@ -140,7 +140,7 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodOrderByBuildsCorrectOrderByStatement(array $columns, string $expected):void {
+        public function testOrderByBuildsCorrectOrderByStatement(array $columns, string $expected):void {
             $this->selectBuilder->orderBy($columns);
 
             $this->assertEquals($expected, $this->selectBuilder->getOrderBy());
@@ -152,10 +152,10 @@ use Prophecy\Util\StringUtil;
          *
          * @return void
          */
-        public function testClassMethodLimitBuildsCorrectLimitStatementWithZeroOffset():void {
+        public function testLimitBuildsCorrectLimitStatementWithZeroOffset():void {
             $this->selectBuilder->limit(5);
 
-            $this->assertEquals("LIMIT 5, 0", $this->selectBuilder->getLimit());
+            $this->assertEquals("LIMIT 0, 5", $this->selectBuilder->getLimit());
         }
 
         /**
@@ -164,10 +164,10 @@ use Prophecy\Util\StringUtil;
          *
          * @return void
          */
-        public function testClassMethodLimitBuildsCorrectLimitStatementWithPositiveOffset():void {
+        public function testLimitBuildsCorrectLimitStatementWithPositiveOffset():void {
             $this->selectBuilder->limit(5, 3);
 
-            $this->assertEquals("LIMIT 5, 3", $this->selectBuilder->getLimit());
+            $this->assertEquals("LIMIT 3, 5", $this->selectBuilder->getLimit());
         }
 
         /**
@@ -180,15 +180,15 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodJoinBuildsCorrectJoinStatement(array $joins, string $expected):void {
+        public function testJoinBuildsCorrectJoinStatement(array $joins, string $expected):void {
             foreach ($joins as $join) {
                 $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"]);
             }
 
-            $this->assertEquals($expected, $this->selectBuilder->getJoins());
+            $this->assertEquals(preg_replace("/\n/", "", $expected), $this->selectBuilder->getJoins());
         }
 
-        public function testClassMethodBuildBuildsCorrectQueryObject():void {
+        public function testBuildBuildsCorrectQueryObject():void {
             $query = $this->selectBuilder->what(["medicine_id", 
                                                 "name" =>"medicine_name"])
                                         ->join("chemicals", "chemical_id", "medicine_chemical_id")
@@ -201,15 +201,15 @@ use Prophecy\Util\StringUtil;
                                         ->limit(30)
                                         ->build();
 
-            $this->assertEquals("
-                SELECT `medicine_id`, `medicine_name` AS `name`
-                FROM `medicines`
-                LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-                LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-                LEFT JOIN `countries` ON `country_id` = `medicine_country_id`
-                WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30
-                GROUP BY `medicine_name`, `medicine_price` DESC
-                LIMIT 30;", $query->getQueryString());
+            $this->assertEquals(preg_replace("/\n/", "", "
+            SELECT `medicine_id`, `medicine_name` AS `name`
+            FROM `medicines`
+        LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
+        LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
+        LEFT JOIN `countries` ON `country_id` = `medicine_country_id`
+            WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30
+            GROUP BY `medicine_name`, `medicine_price` DESC
+            LIMIT 30;"), $query->getQueryString());
         }
 
         /**
@@ -409,9 +409,9 @@ use Prophecy\Util\StringUtil;
                         ],
                     ],
                     "
-                    LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-                    LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-                    LEFT JOIN `countries` ON `country_id` = `medicine_country_id`"
+            LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
+            LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
+            LEFT JOIN `countries` ON `country_id` = `medicine_country_id`"
                 ],
                 "properJoinType" => [
                     [
@@ -441,10 +441,10 @@ use Prophecy\Util\StringUtil;
                         ]
                     ],
                     "
-                    INNER JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-                    LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-                    RIGHT JOIN `countries` ON `country_id` = `medicine_country_id`
-                    FULL OUTER JOIN `purposes` ON `purpose_id` = `medicine_purpose_id`"
+            INNER JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
+            LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
+            RIGHT JOIN `countries` ON `country_id` = `medicine_country_id`
+            FULL OUTER JOIN `purposes` ON `purpose_id` = `medicine_purpose_id`"
                 ]
             ];
         }
