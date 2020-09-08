@@ -1,5 +1,6 @@
 <?php
 
+    namespace Components;
     /**
      * Interface for various Database Connections such as MySQL, PostgreSQL etc.
      */

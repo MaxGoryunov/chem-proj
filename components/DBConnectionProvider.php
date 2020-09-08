@@ -1,5 +1,6 @@
 <?php
 
+    namespace Components;
     /**
      * CLass for providing Database Connections
      * 
@@ -30,7 +31,7 @@
                 return $connection->getConnection();
             }
 
-            throw new InvalidArgumentException("Supplied argument of unknown type");
+            throw new \InvalidArgumentException("Supplied argument of unknown type");
         }
 
     }
