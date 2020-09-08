@@ -12,3 +12,6 @@ vendor/
 
 #Ignore cache files
 *.cache
+
+#Ingore css map files
+*.css.map

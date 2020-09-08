@@ -143,7 +143,11 @@
          * 
          * @return self
          */
-        public function groupBy(string $columnName):self {
+        public function groupBy(string $columnName = ""):self {
+            if ($columnName === "") {
+                return $this;
+            }
+            
             $this->groupBy = "GROUP BY `$columnName`";
 
             return $this;
@@ -156,7 +160,11 @@
          * 
          * @return self
          */
-        public function having(string $condition):self {
+        public function having(string $condition = ""):self {
+            if ($condition === "") {
+                return $this;
+            }
+            
             $this->having = "HAVING " . $condition;
 
             return $this;
