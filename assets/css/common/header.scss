@@ -1,4 +1,10 @@
+$background: #f4f4f4;
+$box-shadow: 30px 30px 60px #e6e5e5, 
+-30px -30px 60px #ffffff;
+
+$header-width: 80px;
 $full-header-width: 300px;
+$header-transition: 0.5s cubic-bezier(0.25, 1.6, 0.45, 0.8);
 
 html {
     scroll-behavior: smooth;
@@ -6,27 +12,28 @@ html {
 
 body {
     overflow: auto;
-    background: #faf8f8;
+    background: $background;
 }
 
 .header {
-    width: 80px;
+    width: $header-width;
     position: fixed;
     //background: #fff;
     border-radius: 0 25px 25px 0;
     height: 100vh;
     color: #eee;
-    transition: 0.5s cubic-bezier(0.5, 1.56, 0.6, 0.8);
+    transition: $header-transition;
     overflow: hidden;
     z-index: 3;
     box-shadow: none;
-    background: #f5f4f4;
-    box-shadow:  34px 34px 68px #eeeded, 
-             -34px -34px 68px #fcfbfb;
+    background: $background;
+    /*box-shadow:  34px 34px 68px #eeeded, 
+             -34px -34px 68px #fcfbfb;*/
+    box-shadow: 30px 30px 60px #e6e5e5, 
+             -30px -30px 60px #ffffff;
 
     &:hover {
         width: $full-header-width;
-        background: #f5f4f4;
         box-shadow:  30px 30px 60px #e6e5e5, 
                     -30px -30px 60px #ffffff;
     }
@@ -43,5 +50,28 @@ body {
         font-weight: 500;
         margin: auto 0;
         padding: 15px;
+    }
+}
+
+.header:hover + .container {
+    margin-left: $full-header-width;
+}
+
+.container {
+    margin-left: $header-width;
+    transition: $header-transition;
+    width: calc(100% - 60px);
+
+    &__header {
+        text-align: center;
+    }
+
+    &__addbutton {
+        display: block;
+        width: 300px;
+        margin: 0 auto;
+        border-radius: 100px;
+        border: none;
+        box-shadow: $box-shadow;
     }
 }
