@@ -111,6 +111,10 @@
          * @return self
          */
         public function what(array $columns = []):self {
+            if (empty($columns)) {
+                return $this;
+            }
+
             $what = "";
 
             if (!empty($columns)) {
@@ -119,7 +123,7 @@
                      * If the $columnKey is string then the algorithm constructs an ALIAS statement, otherwise just adds the $column to the search string $what
                      */
                     if (is_string($columnKey)) {
-                        $what .= "$column AS `$columnKey`, ";
+                        $what .= "`$column` AS `$columnKey`, ";
                     } else {
                         $what .= "`$column`, ";
                     }

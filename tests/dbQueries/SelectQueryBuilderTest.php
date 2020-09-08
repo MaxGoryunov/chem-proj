@@ -1,9 +1,8 @@
 <?php
 
     use PHPUnit\Framework\TestCase;
-use Prophecy\Util\StringUtil;
 
-/**
+    /**
      * Testing SelectQueryBuilder
      * 
      * @coversDefaultClass SelectQueryBuilder
@@ -11,7 +10,7 @@ use Prophecy\Util\StringUtil;
     class SelectQueryBuilderTest extends TestCase {
         
         /**
-         * Contains tested c;ass object
+         * Contains tested class object
          *
          * @var SelectQueryBuilder
          */
