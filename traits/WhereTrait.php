@@ -28,7 +28,11 @@
          * 
          * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
          */
-        public function whereAnd(string $condition):IQueryBuilder {
+        public function whereAnd(string $condition = ""):IQueryBuilder {
+            if ($condition === "") {
+                return $this;
+            }
+
             $this->where .= " AND " . $condition;
 
             return $this;
@@ -41,7 +45,11 @@
          * 
          * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
          */
-        public function whereOr(string $condition):IQueryBuilder {
+        public function whereOr(string $condition = ""):IQueryBuilder {
+            if ($condition === "") {
+                return $this;
+            }
+            
             $this->where .= " OR " . $condition;
 
             return $this;
