@@ -1,5 +1,7 @@
 <?php
 
+    namespace Controllers;
+    
     /**
      * Interface specifies common Controller methods
      */

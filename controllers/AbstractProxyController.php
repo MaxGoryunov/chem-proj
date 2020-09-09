@@ -1,5 +1,7 @@
 <?php
 
+    namespace Controllers;
+    
     /**
      * Base class for implementing other ProxyControllers
      */
