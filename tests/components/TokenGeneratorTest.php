@@ -1,7 +1,9 @@
 <?php
 
     //include_once("./config/autoload.php");
-    
+    namespace Tests\Components;
+
+    use Components\TokenGenerator;
     use PHPUnit\Framework\TestCase;
 
     class TokenGeneratorTest extends TestCase {

@@ -1,5 +1,7 @@
 <?php
 
+    namespace Views;
+    
     /**
      * Interface specifies common View methods
      */
