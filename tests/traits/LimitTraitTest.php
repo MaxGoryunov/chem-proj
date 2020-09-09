@@ -9,19 +9,37 @@
      */
     class LimitTraitTest extends TestCase {
 
+        /**
+         * Contains object for testing trait
+         *
+         * @var UpdateQueryBuilder
+         */
         protected $builder;
 
         protected function setUp():void {
-            $this->builder = $this->createMock(IQueryBuilder::class);
+            $this->builder = new class() implements IQueryBuilder {
+                use LimitTrait;
+
+                public function build():IQuery {
+                    return new class() implements IQuery {};
+                }
+            };
         }
 
         /**
          * @covers ::limit
+         * @covers ::getLimit
+         * 
+         * @dataProvider provideLimits
          *
+         * @param int $limit - limit passed to 'limit' method
+         * @param string $expected - expected result
          * @return void
          */
-        public function testLimitConstructsCorrectStatement():void {
-            
+        public function testLimitConstructsCorrectStatement(int $limit, string $expected):void {
+            $this->builder->limit($limit);
+
+            $this->assertEquals($expected, $this->builder->getLimit());
         }
 
         /**
