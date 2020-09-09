@@ -33,7 +33,7 @@
         "UsersFactory" => array(
             "users/list" => "index"
         ),
-        "AddressesProxyController" => array(
+        "AddressesFactory" => array(
             "addresses/list" => "index"
         )
     );
