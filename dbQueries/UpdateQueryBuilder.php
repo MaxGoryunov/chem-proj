@@ -16,10 +16,10 @@
          */
         public function build():IQuery {
             return new Query("
-                UPDATE `{$this->tableName}`
-                SET {$this->values}
-                {$this->where}
-                {$this->limit};
+                UPDATE `{$this->getTableName()}`
+                SET {$this->getValues()}
+                {$this->getWhere()}
+                {$this->getLimit()};
             ");
         }
     }

@@ -14,9 +14,9 @@
          */
         public function build():IQuery {
             return new Query("
-                DELETE FROM `{$this->tableName}`
-                {$this->where}
-                {$this->limit};
+                DELETE FROM `{$this->getTableName()}`
+                {$this->getWhere()}
+                {$this->getLimit()};
             ");
         }
     }
