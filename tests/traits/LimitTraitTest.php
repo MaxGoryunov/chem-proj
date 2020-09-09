@@ -16,6 +16,11 @@
          */
         protected $builder;
 
+        /**
+         * Creates object for testing trait
+         *
+         * @return void
+         */
         protected function setUp():void {
             $this->builder = new class() implements IQueryBuilder {
                 use LimitTrait;
@@ -24,6 +29,15 @@
                     return new class() implements IQuery {};
                 }
             };
+        }
+
+        /**
+         * Removes object for testing trait
+         *
+         * @return void
+         */
+        protected function tearDown():void {
+            $this->builder = null;
         }
 
         /**
