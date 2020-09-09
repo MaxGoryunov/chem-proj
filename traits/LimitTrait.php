@@ -1,5 +1,7 @@
 <?php
 
+    namespace Traits;
+
     /**
      * Trait supports LIMIT N statements
      */
@@ -28,7 +30,7 @@
          * 
          * @return $this
          */
-        public function limit(int $limit):IQueryBuilder {
+        public function limit(int $limit):\IQueryBuilder {
             $this->limit = "LIMIT " . $limit;
 
             return $this;

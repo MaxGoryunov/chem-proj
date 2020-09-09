@@ -1,5 +1,9 @@
 <?php
 
+    namespace Traits;
+
+    use IQueryBuilder;
+
     /**
      * Trait supports WHERE statements
      */
@@ -64,7 +68,7 @@
          * 
          * @return $this
          */
-        public function whereOr(string $condition = ""):IQueryBuilder {
+        public function whereOr(string $condition = ""):\IQueryBuilder {
             if ($condition === "") {
                 return $this;
             }
