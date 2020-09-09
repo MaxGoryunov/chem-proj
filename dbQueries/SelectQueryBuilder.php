@@ -1,5 +1,9 @@
 <?php
 
+    namespace DBQueries;
+
+    use Traits\WhereTrait;
+
     /**
      * Class for building a Select query
      */
