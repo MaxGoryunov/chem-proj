@@ -10,7 +10,7 @@
          *
          * @var string
          */
-        private $where = "WHERE 1";
+        private $where = "";
 
         /**
          * Returns WHERE statement
@@ -19,6 +19,23 @@
          */
         public function getWhere():string {
             return $this->where;
+        }
+
+        /**
+         * Initiates string starter for first call of 'whereAnd' method
+         *
+         * @return void
+         */
+        private function initWhereAnd():void {
+            if ($this->where === "") {
+                $this->where = "WHERE 1";
+            }
+        }
+
+        private function initWhereOr():void {
+            if ($this->where === "") {
+                $this->where = "WHERE 0";
+            }
         }
 
         /**
@@ -32,6 +49,8 @@
             if ($condition === "") {
                 return $this;
             }
+
+            $this->initWhereAnd();
 
             $this->where .= " AND " . $condition;
 
@@ -49,6 +68,8 @@
             if ($condition === "") {
                 return $this;
             }
+
+            $this->initWhereOr();
             
             $this->where .= " OR " . $condition;
 
