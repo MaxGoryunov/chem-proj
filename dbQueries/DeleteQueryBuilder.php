@@ -12,7 +12,7 @@
         /**
          * {@inheritDoc}
          */
-        public function build():Query {
+        public function build():IQuery {
             return new Query("
                 DELETE FROM `{$this->tableName}`
                 {$this->where}

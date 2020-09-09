@@ -10,7 +10,7 @@
          *
          * @return AddressesModel
          */
-        public function getModel():AddressesModel {
+        public function getModel():IModel {
             return new AddressesModel();
         }
 
@@ -19,7 +19,7 @@
          *
          * @return AddressesView
          */
-        public function getView():AddressesView {
+        public function getView():IView {
             return new AddressesView();
         }
 
@@ -28,7 +28,7 @@
          *
          * @return AddressesController
          */
-        public function getController():AddressesController {
+        public function getController():IController {
             return new AddressesController($this);
         }
 
@@ -37,7 +37,7 @@
          *
          * @return AddressesProxyController
          */
-        public function getProxy():AddressesProxyController {
+        public function getProxy():IController {
             return new AddressesProxyController($this);
         }
 
@@ -46,7 +46,7 @@
          *
          * @return AddressesMapper
          */
-        public function getDataMapper():AddressesMapper {
+        public function getDataMapper():IDataMapper {
             return new AddressesMapper();
         }
     }

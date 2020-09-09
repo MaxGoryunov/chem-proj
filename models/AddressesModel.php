@@ -4,6 +4,11 @@
      * Model containing Addresses business logic
      */
     class AddressesModel extends AbstractModel {
+
+        /**
+         * {@inheritDoc}
+         */
+        protected $tableName = "addresses";
         
         /**
          * {@inheritDoc}
@@ -29,7 +34,7 @@
          * 
          * @return AddressEntity
          */
-        public function getById(int $id):AbstractEntity {
+        public function getById(int $id):IEntity {
             return new AddressEntity();
         }
 

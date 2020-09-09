@@ -22,7 +22,7 @@
          * {@inheritDoc}
          * @return UserEntity
          */
-        public function getById(int $id):UserEntity {
+        public function getById(int $id):IEntity {
             return new UserEntity();
         }
 

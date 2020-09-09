@@ -26,6 +26,7 @@
 					"Entity" => "entities",
 					"Factory" => "factories",
 					"Model" => "models",
+					"ProxyController" => "proxyControllers",
 					"Trait" => "traits",
 					"View" => "views"
 				);

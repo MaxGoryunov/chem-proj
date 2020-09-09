@@ -30,5 +30,5 @@
             return $this->tableName;
         }
 
-        public abstract function build():Query;
+        public abstract function build():IQuery;
     }

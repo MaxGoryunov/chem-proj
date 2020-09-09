@@ -14,7 +14,7 @@
         /**
          * {@inheritDoc}
          */
-        public function build():Query {
+        public function build():IQuery {
             return new Query("
                 UPDATE `{$this->tableName}`
                 SET {$this->values}
