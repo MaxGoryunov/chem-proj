@@ -27,4 +27,12 @@
         public function __construct(IMVCPDMFactory $relatedFactory) {
             $this->relatedFactory = $relatedFactory;
         }
+
+        protected function getController():AbstractController {
+            if (!isset($this->relatedController)) {
+                $this->relatedController = $this->relatedFactory->getController();
+            }
+
+            return $this->relatedController;
+        }
     }

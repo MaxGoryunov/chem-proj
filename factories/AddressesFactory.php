@@ -38,7 +38,7 @@
          * @return AddressesProxyController
          */
         public function getProxy():AddressesProxyController {
-            return new AddressesProxyController();
+            return new AddressesProxyController($this);
         }
 
         /**

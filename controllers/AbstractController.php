@@ -34,4 +34,34 @@
         public function __construct(IMVCPDMFactory $relatedFactory) {
             $this->relatedFactory = $relatedFactory;
         }
+
+        /**
+         * Returns a related Model
+         * 
+         * Access to the Model is done in lazy load manner so that it is not created each time a query is made
+         *
+         * @return AbstractModel
+         */
+        public function getModel():AbstractModel {
+            if (!isset($this->relatedModel)) {
+                $this->relatedModel = $this->relatedFactory->getModel();
+            }
+
+            return $this->relatedModel;
+        }
+
+        /**
+         * Returns a related View
+         * 
+         * Access to the View is done in lazy load manner so that it is not created each time a query is made
+         *
+         * @return AbstractView
+         */
+        public function getView():AbstractView {
+            if (!isset($this->relatedView)) {
+                $this->relatedView = $this->relatedFactory->getView();
+            }
+
+            return $this->relatedView;
+        }
     }

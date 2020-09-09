@@ -227,7 +227,7 @@
         /**
          * {@inheritDoc}
          */
-        public function build():IQuery {
+        public function build():Query {
             return new Query("
                 SELECT {$this->getWhat()}
                 FROM `{$this->getTableName()}`

@@ -29,4 +29,6 @@
         public function getTableName():string {
             return $this->tableName;
         }
+
+        public abstract function build():Query;
     }
