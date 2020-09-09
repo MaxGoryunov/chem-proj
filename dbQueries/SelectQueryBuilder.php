@@ -173,21 +173,23 @@
         /**
          * Constructs an ORDER BY statement
          *
-         * @param string[] $columns
-         * 
+         * @param string[][] $columns
          * @return self
          */
         public function orderBy(array $columns = []):self {
+            if ($columns === []) {
+                return $this;
+            }
+
             $orderBy = "ORDER BY ";
 
-            foreach ($columns as $columnKey => $column) {
-                /**
-                 * If the sorting order is specified and is valid then it is applied, otherwise just adds the $column to the order string $orderBy
-                 */
-                if (in_array($columnKey, ["ASC", "DESC"])) {
-                    $orderBy .= "$column $columnKey, ";
+            foreach ($columns as $column) {
+                $column["orderType"] = $column["orderType"] ?? "";
+
+                if (in_array($column["orderType"], ["ASC", "DESC"])) {
+                    $orderBy .= "`" . $column["name"] . "` " . $column["orderType"] . ", ";
                 } else {
-                    $orderBy .= "$column, ";
+                    $orderBy .= "`" . $column["name"] . "`, ";
                 }
             }
 

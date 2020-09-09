@@ -149,7 +149,15 @@
                                         ->whereAnd("`medicine_price` > 500")
                                         ->whereOr("`medicine_doze` > 30")
                                         ->groupBy("medicine_price")
-                                        ->orderBy(["medicine_name", "DESC" => "medicine_price"])
+                                        ->orderBy([
+                                            [
+                                                "name"      => "medicine_name"
+                                            ],
+                                            [
+                                                "name"      => "medicine_price",
+                                                "orderType" => "DESC"
+                                            ]
+                                        ])
                                         ->limit(30)
                                         ->build();
 
@@ -232,7 +240,7 @@
         /**
          * Provides columns for 'orderBy' method
          *
-         * @return (array|string[]|string)[][]
+         * @return (array|string[][]|string)[][]
          */
         public function provideOrderByColumns():array {
             return [
@@ -242,29 +250,47 @@
                 ],
                 "directionNotSupplied" => [
                     [
-                        "medicine_name",
-                        "medicine_price"
+                        ["name" => "medicine_name"],
+                        ["name" => "medicine_price"]
                     ],
                     "ORDER BY `medicine_name`, `medicine_price`"
                 ],
                 "directionAsc"         => [
                     [
-                        "ASC" => "medicine_name",
-                        "ASC" => "medicine_price"
+                        [
+                            "name"      => "medicine_name",
+                            "orderType" => "ASC"
+                        ],
+                        [
+                            "name"      => "medicine_price",
+                            "orderType" => "ASC"
+                        ]
                     ],
                     "ORDER BY `medicine_name` ASC, `medicine_price` ASC"
                 ],
                 "directionDesc"        => [
                     [
-                        "DESC" => "medicine_name",
-                        "DESC" => "medicine_price"
+                        [
+                            "name"      => "medicine_name",
+                            "orderType" => "DESC"
+                        ],
+                        [
+                            "name"      => "medicine_price",
+                            "orderType" => "DESC"
+                        ]
                     ],
                     "ORDER BY `medicine_name` DESC, `medicine_price` DESC"
                 ],
                 "directionMixed"       => [
                     [
-                        "ASC"  => "medicine_name",
-                        "DESC" => "medicine_price"
+                        [
+                            "name"      => "medicine_name",
+                            "orderType" => "ASC"
+                        ],
+                        [
+                            "name"      => "medicine_price",
+                            "orderType" => "DESC"
+                        ]
                     ],
                     "ORDER BY `medicine_name` ASC, `medicine_price` DESC"
                 ]
