@@ -134,10 +134,14 @@
          */
         public function testJoinBuildsCorrectJoinStatement(array $joins, string $expected):void {
             foreach ($joins as $join) {
-                $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"]);
+                if (isset($join["joinType"])) {
+                    $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"], $join["joinType"]);
+                } else {
+                    $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"]);
+                }
             }
 
-            $this->assertEquals(preg_replace("/\n/", "", $expected), $this->selectBuilder->getJoins());
+            $this->assertEquals($expected, preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $this->selectBuilder->getJoins())));
         }
 
         public function testBuildBuildsCorrectQueryObject():void {
@@ -161,15 +165,7 @@
                                         ->limit(30)
                                         ->build();
 
-            $this->assertEquals(preg_replace("/\n/", "", "
-            SELECT `medicine_id`, `medicine_name` AS `name`
-            FROM `medicines`
-        LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-        LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-        LEFT JOIN `countries` ON `country_id` = `medicine_country_id`
-            WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30
-            GROUP BY `medicine_name`, `medicine_price` DESC
-            LIMIT 30;"), $query->getQueryString());
+            $this->assertEquals(preg_replace("/\n/", "", " SELECT `medicine_id`, `medicine_name` AS `name` FROM `medicines` LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` LEFT JOIN `countries` ON `country_id` = `medicine_country_id` WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30 GROUP BY `medicine_price` ORDER BY `medicine_name`, `medicine_price` DESC LIMIT 0, 30; "), preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
         }
 
         /**
@@ -325,10 +321,7 @@
                             "joinType"            => "BAZ"
                         ],
                     ],
-                    "
-            LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-            LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-            LEFT JOIN `countries` ON `country_id` = `medicine_country_id`"
+                    " LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` LEFT JOIN `countries` ON `country_id` = `medicine_country_id`"
                 ],
                 "properJoinType" => [
                     [
@@ -357,11 +350,7 @@
                             "joinType"            => "FULL OUTER"
                         ]
                     ],
-                    "
-            INNER JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-            LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-            RIGHT JOIN `countries` ON `country_id` = `medicine_country_id`
-            FULL OUTER JOIN `purposes` ON `purpose_id` = `medicine_purpose_id`"
+                    " INNER JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` RIGHT JOIN `countries` ON `country_id` = `medicine_country_id` FULL OUTER JOIN `purposes` ON `purpose_id` = `medicine_purpose_id`"
                 ]
             ];
         }
