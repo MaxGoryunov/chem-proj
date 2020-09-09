@@ -22,7 +22,13 @@
          * @return void
          */
         protected function setUp():void {
-            $this->builder = $this->createMock(SelectQueryBuilder::class);
+            $this->builder = new class() implements IQueryBuilder {
+                use WhereTrait;
+        
+                public function build():IQuery {
+                    return new class() implements IQuery {};
+                }
+            };
         }
 
         /**
@@ -41,7 +47,6 @@
          * @return void
          */
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
-
             $this->builder->whereAnd("");
 
             $this->assertEquals("WHERE 1", $this->builder->getWhere());
