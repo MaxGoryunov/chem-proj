@@ -1,5 +1,8 @@
 <?php
 
+    namespace Tests\DBQueries;
+
+    use DBQueries\SelectQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
     /**
