@@ -1,6 +1,7 @@
 <?php
 
     namespace Components;
+    
     /**
      * CLass for providing Database Connections
      * 

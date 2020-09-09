@@ -1,6 +1,7 @@
 <?php
 
 	namespace Components;
+	
 	/**
 	 * Class for providing routing within the site
 	 */

@@ -1,5 +1,7 @@
 <?php
 
+    namespace Traits;
+
     /**
      * Trait supports SET `column_name` = VALUE statements
      */
@@ -19,7 +21,7 @@
          * 
          * @return UpdateQueryBuilder|InsertQueryBuilder
          */
-        public function set(array $values = []):IQueryBuilder {
+        public function set(array $values = []):\IQueryBuilder {
             $set = "";
 
             foreach ($values as $columnName => $value) {

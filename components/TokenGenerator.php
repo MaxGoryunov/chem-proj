@@ -1,6 +1,7 @@
 <?php
 
     namespace Components;
+    
     /**
      * Class for creating tokens. Will be used later to create tokens for user connections
      */

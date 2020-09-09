@@ -1,5 +1,7 @@
 <?php
 
+    namespace Traits;
+
     /**
      * Trait supports WHERE statements
      */
@@ -28,7 +30,7 @@
          * 
          * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
          */
-        public function whereAnd(string $condition):IQueryBuilder {
+        public function whereAnd(string $condition):\IQueryBuilder {
             $this->where .= " AND " . $condition;
 
             return $this;
@@ -41,7 +43,7 @@
          * 
          * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
          */
-        public function whereOr(string $condition):IQueryBuilder {
+        public function whereOr(string $condition):\IQueryBuilder {
             $this->where .= " OR " . $condition;
 
             return $this;

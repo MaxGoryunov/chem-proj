@@ -1,6 +1,7 @@
 <?php
 
     namespace Components;
+    
     /**
      * Class which represents connection with MySQL Database
      * 
