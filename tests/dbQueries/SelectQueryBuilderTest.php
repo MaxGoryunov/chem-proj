@@ -1,9 +1,8 @@
 <?php
 
     use PHPUnit\Framework\TestCase;
-use Prophecy\Util\StringUtil;
 
-/**
+    /**
      * Testing SelectQueryBuilder
      * 
      * @coversDefaultClass SelectQueryBuilder
@@ -11,7 +10,7 @@ use Prophecy\Util\StringUtil;
     class SelectQueryBuilderTest extends TestCase {
         
         /**
-         * Contains tested c;ass object
+         * Contains tested class object
          *
          * @var SelectQueryBuilder
          */
@@ -45,57 +44,10 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected string
          * @return void
          */
-        public function testClassMethodWhatBuildsCorrectWhatStatement(array $columns, string $expected):void {
+        public function testWhatBuildsCorrectWhatStatement(array $columns, string $expected):void {
             $this->selectBuilder->what($columns);
 
             $this->assertEquals($expected, $this->selectBuilder->getWhat());
-        }
-
-        /**
-         * @covers ::whereAnd
-         * @covers ::getWhere
-
-         * @return void
-         */
-        public function testClassMethodWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
-            $this->selectBuilder->whereAnd("");
-
-            $this->assertEquals("WHERE 1", $this->selectBuilder->getWhere());
-        }
-
-        /**
-         * @covers ::whereOr
-         * @covers ::getWhere
-
-         * @return void
-         */
-        public function testClassMethodWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
-            $this->selectBuilder->whereOr("");
-
-            $this->assertEquals("WHERE 1", $this->selectBuilder->getWhere());
-        }
-
-        /**
-         * @covers ::whereOr
-         * @covers ::whereAnd
-         * @covers ::getWhere
-         * 
-         * @dataProvider provideMixedWhereConditions
-         *
-         * @param string[][] $statements - statements to be built
-         * @param string $expected - expected result
-         * @return void
-         */
-        public function testClassMethodsWhereBuildCorrectWhereStatement(array $statements, string $expected):void {
-            foreach ($statements as $statement) {
-                if ($statement["type"] == "and") {
-                    $this->selectBuilder->whereAnd($statement["condition"]);
-                } else {
-                    $this->selectBuilder->whereOr($statement["condition"]);
-                }
-            }
-
-            $this->assertEquals($expected, $this->selectBuilder->getWhere());
         }
 
         /**
@@ -108,7 +60,7 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodGroupByBuildsCorrectGroupByStatement(string $columnName, string $expected):void {
+        public function testGroupByBuildsCorrectGroupByStatement(string $columnName, string $expected):void {
             $this->selectBuilder->groupBy($columnName);
 
             $this->assertEquals($expected, $this->selectBuilder->getGroupBy());
@@ -124,7 +76,7 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodHavingBuildsCorrectHavingStatement(string $condition, string $expected):void {
+        public function testHavingBuildsCorrectHavingStatement(string $condition, string $expected):void {
             $this->selectBuilder->having($condition);
 
             $this->assertEquals($expected, $this->selectBuilder->getHaving());
@@ -140,7 +92,7 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodOrderByBuildsCorrectOrderByStatement(array $columns, string $expected):void {
+        public function testOrderByBuildsCorrectOrderByStatement(array $columns, string $expected):void {
             $this->selectBuilder->orderBy($columns);
 
             $this->assertEquals($expected, $this->selectBuilder->getOrderBy());
@@ -152,10 +104,10 @@ use Prophecy\Util\StringUtil;
          *
          * @return void
          */
-        public function testClassMethodLimitBuildsCorrectLimitStatementWithZeroOffset():void {
+        public function testLimitBuildsCorrectLimitStatementWithZeroOffset():void {
             $this->selectBuilder->limit(5);
 
-            $this->assertEquals("LIMIT 5, 0", $this->selectBuilder->getLimit());
+            $this->assertEquals("LIMIT 0, 5", $this->selectBuilder->getLimit());
         }
 
         /**
@@ -164,10 +116,10 @@ use Prophecy\Util\StringUtil;
          *
          * @return void
          */
-        public function testClassMethodLimitBuildsCorrectLimitStatementWithPositiveOffset():void {
+        public function testLimitBuildsCorrectLimitStatementWithPositiveOffset():void {
             $this->selectBuilder->limit(5, 3);
 
-            $this->assertEquals("LIMIT 5, 3", $this->selectBuilder->getLimit());
+            $this->assertEquals("LIMIT 3, 5", $this->selectBuilder->getLimit());
         }
 
         /**
@@ -180,15 +132,19 @@ use Prophecy\Util\StringUtil;
          * @param string $expected - expected result
          * @return void
          */
-        public function testClassMethodJoinBuildsCorrectJoinStatement(array $joins, string $expected):void {
+        public function testJoinBuildsCorrectJoinStatement(array $joins, string $expected):void {
             foreach ($joins as $join) {
-                $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"]);
+                if (isset($join["joinType"])) {
+                    $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"], $join["joinType"]);
+                } else {
+                    $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"]);
+                }
             }
 
-            $this->assertEquals($expected, $this->selectBuilder->getJoins());
+            $this->assertEquals($expected, preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $this->selectBuilder->getJoins())));
         }
 
-        public function testClassMethodBuildBuildsCorrectQueryObject():void {
+        public function testBuildBuildsCorrectQueryObject():void {
             $query = $this->selectBuilder->what(["medicine_id", 
                                                 "name" =>"medicine_name"])
                                         ->join("chemicals", "chemical_id", "medicine_chemical_id")
@@ -197,19 +153,19 @@ use Prophecy\Util\StringUtil;
                                         ->whereAnd("`medicine_price` > 500")
                                         ->whereOr("`medicine_doze` > 30")
                                         ->groupBy("medicine_price")
-                                        ->orderBy(["medicine_name", "DESC" => "medicine_price"])
+                                        ->orderBy([
+                                            [
+                                                "name"      => "medicine_name"
+                                            ],
+                                            [
+                                                "name"      => "medicine_price",
+                                                "orderType" => "DESC"
+                                            ]
+                                        ])
                                         ->limit(30)
                                         ->build();
 
-            $this->assertEquals("
-                SELECT `medicine_id`, `medicine_name` AS `name`
-                FROM `medicines`
-                LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-                LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-                LEFT JOIN `countries` ON `country_id` = `medicine_country_id`
-                WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30
-                GROUP BY `medicine_name`, `medicine_price` DESC
-                LIMIT 30;", $query->getQueryString());
+            $this->assertEquals(preg_replace("/\n/", "", " SELECT `medicine_id`, `medicine_name` AS `name` FROM `medicines` LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` LEFT JOIN `countries` ON `country_id` = `medicine_country_id` WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30 GROUP BY `medicine_price` ORDER BY `medicine_name`, `medicine_price` DESC LIMIT 0, 30; "), preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
         }
 
         /**
@@ -254,67 +210,6 @@ use Prophecy\Util\StringUtil;
         }
 
         /**
-         * Provides different condition combinations for testing that both 'whereOr' and 'whereAnd' are built correctly
-         *
-         * @return (string[][]|string)[][]
-         */
-        public function provideMixedWhereConditions():array {
-            return [
-                "multipleAnds" => [
-                    [
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE 1 AND `medicine_id` = 1 AND `medicine_price` < 750 AND `medicine_doze` > 30"
-                ],
-                "multipleOrs"  => [
-                    [
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE 1 OR `medicine_id` = 1 OR `medicine_price` < 750 OR `medicine_doze` > 30"
-                ],
-                "mixed"        => [
-                    [
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE 1 OR `medicine_id` = 1 AND `medicine_price` < 750 OR `medicine_doze` > 30"
-                ]
-            ];
-        }
-
-        /**
          * Provides inputs and expected results for 'groupBy' method
          *
          * @return string[][]
@@ -341,7 +236,7 @@ use Prophecy\Util\StringUtil;
         /**
          * Provides columns for 'orderBy' method
          *
-         * @return (array|string[]|string)[][]
+         * @return (array|string[][]|string)[][]
          */
         public function provideOrderByColumns():array {
             return [
@@ -351,29 +246,47 @@ use Prophecy\Util\StringUtil;
                 ],
                 "directionNotSupplied" => [
                     [
-                        "medicine_name",
-                        "medicine_price"
+                        ["name" => "medicine_name"],
+                        ["name" => "medicine_price"]
                     ],
                     "ORDER BY `medicine_name`, `medicine_price`"
                 ],
                 "directionAsc"         => [
                     [
-                        "ASC" => "medicine_name",
-                        "ASC" => "medicine_price"
+                        [
+                            "name"      => "medicine_name",
+                            "orderType" => "ASC"
+                        ],
+                        [
+                            "name"      => "medicine_price",
+                            "orderType" => "ASC"
+                        ]
                     ],
                     "ORDER BY `medicine_name` ASC, `medicine_price` ASC"
                 ],
                 "directionDesc"        => [
                     [
-                        "DESC" => "medicine_name",
-                        "DESC" => "medicine_price"
+                        [
+                            "name"      => "medicine_name",
+                            "orderType" => "DESC"
+                        ],
+                        [
+                            "name"      => "medicine_price",
+                            "orderType" => "DESC"
+                        ]
                     ],
                     "ORDER BY `medicine_name` DESC, `medicine_price` DESC"
                 ],
                 "directionMixed"       => [
                     [
-                        "ASC"  => "medicine_name",
-                        "DESC" => "medicine_price"
+                        [
+                            "name"      => "medicine_name",
+                            "orderType" => "ASC"
+                        ],
+                        [
+                            "name"      => "medicine_price",
+                            "orderType" => "DESC"
+                        ]
                     ],
                     "ORDER BY `medicine_name` ASC, `medicine_price` DESC"
                 ]
@@ -408,10 +321,7 @@ use Prophecy\Util\StringUtil;
                             "joinType"            => "BAZ"
                         ],
                     ],
-                    "
-                    LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-                    LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-                    LEFT JOIN `countries` ON `country_id` = `medicine_country_id`"
+                    " LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` LEFT JOIN `countries` ON `country_id` = `medicine_country_id`"
                 ],
                 "properJoinType" => [
                     [
@@ -440,11 +350,7 @@ use Prophecy\Util\StringUtil;
                             "joinType"            => "FULL OUTER"
                         ]
                     ],
-                    "
-                    INNER JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id`
-                    LEFT JOIN `companies` ON `company_id` = `medicine_company_id`
-                    RIGHT JOIN `countries` ON `country_id` = `medicine_country_id`
-                    FULL OUTER JOIN `purposes` ON `purpose_id` = `medicine_purpose_id`"
+                    " INNER JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` RIGHT JOIN `countries` ON `country_id` = `medicine_country_id` FULL OUTER JOIN `purposes` ON `purpose_id` = `medicine_purpose_id`"
                 ]
             ];
         }
