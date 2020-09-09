@@ -12,8 +12,8 @@
          */
         public function build():IQuery {
             return new Query("
-                INSERT INTO `{$this->tableName}`
-                SET {$this->values};
+                INSERT INTO `{$this->getTableName()}`
+                SET {$this->getValues()};
             ");
         }
     }
