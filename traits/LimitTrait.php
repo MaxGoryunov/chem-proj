@@ -26,7 +26,7 @@
          *
          * @param int $limit - max number of rows in query
          * 
-         * @return DeleteQueryBuilder|UpdateQueryBuilder
+         * @return $this
          */
         public function limit(int $limit):IQueryBuilder {
             $this->limit = "LIMIT " . $limit;

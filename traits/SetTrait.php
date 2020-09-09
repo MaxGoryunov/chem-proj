@@ -26,7 +26,7 @@
          *
          * @param array $values
          * 
-         * @return UpdateQueryBuilder|InsertQueryBuilder
+         * @return $this
          */
         public function set(array $values = []):IQueryBuilder {
             $set = "";
