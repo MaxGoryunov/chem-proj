@@ -4,6 +4,8 @@
 
     use Controllers\IController;
     use DataMappers\IDataMapper;
+    use Models\IModel;
+    use Views\IView;
 
     /**
      * This interface is used by all factories
@@ -17,14 +19,14 @@
          *
          * @return IModel
          */
-        public function getModel():\IModel;
+        public function getModel():IModel;
 
         /**
          * Returns a specified View
          *
          * @return IView
          */
-        public function getView():\IView;
+        public function getView():IView;
 
         /**
          * Returns a specified Controller
