@@ -10,7 +10,7 @@
          *
          * @var string
          */
-        private $where = "WHERE";
+        private $where = "";
 
         /**
          * Returns WHERE statement
@@ -28,13 +28,13 @@
          */
         private function initWhereAnd():void {
             if ($this->where === "") {
-                $this->where .= " 1";
+                $this->where = "WHERE 1";
             }
         }
 
         private function initWhereOr():void {
             if ($this->where === "") {
-                $this->where .= " 0";
+                $this->where = "WHERE 0";
             }
         }
 
@@ -46,11 +46,11 @@
          * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
          */
         public function whereAnd(string $condition = ""):IQueryBuilder {
-            $this->initWhereAnd();
-
             if ($condition === "") {
                 return $this;
             }
+
+            $this->initWhereAnd();
 
             $this->where .= " AND " . $condition;
 
@@ -65,11 +65,11 @@
          * @return $this
          */
         public function whereOr(string $condition = ""):IQueryBuilder {
-            $this->initWhereOr();
-
             if ($condition === "") {
                 return $this;
             }
+
+            $this->initWhereOr();
             
             $this->where .= " OR " . $condition;
 

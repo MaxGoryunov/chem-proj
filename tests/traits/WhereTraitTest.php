@@ -42,6 +42,7 @@
 
         /**
          * @covers ::whereAnd
+         * @covers ::initWhereAnd
          * @covers ::getWhere
 
          * @return void
@@ -49,11 +50,12 @@
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
             $this->builder->whereAnd("");
 
-            $this->assertEquals("WHERE 1", $this->builder->getWhere());
+            $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
          * @covers ::whereOr
+         * @covers ::initWhereOr
          * @covers ::getWhere
 
          * @return void
@@ -61,12 +63,14 @@
         public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
             $this->builder->whereOr("");
 
-            $this->assertEquals("WHERE 1", $this->builder->getWhere());
+            $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
          * @covers ::whereOr
+         * @covers ::initWhereOr
          * @covers ::whereAnd
+         * @covers ::initWhereAnd
          * @covers ::getWhere
          * 
          * @dataProvider provideMixedWhereConditions
@@ -85,6 +89,28 @@
             }
 
             $this->assertEquals($expected, $this->builder->getWhere());
+        }
+
+        /**
+         * @covers ::whereOr
+         * @covers ::initWhereOr
+         * @covers ::whereAnd
+         * @covers ::initWhereAnd
+         * @covers ::getWhere
+         *
+         * @return void
+         */
+        public function testBadUsageOfWhereMethods():void {
+            $this->builder->whereAnd("");
+            $this->builder->whereOr("");
+            $this->builder->whereAnd("");
+
+            $this->builder->whereAnd("`medicine_id` = 1");
+            $this->builder->whereOr("");
+            $this->builder->whereOr("`medicine_price` < 750");
+            $this->builder->whereAnd("");
+
+            $this->assertEquals("WHERE 1 AND `medicine_id` = 1 OR `medicine_price` < 750", $this->builder->getWhere());
         }
 
         /**
@@ -126,7 +152,7 @@
                             "condition" => "`medicine_doze` > 30"
                         ]
                     ],
-                    "WHERE 1 OR `medicine_id` = 1 OR `medicine_price` < 750 OR `medicine_doze` > 30"
+                    "WHERE 0 OR `medicine_id` = 1 OR `medicine_price` < 750 OR `medicine_doze` > 30"
                 ],
                 "mixed"        => [
                     [
@@ -143,7 +169,7 @@
                             "condition" => "`medicine_doze` > 30"
                         ]
                     ],
-                    "WHERE 1 OR `medicine_id` = 1 AND `medicine_price` < 750 OR `medicine_doze` > 30"
+                    "WHERE 0 OR `medicine_id` = 1 AND `medicine_price` < 750 OR `medicine_doze` > 30"
                 ]
             ];
         }
