@@ -39,7 +39,7 @@
          *
          * @param string $condition  - condition to be added
          * 
-         * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
+         * @return $this
          */
         public function whereOr(string $condition):IQueryBuilder {
             $this->where .= " OR " . $condition;
