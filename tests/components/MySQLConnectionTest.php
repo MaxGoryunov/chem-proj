@@ -1,10 +1,11 @@
 <?php
 
+    namespace Tests\Components;
+
+    use Components\MySQLConnection;
     use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\assertSame;
-
-/**
+    /**
      * Testing MySQLConnection class
      * 
      * @coversDefaultClass MySQLConnection

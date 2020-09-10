@@ -1,5 +1,9 @@
 <?php
 
+    namespace Tests\DBQueries;
+
+    use DBQueries\AbstractQueryBuilder;
+    use DBQueries\Query;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -18,6 +22,11 @@
          * @return void
          */
         public function testClassReturnsSuppliedQueryString(string $queryString):void {
+            /**
+             * Mock for AbstractQueryBuilder class
+             * 
+             * @var \PHPUnit\Framework\MockObject\MockObject|AbstractQueryBuilder
+             */
             $queryBuilder = $this->getMockBuilder(AbstractQueryBuilder::class)
                             ->onlyMethods(["build"])
                             ->disableOriginalConstructor()

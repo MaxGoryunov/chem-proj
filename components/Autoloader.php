@@ -1,5 +1,7 @@
 <?php
 
+	namespace Components;
+	
 	/**
 	 * Class for autoloading classes, interfaces or traits
 	 */
