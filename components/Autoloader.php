@@ -49,7 +49,9 @@
 			 */
 			spl_autoload_register(function(string $className):void {
 				foreach ($this->dirs as $dir) {
-					$filePath = "./$dir/$className.php";
+					$classNameParts = explode("\\", $className);
+					$className      = $classNameParts[count($classNameParts) - 1];
+					$filePath       = "./$dir/$className.php";
 					
 					if (file_exists($filePath)) {
 						include_once($filePath);
