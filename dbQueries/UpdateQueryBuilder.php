@@ -1,5 +1,8 @@
 <?php
 
+    namespace DBQueries;
+    
+    use Traits\{SetTrait, WhereTrait, LimitTrait};
     /**
      * Class for building an Update query
      */

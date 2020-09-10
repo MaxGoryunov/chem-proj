@@ -1,5 +1,9 @@
 <?php
 
+    namespace DBQueries;
+
+    use Traits\SetTrait;
+
     /**
      * Class for building and Insert query
      */
