@@ -1,6 +1,9 @@
 <?php
 
+    use DBQueries\IQuery;
+    use DBQueries\IQueryBuilder;
     use PHPUnit\Framework\TestCase;
+    use Traits\WhereTrait;
 
     /**
      * Testing WhereTrait trait
@@ -12,7 +15,7 @@
         /**
          * Contains class which uses tested trait
          *
-         * @var \PHPUnit\Framework\MockObject\MockObject|SelectQueryBuilder
+         * @var SelectQueryBuilder
          */
         protected $builder;
 

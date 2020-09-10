@@ -2,8 +2,8 @@
 
     namespace Tests\DBQueries;
 
-use DBQueries\UpdateQueryBuilder;
-use PHPUnit\Framework\TestCase;
+    use DBQueries\UpdateQueryBuilder;
+    use PHPUnit\Framework\TestCase;
 
     /**
      * Testing UpdateQueryBuilder

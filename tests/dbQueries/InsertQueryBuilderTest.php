@@ -1,5 +1,6 @@
 <?php
 
+    use DBQueries\InsertQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
     /**

@@ -1,6 +1,9 @@
 <?php
 
+    use DBQueries\IQuery;
+    use DBQueries\IQueryBuilder;
     use PHPUnit\Framework\TestCase;
+    use Traits\SetTrait;
 
     /**
      * Testing SetTrait trait

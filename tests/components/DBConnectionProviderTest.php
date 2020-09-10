@@ -1,7 +1,11 @@
 <?php
 
     namespace Tests\Components;
-    
+
+    use Components\DBConnectionProvider;
+    use Components\IDBConnection;
+    use InvalidArgumentException;
+    use mysqli;
     use PHPUnit\Framework\TestCase;
 
     /**
