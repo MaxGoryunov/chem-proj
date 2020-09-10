@@ -2,7 +2,7 @@
 
     namespace Traits;
 
-    use IQueryBuilder;
+    use DBQueries\IQueryBuilder;
 
     /**
      * Trait supports WHERE statements
@@ -47,7 +47,7 @@
          *
          * @param string $condition  - condition to be added
          * 
-         * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
+         * @return $this
          */
         public function whereAnd(string $condition = ""):IQueryBuilder {
             if ($condition === "") {
@@ -68,7 +68,7 @@
          * 
          * @return $this
          */
-        public function whereOr(string $condition = ""):\IQueryBuilder {
+        public function whereOr(string $condition = ""):IQueryBuilder {
             if ($condition === "") {
                 return $this;
             }

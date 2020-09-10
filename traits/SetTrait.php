@@ -2,6 +2,8 @@
 
     namespace Traits;
 
+    use DBQueries\IQueryBuilder;
+
     /**
      * Trait supports SET `column_name` = VALUE statements
      */
@@ -30,7 +32,7 @@
          * 
          * @return $this
          */
-        public function set(array $values = []):\IQueryBuilder {
+        public function set(array $values = []):IQueryBuilder {
             $set = "";
 
             foreach ($values as $columnName => $value) {
