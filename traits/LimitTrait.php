@@ -2,6 +2,8 @@
 
     namespace Traits;
 
+    use DBQueries\IQueryBuilder;
+
     /**
      * Trait supports LIMIT N statements
      */
@@ -30,7 +32,11 @@
          * 
          * @return $this
          */
-        public function limit(int $limit):\IQueryBuilder {
+        public function limit(int $limit):IQueryBuilder {
+            if ($limit < 0) {
+                $limit = 0;
+            }
+            
             $this->limit = "LIMIT " . $limit;
 
             return $this;
