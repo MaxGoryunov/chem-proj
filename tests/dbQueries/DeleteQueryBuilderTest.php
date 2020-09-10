@@ -37,6 +37,11 @@
             $this->deleteBuilder = null;
         }
 
+        /**
+         * @covers ::build
+         *
+         * @return void
+         */
         public function testBuildBuildsCorrectQueryObject():void {
             $query = $this->deleteBuilder->whereAnd("`medicine_price` < 300")
                                          ->whereOr("`medicine_price` > 500")
