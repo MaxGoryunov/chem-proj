@@ -2,7 +2,7 @@
 
     namespace Controllers;
 
-    use Factories\IMVCPDMFactory;
+    use Factories\AbstractMVCPDMFactory;
     use Models\AbstractModel;
     use Views\AbstractView;
 
@@ -35,9 +35,9 @@
         /**
          * Accepts the Factory to delegate it the creation of MVCPDM components
          *
-         * @param IMVCPDMFactory $relatedFactory
+         * @param AbstractMVCPDMFactory $relatedFactory
          */
-        public function __construct(IMVCPDMFactory $relatedFactory) {
+        public function __construct(AbstractMVCPDMFactory $relatedFactory) {
             $this->relatedFactory = $relatedFactory;
         }
 
@@ -48,7 +48,7 @@
          *
          * @return AbstractModel
          */
-        public function getModel():AbstractModel {
+        protected function getModel():AbstractModel {
             if (!isset($this->relatedModel)) {
                 $this->relatedModel = $this->relatedFactory->getModel();
             }
@@ -63,7 +63,7 @@
          *
          * @return AbstractView
          */
-        public function getView():AbstractView {
+        protected function getView():AbstractView {
             if (!isset($this->relatedView)) {
                 $this->relatedView = $this->relatedFactory->getView();
             }

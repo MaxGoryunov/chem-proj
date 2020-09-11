@@ -35,7 +35,9 @@
          * @return void
          */
         public function edit(int $id):void {
-
+            $title          = "Редактирование адреса";
+            $addressesModel = $this->getModel();
+            $address        = $addressesModel->getById($id);
         }
 
         /**

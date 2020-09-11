@@ -3,7 +3,9 @@
     namespace Models;
 
     use Components\DBConnectionProvider;
+    use DataMappers\AbstractDataMapper;
     use DBQueries\SelectQueryBuilder;
+    use Factories\AbstractMVCPDMFactory;
 
     /**
      * Base class for implementing other Models
@@ -16,6 +18,37 @@
          * @var string
          */
         protected $tableName = "";
+
+        /**
+         * Related Factory used to get related Data Mapper
+         *
+         * @var AbstractMVCPDMFactory
+         */
+        protected $relatedFactory;
+
+        /**
+         * Related Data Mapper containing methods for mapping datasets to objects
+         *
+         * @var AbstractDataMapper
+         */
+        protected $relatedMapper;
+
+        /**
+         * Accepts the Factory to delegate it the creation of Data Mapper
+         *
+         * @param AbstractMVCPDMFactory $relatedFactory
+         */
+        public function __construct(AbstractMVCPDMFactory $relatedFactory) {
+            $this->relatedFactory = $relatedFactory;
+        }
+
+        protected function getDataMapper():AbstractDataMapper {
+            if (!isset($this->relatedMapper)) {
+                $this->relatedMapper = $this->relatedFactory->getDataMapper();
+            }
+
+            return $this->relatedMapper;
+        }
 
         /**
          * Returns a name of related Database Table
