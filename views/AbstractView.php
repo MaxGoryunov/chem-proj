@@ -1,5 +1,7 @@
 <?php
 
+    namespace Views;
+    
     /**
      * Base class for implementing other Views
      */

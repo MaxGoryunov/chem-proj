@@ -1,5 +1,9 @@
 <?php
 
+    namespace Traits;
+
+    use DBQueries\IQueryBuilder;
+
     /**
      * Trait supports WHERE statements
      */
@@ -43,7 +47,7 @@
          *
          * @param string $condition  - condition to be added
          * 
-         * @return SelectQueryBuilder|DeleteQueryBuilder|UpdateQueryBuilder
+         * @return $this
          */
         public function whereAnd(string $condition = ""):IQueryBuilder {
             if ($condition === "") {

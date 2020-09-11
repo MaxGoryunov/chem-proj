@@ -1,5 +1,9 @@
 <?php
 
+    namespace DataMappers;
+
+    use Entities\IEntity;
+
     /**
      * Interface specifies common Data Mapper methods
      */

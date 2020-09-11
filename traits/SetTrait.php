@@ -1,5 +1,9 @@
 <?php
 
+    namespace Traits;
+
+    use DBQueries\IQueryBuilder;
+
     /**
      * Trait supports SET `column_name` = VALUE statements
      */

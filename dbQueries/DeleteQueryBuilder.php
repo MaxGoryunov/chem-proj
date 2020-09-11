@@ -1,5 +1,10 @@
 <?php
 
+    namespace DBQueries;
+
+    use Traits\LimitTrait;
+    use Traits\WhereTrait;
+
     /**
      * Class for building a Delete query
      */

@@ -1,5 +1,7 @@
 <?php
 
+    namespace DBQueries;
+
     /**
      * Abstract class for different specific queries: Select, Update, Insert and Delete
      */
