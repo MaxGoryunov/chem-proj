@@ -1,5 +1,9 @@
 <?php
 
+    namespace DataMappers;
+    
+    use Entities\AddressEntity;
+
     /**
      * Data Mapper for mapping AddressEntity objects
      */

@@ -1,5 +1,9 @@
 <?php
 
+    namespace Factories;
+
+    use Models\UsersModel;
+
     /**
      * Class for creating components from Users domain
      */

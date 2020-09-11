@@ -1,7 +1,10 @@
 <?php
 
     namespace Models;
-    
+
+    use Components\DBConnectionProvider;
+    use DBQueries\SelectQueryBuilder;
+
     /**
      * Base class for implementing other Models
      */

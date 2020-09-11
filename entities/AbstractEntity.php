@@ -1,5 +1,7 @@
 <?php
 
+    namespace Entities;
+    
     /**
      * Base class for implementing other Entities
      */

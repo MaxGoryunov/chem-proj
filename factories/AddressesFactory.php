@@ -1,5 +1,17 @@
 <?php
 
+    namespace Factories;
+
+    use Controllers\AddressesController;
+    use Controllers\IController;
+    use DataMappers\AddressesMapper;
+    use DataMappers\IDataMapper;
+    use Models\AddressesModel;
+    use Models\IModel;
+    use ProxyControllers\AddressesProxyController;
+    use Views\AddressesView;
+    use Views\IView;
+
     /**
      * Factory for getting classes from Addresses Domain
      */

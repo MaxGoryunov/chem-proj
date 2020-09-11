@@ -1,5 +1,9 @@
 <?php
 
+    namespace Controllers;
+
+    use Factories\UsersFactory;
+
     /**
      * Class contains Address Controller logic
      */

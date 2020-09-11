@@ -1,5 +1,7 @@
 <?php
 
+    namespace ProxyControllers;
+    
     /**
      * Proxy Controller for actions related to addresses
      */

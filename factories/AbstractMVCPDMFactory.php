@@ -1,5 +1,7 @@
 <?php
 
+    namespace Factories;
+    
     /**
      * Base class for implementing other Factories
      */

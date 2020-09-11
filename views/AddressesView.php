@@ -1,5 +1,7 @@
 <?php
 
+    namespace Views;
+    
     /**
      * Class for Address presentation logic
      */

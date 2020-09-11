@@ -1,5 +1,11 @@
 <?php
 
+    namespace ProxyControllers;
+
+    use Controllers\AbstractController;
+    use Controllers\IController;
+    use Factories\IMVCPDMFactory;
+
     /**
      * Base class for implementing other ProxyControllers
      */
@@ -28,6 +34,11 @@
             $this->relatedFactory = $relatedFactory;
         }
 
+        /**
+         * Returns a related Controller from the same domain
+         *
+         * @return AbstractController
+         */
         protected function getController():AbstractController {
             if (!isset($this->relatedController)) {
                 $this->relatedController = $this->relatedFactory->getController();

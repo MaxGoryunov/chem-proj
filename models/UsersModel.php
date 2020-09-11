@@ -1,5 +1,10 @@
 <?php
 
+    namespace Models;
+
+    use Entities\IEntity;
+    use Entities\UserEntity;
+
     /**
      * Class containing Users business logic 
      */

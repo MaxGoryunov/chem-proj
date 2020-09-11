@@ -1,7 +1,11 @@
 <?php
 
     namespace Controllers;
-    
+
+    use Factories\IMVCPDMFactory;
+    use Models\AbstractModel;
+    use Views\AbstractView;
+
     /**
      * Base class for implementing other Controllers
      */

@@ -1,5 +1,12 @@
 <?php
 
+    namespace Models;
+
+    use Components\DBConnectionProvider;
+    use DBQueries\SelectQueryBuilder;
+    use Entities\AddressEntity;
+    use Entities\IEntity;
+
     /**
      * Model containing Addresses business logic
      */
