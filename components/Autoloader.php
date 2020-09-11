@@ -34,12 +34,14 @@
             }
 		}
 
+		/**
+		 * Registers an autoload factor
+		 *
+		 * @return void
+		 */
 		public function register():void {
 			$this->initDirs();
 
-			/**
-			 * @todo Implement a more effective way of class loading and then test it; maybe with the Regex Expressions
-			 */
 			/**
 			 * Anonymous function
 			 * 
@@ -48,16 +50,10 @@
 			 * @return void
 			 */
 			spl_autoload_register(function(string $className):void {
-				foreach ($this->dirs as $dir) {
-					$classNameParts = explode("\\", $className);
-					$className      = $classNameParts[count($classNameParts) - 1];
-					$filePath       = "./$dir/$className.php";
+				$filePath  = "./$className.php";
 					
-					if (file_exists($filePath)) {
-						include_once($filePath);
-		
-						break;
-					}
+				if (file_exists($filePath)) {
+					include_once($filePath);
 				}
 			});
 		}
