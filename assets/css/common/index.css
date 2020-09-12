@@ -1,0 +1,33 @@
+.container__addbutton {
+  display: block;
+  width: 300px;
+  margin: 0 auto;
+  border-radius: 100px;
+  border: none;
+  color: #eee;
+  background: -webkit-gradient(linear, left top, left bottom, from(#58a9ff), to(#006ee4)) no-repeat;
+  background: linear-gradient(#58a9ff, #006ee4) no-repeat;
+  text-shadow: 0 1px 0 #4b5ef0;
+  -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  -webkit-transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
+  transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
+}
+
+.container__addbutton:hover {
+  -webkit-box-shadow: 0 0px 20px -5px rgba(0, 123, 255, 0.85), 0 15px 15px 0px rgba(4, 4, 4, 0.1);
+          box-shadow: 0 0px 20px -5px rgba(0, 123, 255, 0.85), 0 15px 15px 0px rgba(4, 4, 4, 0.1);
+  -webkit-transform: translateY(-5px);
+          transform: translateY(-5px);
+}
+
+.container__table {
+  border-radius: 25px;
+  -webkit-box-shadow: 10px 10px 20px #dcdcdc, -10px -10px 20px #ffffff;
+          box-shadow: 10px 10px 20px #dcdcdc, -10px -10px 20px #ffffff;
+}
+
+.container__table > .thead-light {
+  border-radius: 25px;
+}
+/*# sourceMappingURL=index.css.map */

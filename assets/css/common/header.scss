@@ -1,10 +1,4 @@
-$background: #f4f4f4;
-$box-shadow: 30px 30px 60px #e6e5e5, 
--30px -30px 60px #ffffff;
-
-$header-width: 80px;
-$full-header-width: 300px;
-$header-transition: 0.5s cubic-bezier(0.25, 1.6, 0.45, 0.8);
+@import "variables";
 
 html {
     scroll-behavior: smooth;
@@ -29,13 +23,10 @@ body {
     background: $background;
     /*box-shadow:  34px 34px 68px #eeeded, 
              -34px -34px 68px #fcfbfb;*/
-    box-shadow: 30px 30px 60px #e6e5e5, 
-             -30px -30px 60px #ffffff;
+    box-shadow: $box-shadow;
 
     &:hover {
         width: $full-header-width;
-        box-shadow:  30px 30px 60px #e6e5e5, 
-                    -30px -30px 60px #ffffff;
     }
 
     &__navblock {
@@ -55,23 +46,4 @@ body {
 
 .header:hover + .container {
     margin-left: $full-header-width;
-}
-
-.container {
-    margin-left: $header-width;
-    transition: $header-transition;
-    width: calc(100% - 60px);
-
-    &__header {
-        text-align: center;
-    }
-
-    &__addbutton {
-        display: block;
-        width: 300px;
-        margin: 0 auto;
-        border-radius: 100px;
-        border: none;
-        box-shadow: $box-shadow;
-    }
 }

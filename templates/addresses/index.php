@@ -1,7 +1,7 @@
 <div class="container">
     <h2 class="container__header">Адреса</h2>
     <a href="./add" class="btn btn-outline-primary btn-lg container__addbutton" role="button">Добавить</a>
-    <table class="table table-striped">
+    <table class="table container__table">
         <thead class="thead-light">
             <tr>
                 <th scope="col"> ID </th>
@@ -22,5 +22,21 @@
                 <? endif; ?>
             </tr>
             <? endforeach; ?>
+            <tr>
+                <td scope="row">1</td>
+                <td>Санкт-Петербург</td>
+                <td>Изменить</td>
+            </tr>
+            <tr>
+                <td scope="row">2</td>
+                <td>Москва</td>
+                <td>Изменить</td>
+            </tr>
+            <tr>
+                <td scope="row">3</td>
+                <td>Казань</td>
+                <td>Изменить</td>
+            </tr>
         </tbody>
+    </table>
 </div>

@@ -13,8 +13,8 @@ body {
   border-radius: 0 25px 25px 0;
   height: 100vh;
   color: #eee;
-  -webkit-transition: 0.5s cubic-bezier(0.25, 1.6, 0.45, 0.8);
-  transition: 0.5s cubic-bezier(0.25, 1.6, 0.45, 0.8);
+  -webkit-transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
+  transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
   overflow: hidden;
   z-index: 3;
   -webkit-box-shadow: none;
@@ -22,14 +22,12 @@ body {
   background: #f4f4f4;
   /*box-shadow:  34px 34px 68px #eeeded, 
              -34px -34px 68px #fcfbfb;*/
-  -webkit-box-shadow: 30px 30px 60px #e6e5e5,  -30px -30px 60px #ffffff;
-          box-shadow: 30px 30px 60px #e6e5e5,  -30px -30px 60px #ffffff;
+  -webkit-box-shadow: 10px 10px 20px #dcdcdc, -10px -10px 20px #ffffff;
+          box-shadow: 10px 10px 20px #dcdcdc, -10px -10px 20px #ffffff;
 }
 
 .header:hover {
   width: 300px;
-  -webkit-box-shadow: 30px 30px 60px #e6e5e5,  -30px -30px 60px #ffffff;
-          box-shadow: 30px 30px 60px #e6e5e5,  -30px -30px 60px #ffffff;
 }
 
 .header__navblock {
@@ -51,26 +49,5 @@ body {
 
 .header:hover + .container {
   margin-left: 300px;
-}
-
-.container {
-  margin-left: 80px;
-  -webkit-transition: 0.5s cubic-bezier(0.25, 1.6, 0.45, 0.8);
-  transition: 0.5s cubic-bezier(0.25, 1.6, 0.45, 0.8);
-  width: calc(100% - 60px);
-}
-
-.container__header {
-  text-align: center;
-}
-
-.container__addbutton {
-  display: block;
-  width: 300px;
-  margin: 0 auto;
-  border-radius: 100px;
-  border: none;
-  -webkit-box-shadow: 30px 30px 60px #e6e5e5, -30px -30px 60px #ffffff;
-          box-shadow: 30px 30px 60px #e6e5e5, -30px -30px 60px #ffffff;
 }
 /*# sourceMappingURL=header.css.map */

@@ -1,0 +1,31 @@
+@import "variables";
+
+.container {
+    &__addbutton {
+        display: block;
+        width: 300px;
+        margin: 0 auto;
+        border-radius: 100px;
+        border: none;
+        color: #eee;
+        background: linear-gradient(#58a9ff, #006ee4) no-repeat;
+        text-shadow: 0 1px 0 #4b5ef0;
+        // background: #007bff;
+        box-shadow: 0 0 0 0 rgba($color: #000000, $alpha: 0);
+        transition: $header-transition;
+
+        &:hover {
+            box-shadow: 0 0px 20px -5px rgba(0, 123, 255, 0.85), 0 15px 15px 0px rgba(4, 4, 4, 0.1);
+            transform: translateY(-5px);
+        }
+    }
+
+    &__table {
+        border-radius: 25px;
+        box-shadow: $box-shadow;
+
+        & > .thead-light {
+            border-radius: 25px;
+        }
+    }
+}

@@ -6,7 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="<?= LIBS; ?>bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= CSS; ?>common/header.css">
+    <link rel="stylesheet" href="<?= CSS; ?>common/page.css">
+    <link rel="stylesheet" href="<?= CSS; ?>common/index.css">
+    <? if (isset($cssFile)): ?>
     <link rel="stylesheet" href="<?= CSS . $cssFile; ?>.css">
+    <? endif; ?>
     <title><?= $title; ?></title>
 </head>
 <body>
