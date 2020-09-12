@@ -1,5 +1,6 @@
 .container {
   margin-left: 80px;
+  padding-top: 30px;
   -webkit-transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
   transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
   width: calc(100% - 60px);
@@ -7,7 +8,6 @@
 
 .container__header {
   text-align: center;
-  margin-top: 30px;
 }
 
 .table {
