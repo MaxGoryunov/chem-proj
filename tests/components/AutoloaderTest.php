@@ -2,7 +2,8 @@
 
     namespace Tests\Components;
 
-    use Components\Autoloader;
+use Closure;
+use Components\Autoloader;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -49,6 +50,42 @@
             $this->assertContains("spl_autoload", $this->autoloader->getAutoloaders());
         }
 
-        
+        /**
+         * @covers ::register
+         * @covers ::getAutoloaders
+         * 
+         * @dataProvider provideAutoloaderFunctions
+         *
+         * @param Closure $func
+         * @return void
+         */
+        public function testRegisterMethodRegistersSuppliedFunction(Closure $func):void {
+            $this->autoloader->register($func);
+
+            $this->assertContains($func, $this->autoloader->getAutoloaders());
+        }
+
+        /**
+         * Provides functions for 'register' method
+         *
+         * @return Closure[][]
+         */
+        public function provideAutoloaderFunctions():array {
+            return [
+                "include"            => [function (string $className) {
+                    include_once("./$className.php");
+                }],
+                "require"            => [function (string $className) {
+                    require_once("./$className.php");
+                }],
+                "checkFileExistence" => [function (string $className) {
+                    $filePath = "./$className.php";
+
+                    if (file_exists($filePath)) {
+                        include_once($filePath);
+                    }
+                }]
+            ];
+        }
 
     }
