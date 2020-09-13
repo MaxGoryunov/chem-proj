@@ -33,15 +33,43 @@ body {
         width: $full-header-width;
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: repeat(4, 60px);
+        grid-template-rows: repeat(4, auto);
+
+        & > .header__navitem {
+            color: #bababa;
+            font-weight: 500;
+            margin: auto 0;
+            border-bottom: 1.75px #ccc solid;
+
+            &:last-of-type {
+                border-bottom: none;
+            }
+
+            & > .header__link {
+                display: flex;
+                height: $header-nav-item-height;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                transition: 0.2s ease-in-out;
+
+                & > .header__icon {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: $header-nav-item-height;
+                    width: $header-nav-item-height;
+                    font-size: 1.75rem;
+                }
+
+                & > .header__text {
+                    padding-left: 15px;
+                    font-size: 1.25rem;
+                }
+            }
+        }
     }
 
-    &__navitem {
-        color: #bababa;
-        font-weight: 500;
-        margin: auto 0;
-        padding: 15px;
-    }
 }
 
 .header:hover + .container {
