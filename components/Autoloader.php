@@ -16,4 +16,13 @@
 			spl_autoload_extensions(".php");
 			spl_autoload_register();
 		}
+
+		/**
+		 * Returns registered autoloaders
+		 *
+		 * @return callback[]
+		 */
+		public function getAutoloaders():array {
+			return spl_autoload_functions();
+		}
 	}
