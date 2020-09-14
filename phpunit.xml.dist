@@ -6,7 +6,7 @@
         </testsuite>
         <testsuite name="DbQueries">
             <directory suffix="Test.php">./tests/dbQueries/</directory>
-        </testsuite>`
+        </testsuite>
         <testsuite name="Traits">
             <directory suffix="Test.php">./tests/traits/</directory>
         </testsuite>
