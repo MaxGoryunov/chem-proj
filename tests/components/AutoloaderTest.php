@@ -48,6 +48,10 @@ use Components\Autoloader;
             $this->autoloader->register();
 
             $this->assertContains("spl_autoload", $this->autoloader->getAutoloaders());
+            /**
+             * Asserting 2 because of PHPUnit's autoloader
+             */
+            $this->assertCount(2, $this->autoloader->getAutoloaders());
         }
 
         /**
@@ -63,6 +67,24 @@ use Components\Autoloader;
             $this->autoloader->register($func);
 
             $this->assertContains($func, $this->autoloader->getAutoloaders());
+        }
+
+        /**
+         * @covers ::unregister
+         * @covers ::getAutoloaders
+         * 
+         * @depends testRegisterMethodRegistersDefaultFunction
+         * 
+         * @return void
+         */
+        public function testUnregisterMethodUnregistersDefaultFunction():void {
+            $this->autoloader->unregister();
+
+            /**
+             * Asserting 4 because of PHPUnit's autoloader
+             */
+            $this->assertCount(4, $this->autoloader->getAutoloaders());
+            $this->assertNotContains("spl_autoload", $this->autoloader->getAutoloaders());
         }
 
         /**

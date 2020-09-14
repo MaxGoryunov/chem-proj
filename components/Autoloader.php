@@ -19,6 +19,9 @@ use Closure;
 				spl_autoload_register($func);
 				return;
 			}
+			if (in_array("spl_autoload", $this->getAutoloaders())) {
+				return;
+			}
 			
 			spl_autoload_extensions(".php");
 			spl_autoload_register();
@@ -27,9 +30,13 @@ use Closure;
 		/**
 		 * Returns registered autoloaders
 		 *
-		 * @return callback[]
+		 * @return callback[]|bool
 		 */
-		public function getAutoloaders():array {
+		public function getAutoloaders() {
 			return spl_autoload_functions();
+		}
+
+		public function unregister():void {
+			spl_autoload_unregister("spl_autoload");
 		}
 	}
