@@ -23,15 +23,11 @@
         }
 
 		/**
-		 * @todo Extract the calling of controller action into another method
-		 */
-		/**
 		 * This function looks finds the controller using the routes and executes the associated action
 		 *
 		 * @return void
 		 */
-        public function run():void {
-			$userUri = $_SERVER['REQUEST_URI'];
+        public function run(string $userUri = ""):void {
 
 			/**
 			 * @todo Implement a more efficient algorithm as this works for O(n) where n is the overall number of patterns
@@ -48,24 +44,37 @@
 						 * 
 						 * @var string $id
 						 */
-						$id = $matches[1] ?? '';
+						$id         = $matches[1] ?? "";
+						$invokeData = compact("factory", "action", "id");
 
-						/**
-						 * Factory used for creating MVCPDM components
-						 * 
-						 * @var IMVCPDMFactory
-						 */
-						$factoryObj = new $factory();
-
-						$proxyController = $factoryObj->getProxy();
-
-						if ($id) {
-							$proxyController->$action($id);
-						} else {
-							$proxyController->$action();
-						}
+						$this->invokeFactory($invokeData);
 					}
 				}
 			}
-        }
+		}
+		
+		/**
+		 * Creates factory and invokes its Proxy Controller method
+		 *
+		 * @param string[] $invokeData
+		 * @return void
+		 */
+		protected function invokeFactory(array $invokeData = []):void {
+			extract($invokeData);
+
+			/**
+			 * Factory used for creating MVCPDM components
+			 * 
+			 * @var IMVCPDMFactory
+			 */
+			$factoryObj = new $factory();
+
+			$proxyController = $factoryObj->getProxy();
+
+			if ($id) {
+				$proxyController->$action($id);
+			} else {
+				$proxyController->$action();
+			}
+		}
     }
