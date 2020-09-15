@@ -1,8 +1,10 @@
 <?php
 
 	namespace Components;
-	
-	/**
+
+use InvalidArgumentException;
+
+/**
 	 * Class for providing routing within the site
 	 */
     class Router {
@@ -28,6 +30,9 @@
 		 * @return void
 		 */
         public function run(string $userUri = ""):void {
+			if ($userUri === "") {
+				throw new InvalidArgumentException("User URI must not be empty");
+			}
 
 			/**
 			 * @todo Implement a more efficient algorithm as this works for O(n) where n is the overall number of patterns
