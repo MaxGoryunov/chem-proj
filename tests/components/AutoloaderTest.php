@@ -2,8 +2,8 @@
 
     namespace Tests\Components;
 
-use Closure;
-use Components\Autoloader;
+    use Closure;
+    use Components\Autoloader;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -35,6 +35,12 @@ use Components\Autoloader;
          * @return void
          */
         protected function tearDown():void {
+            foreach ($this->autoloader->getAutoloaders() as $key => $autoloader) {
+                if ($key != 0) {
+                    spl_autoload_unregister($autoloader);
+                }
+            }
+
             $this->autoloader = null;
         }
 
@@ -64,10 +70,31 @@ use Components\Autoloader;
          * @return void
          */
         public function testRegisterMethodRegistersSuppliedFunction(Closure $func):void {
+            $this->assertNotContains($func, $this->autoloader->getAutoloaders());
+
             $this->autoloader->register($func);
 
             $this->assertContains($func, $this->autoloader->getAutoloaders());
+            $this->assertCount(2, $this->autoloader->getAutoloaders());
         }
+
+        /**
+         * @covers ::unregister
+         * @covers ::getAutoloaders
+         * 
+         * @dataProvider provideAutoloaderFunctions
+         *
+         * @param Closure $func
+         * @return void
+         */
+        public function testUnregisterMethodUnregistersSuppliedFunction(Closure $func):void {
+            $this->testRegisterMethodRegistersSuppliedFunction($func);
+
+            $this->autoloader->unregister($func);
+
+            $this->assertNotContains($func, $this->autoloader->getAutoloaders());
+        }
+
 
         /**
          * @covers ::unregister
@@ -78,13 +105,14 @@ use Components\Autoloader;
          * @return void
          */
         public function testUnregisterMethodUnregistersDefaultFunction():void {
-            $this->autoloader->unregister();
+            $this->testRegisterMethodRegistersDefaultFunction();
 
+            $this->autoloader->unregister();
             /**
-             * Asserting 4 because of PHPUnit's autoloader
+             * Asserting 1 because of PHPUnit's autoloader
              */
-            $this->assertCount(4, $this->autoloader->getAutoloaders());
             $this->assertNotContains("spl_autoload", $this->autoloader->getAutoloaders());
+            $this->assertCount(1, $this->autoloader->getAutoloaders());
         }
 
         /**

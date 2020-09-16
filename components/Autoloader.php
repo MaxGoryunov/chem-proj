@@ -2,9 +2,9 @@
 
 	namespace Components;
 
-use Closure;
+	use Closure;
 
-/**
+	/**
 	 * Class for autoloading classes, interfaces or traits
 	 */
 	class Autoloader {
@@ -14,9 +14,9 @@ use Closure;
 		 *
 		 * @return void
 		 */
-		public function register(Closure $func = null):void {
-			if (isset($func)) {
-				spl_autoload_register($func);
+		public function register(Closure $autoloader = null):void {
+			if (isset($autoloader)) {
+				spl_autoload_register($autoloader);
 				return;
 			}
 			if (in_array("spl_autoload", $this->getAutoloaders())) {
@@ -30,13 +30,29 @@ use Closure;
 		/**
 		 * Returns registered autoloaders
 		 *
-		 * @return callback[]|bool
+		 * @return (string|Closure)[]
 		 */
-		public function getAutoloaders() {
-			return spl_autoload_functions();
+		public function getAutoloaders():array {
+			$autoloaders = spl_autoload_functions();
+
+			if (!$autoloaders) {
+				return [];
+			}
+
+			return $autoloaders;
 		}
 
-		public function unregister():void {
-			spl_autoload_unregister("spl_autoload");
+		/**
+		 * Removes a function from the autoloaders function stack
+		 *
+		 * @return void
+		 */
+		public function unregister(Closure $autoloader = null):void {
+			if (!isset($autoloader)) {
+				spl_autoload_unregister("spl_autoload");
+			}
+
+			spl_autoload_unregister($autoloader);
 		}
+		
 	}
