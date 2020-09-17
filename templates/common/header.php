@@ -20,25 +20,25 @@
         <div class="header__logoblock"></div>
         <form action="" class="header__form"></form>
         <div class="header__navblock">
-            <div class="header__navitem">
+            <div class="header__navitem header__navitem--selected">
                 <a href="" class="header__link">
                     <div class="header__icon"><i class="fas fa-map-marker-alt"></i></div>
                     <div class="header__text">Адреса</div>
                 </a>
             </div><div class="header__navitem">
                 <a href="" class="header__link">
-                    <div class="header__icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <div class="header__text">Адреса</div>
+                    <div class="header__icon"><i class="fas fa-venus-mars"></i></div>
+                    <div class="header__text">Гендеры</div>
                 </a>
             </div><div class="header__navitem">
                 <a href="" class="header__link">
-                    <div class="header__icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <div class="header__text">Адреса</div>
+                    <div class="header__icon"><i class="fas fa-user-tag"></i></div>
+                    <div class="header__text">Статусы</div>
                 </a>
             </div><div class="header__navitem">
                 <a href="" class="header__link">
-                    <div class="header__icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <div class="header__text">Адреса</div>
+                    <div class="header__icon"><i class="fas fa-users"></i></div>
+                    <div class="header__text">Пользователи</div>
                 </a>
             </div>
         </div>

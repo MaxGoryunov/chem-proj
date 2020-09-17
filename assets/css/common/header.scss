@@ -41,6 +41,10 @@ body {
             margin: auto 0;
             border-bottom: 1.75px #ccc solid;
 
+            &:not(.header__navitem--selected):hover > .header__link {
+                color: $primary;
+            }
+
             &:last-of-type {
                 border-bottom: none;
             }
@@ -52,6 +56,7 @@ body {
                 display: flex;
                 align-items: center;
                 transition: 0.2s ease-in-out;
+                color: #999;
 
                 & > .header__icon {
                     display: flex;
@@ -65,6 +70,14 @@ body {
                 & > .header__text {
                     padding-left: 15px;
                     font-size: 1.25rem;
+                }
+            }
+
+            &--selected {
+                background: linear-gradient(to right, $primary, $primary-darker) no-repeat;
+
+                & > .header__link {
+                    color: #eee;
                 }
             }
         }
