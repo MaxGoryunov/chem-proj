@@ -127,7 +127,13 @@
                      * If the $columnKey is string then the algorithm constructs an ALIAS statement, otherwise just adds the $column to the search string $what
                      */
                     if (is_string($columnKey)) {
-                        $what .= "`$column` AS `$columnKey`, ";
+                        $tableName = explode("_", $column);
+
+                        if (preg_match("~$tableName~", $this->getTableName())) {
+                            $what .= "`$column` AS `$columnKey`, ";
+                        } else {
+                            $what .= "$column AS `$columnKey`, ";
+                        }
                     } else {
                         $what .= "`$column`, ";
                     }
