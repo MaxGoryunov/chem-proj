@@ -1,5 +1,7 @@
 <?php
 
+    namespace Components;
+    
     /**
      * Class for creating tokens. Will be used later to create tokens for user connections
      */
@@ -18,15 +20,19 @@
         private $length;
 
         /**
+         * Controls creation of symbols used in tokens
+         * 
          * The initialization of the symbols is done in Lazy Load manner so that the array is not created during the creation of the object
          *
-         * @return void
+         * @return int
          */
-        private function initSymbols():void {
+        public function initSymbols():int {
             if (empty($this->symbols)) {
-                $this->symbols = array_merge(range(0, 9), range("a", "z"));
+                $this->symbols = array_merge(range(0, 9), range("a", "z"), range("A", "Z"));
                 $this->length  = count($this->symbols);
             }
+
+            return $this->length;
         }
         /**
          * Function returns a token, user can specify the token length if needed

@@ -3,6 +3,10 @@
     /**
      * @author Max Goriunov
      */
+
+    use Components\Autoloader;
+    use Components\Router;
+
     /**
      * @todo Add working email address
      */

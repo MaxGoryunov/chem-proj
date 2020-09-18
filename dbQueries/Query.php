@@ -1,5 +1,7 @@
 <?php
 
+    namespace DBQueries;
+    
     /**
      * Class for holding a query string to DB
      */

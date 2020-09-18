@@ -1,5 +1,12 @@
 <?php
 
+    namespace Factories;
+
+    use Controllers\IController;
+    use DataMappers\IDataMapper;
+    use Models\IModel;
+    use Views\IView;
+
     /**
      * This interface is used by all factories
      * 
@@ -41,4 +48,5 @@
          * @return IDataMapper
          */
         public function getDataMapper():IDataMapper;
+        
     }

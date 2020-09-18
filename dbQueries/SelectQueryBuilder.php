@@ -1,5 +1,9 @@
 <?php
 
+    namespace DBQueries;
+
+    use Traits\WhereTrait;
+    
     /**
      * Class for building a Select query
      */
@@ -50,6 +54,60 @@
         private $joins = "";
 
         /**
+         * Returns a statement with the selected columns
+         *
+         * @return string
+         */
+        public function getWhat():string {
+            return $this->what;
+        }
+
+        /**
+         * Returns a GROUP BY statement
+         *
+         * @return string
+         */
+        public function getGroupBy():string {
+            return $this->groupBy;
+        }
+
+        /**
+         * Returns a HAVING statement
+         *
+         * @return string
+         */
+        public function getHaving():string {
+            return $this->having;
+        }
+
+        /**
+         * Returns an ORDER BY statement
+         *
+         * @return string
+         */
+        public function getOrderBy():string {
+            return $this->orderBy;
+        }
+
+        /**
+         * Returns a LIMIT ... statement
+         *
+         * @return string
+         */
+        public function getLimit():string {
+            return $this->limit;
+        }
+
+        /**
+         * Returns JOIN statements
+         *
+         * @return string
+         */
+        public function getJoins():string {
+            return $this->joins;
+        }
+
+        /**
          * Constructs a statement with the selected columns
          *
          * @param string[] $columns - columns to be selected
@@ -57,6 +115,10 @@
          * @return self
          */
         public function what(array $columns = []):self {
+            if (empty($columns)) {
+                return $this;
+            }
+
             $what = "";
 
             if (!empty($columns)) {
@@ -65,7 +127,7 @@
                      * If the $columnKey is string then the algorithm constructs an ALIAS statement, otherwise just adds the $column to the search string $what
                      */
                     if (is_string($columnKey)) {
-                        $what .= "$column AS `$columnKey`, ";
+                        $what .= "`$column` AS `$columnKey`, ";
                     } else {
                         $what .= "`$column`, ";
                     }
@@ -85,7 +147,11 @@
          * 
          * @return self
          */
-        public function groupBy(string $columnName):self {
+        public function groupBy(string $columnName = ""):self {
+            if ($columnName === "") {
+                return $this;
+            }
+            
             $this->groupBy = "GROUP BY `$columnName`";
 
             return $this;
@@ -98,7 +164,11 @@
          * 
          * @return self
          */
-        public function having(string $condition):self {
+        public function having(string $condition = ""):self {
+            if ($condition === "") {
+                return $this;
+            }
+            
             $this->having = "HAVING " . $condition;
 
             return $this;
@@ -107,21 +177,23 @@
         /**
          * Constructs an ORDER BY statement
          *
-         * @param string[] $columns
-         * 
+         * @param string[][] $columns
          * @return self
          */
         public function orderBy(array $columns = []):self {
+            if ($columns === []) {
+                return $this;
+            }
+
             $orderBy = "ORDER BY ";
 
-            foreach ($columns as $columnKey => $column) {
-                /**
-                 * If the sorting order is specified and is valid then it is applied, otherwise just adds the $column to the order string $orderBy
-                 */
-                if (in_array($columnKey, ["ASC", "DESC"])) {
-                    $orderBy .= "$column $columnKey, ";
+            foreach ($columns as $column) {
+                $column["orderType"] = $column["orderType"] ?? "";
+
+                if (in_array($column["orderType"], ["ASC", "DESC"])) {
+                    $orderBy .= "`" . $column["name"] . "` " . $column["orderType"] . ", ";
                 } else {
-                    $orderBy .= "$column, ";
+                    $orderBy .= "`" . $column["name"] . "`, ";
                 }
             }
 
@@ -175,14 +247,14 @@
          */
         public function build():IQuery {
             return new Query("
-                SELECT {$this->what}
-                FROM `{$this->tableName}`
-                {$this->joins}
-                {$this->where}
-                {$this->groupBy}
-                {$this->having}
-                {$this->orderBy}
-                {$this->limit};
+                SELECT {$this->getWhat()}
+                FROM `{$this->getTableName()}`
+                {$this->getJoins()}
+                {$this->getWhere()}
+                {$this->getGroupBy()}
+                {$this->getHaving()}
+                {$this->getOrderBy()}
+                {$this->getLimit()};
             ");
         }
 

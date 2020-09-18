@@ -1,5 +1,10 @@
 <?php
 
+    namespace Models;
+
+    use Entities\IEntity;
+    use Entities\UserEntity;
+
     /**
      * Class containing Users business logic 
      */
@@ -22,7 +27,7 @@
          * {@inheritDoc}
          * @return UserEntity
          */
-        public function getById(int $id):UserEntity {
+        public function getById(int $id):IEntity {
             return new UserEntity();
         }
 
