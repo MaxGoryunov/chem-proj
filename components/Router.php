@@ -2,7 +2,8 @@
 
 	namespace Components;
 
-use InvalidArgumentException;
+	use InvalidArgumentException;
+use LogicException;
 
 /**
 	 * Class for providing routing within the site
@@ -14,15 +15,16 @@ use InvalidArgumentException;
 		 * @var string[][]
 		 */
         private $routes;
-
+		
 		/**
-		 * Constructor assigns the routes to the inner routes property
+		 * Assigns the routes for routing
+		 *
+		 * @param string[][] $routes
+		 * @return void
 		 */
-        public function __construct() {
-			include_once("./config/routes.php");
-			
+		public function setRoutes(array $routes = []):void {
 			$this->routes = $routes;
-        }
+		}
 
 		/**
 		 * This function looks finds the controller using the routes and executes the associated action
@@ -32,6 +34,10 @@ use InvalidArgumentException;
         public function run(string $userUri = ""):void {
 			if ($userUri === "") {
 				throw new InvalidArgumentException("User URI must not be empty");
+			}
+
+			if (!isset($this->routes)) {
+				throw new LogicException("Routes are not set");
 			}
 
 			/**
