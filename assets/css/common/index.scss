@@ -1,25 +1,6 @@
 @import "variables";
 
 .container {
-    &__addbutton {
-        display: block;
-        width: 300px;
-        margin: 0 auto;
-        border-radius: 40px;
-        border: none;
-        color: #efefef;
-        background: linear-gradient($primary-light, $primary-dark) no-repeat;
-        text-shadow: 0 1.5px 0 #4b5ef0;
-        // background: #007bff;
-        box-shadow: 0 0 0 0 rgba($color: #000000, $alpha: 0), 0 3px 0px 0 $primary-darker;
-        transition: $header-transition;
-
-        &:hover {
-            box-shadow: 0 3px 0px 0 $primary-darker, 0 0px 15px 0px $primary-light;
-            transform: translateY(-2.5px);
-        }
-    }
-
     &__table {
         border-radius: 25px;
         box-shadow: $box-shadow;

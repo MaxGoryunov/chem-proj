@@ -10,6 +10,7 @@ body {
 .header {
   width: 80px;
   position: fixed;
+  top: 0;
   border-radius: 0 25px 25px 0;
   height: 100vh;
   color: #eee;
@@ -28,6 +29,10 @@ body {
 
 .header:hover {
   width: 300px;
+}
+
+.header:hover + .container {
+  margin-left: 300px;
 }
 
 .header__navblock {
@@ -97,9 +102,5 @@ body {
 
 .header__navblock > .header__navitem--selected > .header__link {
   color: #eee;
-}
-
-.header:hover + .container {
-  margin-left: 300px;
 }
 /*# sourceMappingURL=header.css.map */

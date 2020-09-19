@@ -1,6 +1,6 @@
 <div class="container">
     <h2 class="container__header">Адреса</h2>
-    <a href="./add" class="btn btn-outline-primary btn-lg container__addbutton" role="button">Добавить</a>
+    <a href="./add" class="btn btn-outline-primary btn-lg container__actionbutton" role="button">Добавить</a>
     <table class="table container__table">
         <thead class="thead-light">
             <tr>
