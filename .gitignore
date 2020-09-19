@@ -17,4 +17,4 @@ vendor/
 *.css.map
 
 #Ignore LOC file
-phploc.phar
+#phploc.phar
