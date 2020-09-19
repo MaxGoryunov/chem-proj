@@ -35,12 +35,6 @@
          * @return void
          */
         protected function tearDown():void {
-            foreach ($this->autoloader->getAutoloaders() as $key => $autoloader) {
-                if ($key != 0) {
-                    spl_autoload_unregister($autoloader);
-                }
-            }
-
             $this->autoloader = null;
         }
 
@@ -75,7 +69,12 @@
             $this->autoloader->register($func);
 
             $this->assertContains($func, $this->autoloader->getAutoloaders());
-            $this->assertCount(2, $this->autoloader->getAutoloaders());
+            /**
+             * Asserting 3 because of PHPUnit's autoloader and spl_autoload
+             */
+            $this->assertCount(3, $this->autoloader->getAutoloaders());
+
+            spl_autoload_unregister($func);
         }
 
         /**
@@ -88,31 +87,43 @@
          * @return void
          */
         public function testUnregisterMethodUnregistersSuppliedFunction(Closure $func):void {
-            $this->testRegisterMethodRegistersSuppliedFunction($func);
+            $this->autoloader->register($func);
+
+            $this->assertContains($func, $this->autoloader->getAutoloaders());
 
             $this->autoloader->unregister($func);
 
             $this->assertNotContains($func, $this->autoloader->getAutoloaders());
+
+            $this->assertCount(2, $this->autoloader->getAutoloaders());
         }
 
+        public function testRegisterUnregisterDefaultFunctionSequence():void {
+            $this->assertCount(2, $this->autoloader->getAutoloaders());
 
-        /**
-         * @covers ::unregister
-         * @covers ::getAutoloaders
-         * 
-         * @depends testRegisterMethodRegistersDefaultFunction
-         * 
-         * @return void
-         */
-        public function testUnregisterMethodUnregistersDefaultFunction():void {
-            $this->testRegisterMethodRegistersDefaultFunction();
+            $this->autoloader->register();
+
+            $this->assertCount(2, $this->autoloader->getAutoloaders());
 
             $this->autoloader->unregister();
-            /**
-             * Asserting 1 because of PHPUnit's autoloader
-             */
-            $this->assertNotContains("spl_autoload", $this->autoloader->getAutoloaders());
-            $this->assertCount(1, $this->autoloader->getAutoloaders());
+
+            $this->assertCount(2, $this->autoloader->getAutoloaders());
+
+            $this->autoloader->register();
+
+            $this->assertCount(2, $this->autoloader->getAutoloaders());
+        }
+
+        public function testRegisterSpeed():void {
+            $time = microtime(true);
+
+            for ($i = 0; $i < 10000000; $i++) { 
+                $this->autoloader->register();
+            }
+
+            $time = microtime(true) - $time;
+
+            $this->assertLessThan(1.4, $time);
         }
 
         /**
