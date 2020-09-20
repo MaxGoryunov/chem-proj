@@ -121,29 +121,27 @@
 
             $what = "";
 
-            if (!empty($columns)) {
-                foreach ($columns as $columnKey => $column) {
-                    /**
-                     * Contains DB table name in singular, i.e. "address"
-                     * 
-                     * @var string
-                     */
-                    $tableName = preg_quote(explode("_", $column)[0]);
+            foreach ($columns as $columnKey => $column) {
+                /**
+                 * Contains DB table name in singular, i.e. "address"
+                 * 
+                 * @var string
+                 */
+                $tableName = preg_quote(explode("_", $column)[0]);
 
-                    /**
-                     * If the given column is actually a table column and not a function then it is wrapped by backquotes
-                     */
-                    if (preg_match("/$tableName/", $this->getTableName())) {
-                        $column = "`$column`";
-                    }
-                    /**
-                     * If the $columnKey is string then the algorithm constructs an ALIAS statement, otherwise just adds the $column to the search string $what
-                     */
-                    if (is_string($columnKey)) {
-                        $what .= "$column AS `$columnKey`, ";
-                    } else {
-                        $what .= "$column, ";
-                    }
+                /**
+                 * If the given column is actually a table column and not a function then it is wrapped by backquotes
+                 */
+                if (preg_match("/$tableName/", $this->getTableName())) {
+                    $column = "`$column`";
+                }
+                /**
+                 * If the $columnKey is string then the algorithm constructs an ALIAS statement, otherwise just adds the $column to the search string $what
+                 */
+                if (is_string($columnKey)) {
+                    $what .= "$column AS `$columnKey`, ";
+                } else {
+                    $what .= "$column, ";
                 }
             }
 
