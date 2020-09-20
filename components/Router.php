@@ -3,9 +3,9 @@
 	namespace Components;
 
 	use InvalidArgumentException;
-use LogicException;
+	use LogicException;
 
-/**
+	/**
 	 * Class for providing routing within the site
 	 */
     class Router {
