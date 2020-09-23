@@ -4,6 +4,7 @@
 
     use Closure;
     use Components\Autoloader;
+    use Components\Router;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -112,6 +113,14 @@
             $this->autoloader->register();
 
             $this->assertCount(2, $this->autoloader->getAutoloaders());
+        }
+
+        public function testPHPThrowsFatalErrorWithoutAutoloaderFunction():void {
+            $this->expectErrorMessage("Class 'Components\Router' not found");
+
+            spl_autoload_unregister("spl_autoload");
+
+            $router = new Router();
         }
 
         public function testRegisterSpeed():void {
