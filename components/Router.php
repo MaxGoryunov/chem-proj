@@ -28,6 +28,9 @@
 
 		/**
 		 * This function looks finds the controller using the routes and executes the associated action
+		 * 
+		 * @throws InvalidArgumentException
+		 * @throws LogicException
 		 *
 		 * @return void
 		 */
