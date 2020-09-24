@@ -2,8 +2,10 @@
 
     namespace Components;
 
+    use DBQueries\Query;
     use Exception;
     use mysqli;
+    use mysqli_result;
 
     /**
      * Class which represents connection with MySQL Database
@@ -45,6 +47,30 @@
             }
 
             return self::$connection;
+        }
+
+        /**
+         * Returns the result of MySQLi query
+         *
+         * @param Query $query
+         * @return mysqli_result|bool
+         */
+        public function query(Query $query) {
+            return self::$connection->query($query->getQueryString());
+        }
+
+        /**
+         * Returns all matched rows from DB Table
+         *
+         * @param Query $query
+         * @param int $resultType
+         * @return array
+         */
+        public function fetchAll(Query $query, int $resultType = MYSQLI_ASSOC):array {
+            $result  = $this->query($query);
+            $fetched = $result->fetch_all($resultType);
+
+            return $fetched;
         }
 
     }
