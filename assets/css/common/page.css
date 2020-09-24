@@ -45,6 +45,15 @@
   margin-bottom: 0;
 }
 
+.container__form .container__formlabel {
+  font-size: 1.25rem;
+  padding-left: 10px;
+}
+
+.container__form .container__input {
+  border-radius: 50px;
+}
+
 .table {
   overflow: hidden;
 }

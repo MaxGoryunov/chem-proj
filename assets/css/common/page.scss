@@ -41,6 +41,15 @@
         & > .form-group:last-of-type {
             margin-bottom: 0;
         }
+
+        & .container__formlabel {
+            font-size: 1.25rem;
+            padding-left: 10px;
+        }
+
+        & .container__input {
+            border-radius: 50px;
+        }
     }
 }
 
