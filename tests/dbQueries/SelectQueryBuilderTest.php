@@ -208,6 +208,24 @@
                         "medicine_doze"
                     ],
                     "`medicine_id` AS `id`, `medicine_name` AS `name`, `medicine_price`, `medicine_doze`"
+                ],
+                "functions"   => [
+                    [
+                        "COUNT(*)",
+                        "AVG(*)",
+                        "MIN(*)",
+                        "MAX(*)"
+                    ],
+                    "COUNT(*), AVG(*), MIN(*), MAX(*)"
+                ],
+                "functionsKeys"   => [
+                    [
+                        "count"   => "COUNT(*)",
+                        "avg"     => "AVG(*)",
+                        "min"     => "MIN(*)",
+                        "max"     => "MAX(*)"
+                    ],
+                    "COUNT(*) AS `count`, AVG(*) AS `avg`, MIN(*) AS `min`, MAX(*) AS `max`"
                 ]
             ];
         }
