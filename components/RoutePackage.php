@@ -2,9 +2,12 @@
 
     namespace Components;
 
-use InvalidArgumentException;
+    use InvalidArgumentException;
 
-class RoutePackage {
+    /**
+     * Contains routes grouped by the same domain
+     */
+    class RoutePackage {
 
         /**
          * Contains domain name to which this route package corresponds
@@ -51,20 +54,28 @@ class RoutePackage {
          *
          * @param string $route
          * @param string $action
-         * @return void
+         * @return self
          */
-        public function addRoute(string $route, string $action):void {
+        public function addRoute(string $route, string $action):self {
             $this->routes[$route] = $action;
+
+            return $this;
         }
 
         /**
          * Returns action based on the supplied route
          *
          * @param string $route
-         * @return string
+         * @return string[]
          */
-        public function getActionByRoute(string $route):string {
-            return $this->routes[$route] ?? null;
+        public function getActionByRoute(string $route):array {
+            preg_match("/([1-9][0-9]*$)/", $route, $matches);
+
+            $id     = $matches[0] ?? null;
+            $route  = preg_replace("/([1-9][0-9]*$)/", "([1-9][0-9]*$)", $route);
+            $action = $this->routes[$route] ?? null;
+            
+            return compact("id", "action");
         }
 
         /**

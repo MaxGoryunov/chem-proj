@@ -2,6 +2,7 @@
 
 	namespace Components;
 
+	use Components\RoutePackage;
 	use InvalidArgumentException;
 	use LogicException;
 
@@ -14,7 +15,14 @@
 		 *
 		 * @var string[][]
 		 */
-        private $routes;
+		private $routes;
+		
+		/**
+		 * Contains route packages for controller actions
+		 *
+		 * @var RoutePackage[]
+		 */
+		private $routePackages;
 		
 		/**
 		 * Assigns the routes for routing
@@ -24,6 +32,18 @@
 		 */
 		public function setRoutes(array $routes = []):void {
 			$this->routes = $routes;
+		}
+
+		/**
+		 * Assigns route packages for routing
+		 *
+		 * @param RoutePackage[] $routePackages
+		 * @return void
+		 */
+		public function setRoutePackages(array $routePackages):void {
+			foreach ($routePackages as $routePackage) {
+				$this->routePackages[$routePackage->getDomain()] = $routePackage;
+			}
 		}
 
 		/**
@@ -65,6 +85,13 @@
 					}
 				}
 			}
+		}
+
+		public function runExtended(string $userUri):void {
+			$actualUri = substr($userUri, 1);
+			list($domain, $route) = explode("/", $actualUri, 2);
+
+			$routePackage = $this->routePackages[$domain];
 		}
 		
 		/**

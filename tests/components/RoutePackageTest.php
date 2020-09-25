@@ -71,16 +71,18 @@ use PHPUnit\Framework\TestCase;
          * 
          * @dataProvider provideActions
          *
-         * @param string $route
-         * @param string $action
+         * @param string $route - route pattern
+         * @param string $action - corresponding action
+         * @param string $getRoute - actual route
+         * @param array $expected - expected result
          * @return void
          */
-        public function testAddRouteAddsRouteToRoutesArray(string $route, string $action):void {
+        public function testAddRouteAddsRouteToRoutesArray(string $route, string $action, string $getRoute, array $expected):void {
             $package = new RoutePackage("addresses", "AddressesFactory");
 
             $package->addRoute($route, $action);
 
-            $this->assertEquals($action, $package->getActionByRoute($route));
+            $this->assertEquals($expected, $package->getActionByRoute($getRoute));
         }
 
         /**
@@ -103,10 +105,10 @@ use PHPUnit\Framework\TestCase;
          */
         public function provideActions():array {
             return [
-                "list"   => ["list", "index"],
-                "edit"   => ["edit/([1-9][0-9]*$)", "edit"],
-                "add"    => ["add", "add"],
-                "delete" => ["delete/([1-9][0-9]*$)", "delete"]
+                "list"   => ["list", "index", "list", ["id" => null, "action" => "index"]],
+                "edit"   => ["edit/([1-9][0-9]*$)", "edit", "edit/11", ["id" => 11, "action" => "edit"]],
+                "add"    => ["add", "add", "add", ["id" => null, "action" => "add"]],
+                "delete" => ["delete/([1-9][0-9]*$)", "delete", "delete/11", ["id" => 11, "action" => "delete"]]
             ];
         }
     }
