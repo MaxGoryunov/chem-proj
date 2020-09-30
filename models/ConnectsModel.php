@@ -6,21 +6,19 @@
     use Components\IDBConnection;
     use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
-    use Entities\UserEntity;
 
     /**
-     * Class containing Users business logic 
+     * Class containing Connects business logic
      */
-    class UsersModel extends AbstractModel {
+    class ConnectsModel extends AbstractModel {
 
         /**
          * {@inheritDoc}
          */
-        protected $tableName = "users";
+        protected $tableName = "connects";
 
         /**
          * {@inheritDoc}
-         * @return UserEntity[]
          */
         public function getList(int $limit, int $offset):array {
             return [];
@@ -28,10 +26,9 @@
 
         /**
          * {@inheritDoc}
-         * @return UserEntity
          */
         public function getById(int $id):IEntity {
-            return new UserEntity();
+            return new class implements IEntity {};
         }
 
         /**
@@ -56,27 +53,25 @@
         }
 
         /**
-         * Returns User's Admin Status based on User's SESSION
+         * Returns User's Authorisation Status
          *
-         * @param int $userId
+         * @param int $userId - id of the user to be checked
+         * @param string $token - unique string which assures user's authorisation
+         * @param string $sessionId - session id unique per user
          * @return bool
          */
-        public function getUserAdminStatus(int $userId = 0):bool {
-            if ($userId == 0) {
-                return false;
-            }
-
+        public function getUserAuthStatus(int $userId, string $token, string $sessionId):bool {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
-            $what       = ["user_is_admin"];
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
-                          ->what($what)
-                          ->whereAnd("`user_id` = " . $userId)
+                          ->whereAnd("`connect_user_id` = " . $userId)
+                          ->whereAnd("`connect_token` = '$token'")
+                          ->whereAnd("`connect_session_id` = '$sessionId'")
                           ->build();
+            
+            $res          = mysqli_query($connection, $query->getQueryString());
+            $contactInfo = mysqli_fetch_assoc($res);
 
-            $res         = mysqli_query($connection, $query->getQueryString());
-            $userIsAdmin = mysqli_fetch_assoc($res)['user_is_admin'];
-
-            return (bool)$userIsAdmin;
+            return ($contactInfo) ? true : false;
         }
     }

@@ -50,6 +50,11 @@
             $this->assertEquals($expected, $this->usersModel->getUserAdminStatus($id));
         }
 
+        /**
+         * Returns user Ids 
+         *
+         * @return (int|bool)[][]
+         */
         public function provideUserIds():array {
             return [
                 "none"         => [0, false],
