@@ -21,4 +21,4 @@
     $router->run();
 
     include_once("./templates/common/header.php");
-    include_once("./templates/addresses/add.php");
+    include_once("./templates/addresses/edit.php");
