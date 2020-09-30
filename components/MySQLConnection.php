@@ -68,9 +68,22 @@
          */
         public function fetchAll(Query $query, int $resultType = MYSQLI_ASSOC):array {
             $result  = $this->query($query);
-            $fetched = $result->fetch_all($resultType);
+            $fetchAll = $result->fetch_all($resultType);
 
-            return $fetched;
+            return $fetchAll;
+        }
+
+        /**
+         * Returns a single matched row from DB Table
+         *
+         * @param Query $query
+         * @return array
+         */
+        public function fetchAssoc(Query $query):array {
+            $result = $this->query($query);
+            $fetchAssoc = $result->fetch_assoc();
+
+            return $fetchAssoc ?? [];
         }
 
     }

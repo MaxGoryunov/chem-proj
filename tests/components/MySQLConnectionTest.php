@@ -25,7 +25,7 @@
          * @return void
          */
         protected function setUp():void {
-            $this->mySQLConnection = MySQLConnection::getInstance();
+            $this->mySQLConnection = new MySQLConnection();
         }
 
         /**
@@ -38,24 +38,14 @@
         }
 
         /**
-         * @coversNothing
-         *
-         * @return void
-         */
-        public function testInstanceIsOfMySQLConnectionClass():void {
-            $this->assertInstanceOf(MySQLConnection::class, $this->mySQLConnection);
-        
-        }
-
-        /**
-         * @covers ::getInstance
+         * @covers ::__construct
          *
          * @return MySQLConnection
          */
         public function testClassHasOnlyOneInstance():MySQLConnection {
-            $instance = MySQLConnection::getInstance();
+            $instance = new MySQLConnection();
 
-            $this->assertSame($instance, $this->mySQLConnection);
+            $this->assertNotSame($instance, $this->mySQLConnection);
 
             return $instance;
         }
@@ -73,7 +63,6 @@
         }
 
         /**
-         * @covers ::getInstance
          * @covers ::getConnection
          * 
          * @depends testClassHasOnlyOneInstance
