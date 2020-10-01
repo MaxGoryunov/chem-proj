@@ -86,13 +86,6 @@
 				}
 			}
 		}
-
-		public function runExtended(string $userUri):void {
-			$actualUri = substr($userUri, 1);
-			list($domain, $route) = explode("/", $actualUri, 2);
-
-			$routePackage = $this->routePackages[$domain];
-		}
 		
 		/**
 		 * Creates factory and invokes its Proxy Controller method
@@ -117,5 +110,15 @@
 			} else {
 				$proxyController->$action();
 			}
+		}
+
+		/**
+		 * Routing mechanism used for redirection of faulty routes
+		 *
+		 * @param string $location - URI where the user is redirected
+		 * @return void
+		 */
+		public static function headerTo(string $location):void {
+			header("Location: " . $location);
 		}
     }
