@@ -6,19 +6,15 @@
     use DataMappers\AbstractDataMapper;
     use DBQueries\SelectQueryBuilder;
     use Factories\AbstractMVCPDMFactory;
+    use Traits\TableNameTrait;
 
     /**
      * Base class for implementing other Models
      */
     abstract class AbstractModel implements IModel {
-        
-        /**
-         * Contains name of related Database Table
-         *
-         * @var string
-         */
-        protected $tableName = "";
 
+        use TableNameTrait;
+        
         /**
          * Related Factory used to get related Data Mapper
          *
@@ -48,15 +44,6 @@
             }
 
             return $this->relatedMapper;
-        }
-
-        /**
-         * Returns a name of related Database Table
-         *
-         * @return string
-         */
-        protected function getTableName():string {
-            return $this->tableName;
         }
 
         /**

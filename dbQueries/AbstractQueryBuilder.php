@@ -2,17 +2,14 @@
 
     namespace DBQueries;
 
+    use Traits\TableNameTrait;
+
     /**
      * Abstract class for different specific queries: Select, Update, Insert and Delete
      */
     abstract class AbstractQueryBuilder implements IQueryBuilder {
         
-        /**
-         * DB Table involved in the query
-         *
-         * @var string
-         */
-        protected $tableName = "";
+        use TableNameTrait;
 
         /**
          * @param string $tableName
@@ -24,13 +21,9 @@
         }
 
         /**
-         * Returns DB Table to which the query is made
+         * Builds a Query object
          *
-         * @return string
+         * @return IQuery
          */
-        public function getTableName():string {
-            return $this->tableName;
-        }
-
         public abstract function build():IQuery;
     }
