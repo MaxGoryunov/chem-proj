@@ -50,7 +50,7 @@
         }
 
         /**
-         * Returns the result of MySQLi query
+         * Performs a MySQLi query to Database
          *
          * @param Query $query
          * @return mysqli_result|bool
@@ -60,11 +60,7 @@
         }
 
         /**
-         * Returns all matched rows from DB Table
-         *
-         * @param Query $query
-         * @param int $resultType
-         * @return array
+         * {@inheritDoc}
          */
         public function fetchAll(Query $query, int $resultType = MYSQLI_ASSOC):array {
             $result  = $this->query($query);
@@ -74,10 +70,7 @@
         }
 
         /**
-         * Returns a single matched row from DB Table
-         *
-         * @param Query $query
-         * @return array
+         * {@inheritDoc}
          */
         public function fetchAssoc(Query $query):array {
             $result = $this->query($query);
