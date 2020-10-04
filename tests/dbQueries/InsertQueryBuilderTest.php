@@ -1,5 +1,7 @@
 <?php
 
+    namespace Tests\DBQueries;
+    
     use DBQueries\InsertQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
