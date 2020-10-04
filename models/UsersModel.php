@@ -56,6 +56,30 @@
         }
 
         /**
+         * Calculates number of registered users
+         * 
+         * This method is meant to protect Database from creating two accounts with the same login
+         *
+         * @param string $email
+         * @return int
+         */
+        public function calculateRegisteredCount(string $email):int {
+            $email = preg_quote($email);
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $columns       = ["count" => "COUNT(`user_id`)"];
+
+            $query       = (new SelectQueryBuilder($this->getTableName()))
+                           ->what($columns)
+                           ->whereAnd("`user_email` = '$email'")
+                           ->build();
+
+            $res   = mysqli_query($connection, $query->getQueryString());
+            $count = mysqli_fetch_assoc($res)["count"];
+            
+            return $count;
+        }
+
+        /**
          * Returns User's Admin Status based on User's SESSION
          *
          * @param int $userId

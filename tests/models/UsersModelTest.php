@@ -51,6 +51,19 @@
         }
 
         /**
+         * @covers ::calculateRegisteredCount
+         * 
+         * @dataProvider provideUserEmails
+         *
+         * @param string $login - user login
+         * @param int $expected - expected result
+         * @return void
+         */
+        public function testCalculateRegisteredCountReturnsCorrectValue(string $email, int $expected):void {
+            $this->assertEquals($expected, $this->usersModel->calculateRegisteredCount($email));
+        }
+
+        /**
          * Returns user Ids 
          *
          * @return (int|bool)[][]
@@ -60,6 +73,18 @@
                 "none"         => [0, false],
                 "regular user" => [3, false],
                 "admin"        => [12, true]
+            ];
+        }
+
+        /**
+         * Returns user emails
+         *
+         * @return (string|int)[][]
+         */
+        public function provideUserEmails():array {
+            return [
+                "registered"    => ["gormak@rr.rr", 1],
+                "notRegistered" => ["nonexistent@gmail.ru", 0]
             ];
         }
     }
