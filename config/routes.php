@@ -32,6 +32,9 @@
         ),
         "UsersFactory" => array(
             "users/list" => "index"
+        ),
+        "AddressesFactory" => array(
+            "addresses/list" => "index"
         )
     );
 
