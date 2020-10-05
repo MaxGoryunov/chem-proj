@@ -6,7 +6,8 @@
     use Components\IDBConnection;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
-    use Entities\AddressEntity;
+use DBQueries\UpdateQueryBuilder;
+use Entities\AddressEntity;
     use Entities\IEntity;
 
     /**
@@ -76,7 +77,14 @@
          * {@inheritDoc}
          */
         public function edit(array $data = []):void {
-            
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new UpdateQueryBuilder($this->getTableName()))
+                          ->set($data)
+                          ->whereAnd("`address_id` = " . $data["id"])
+                          ->build();
+                        
+            $connection->query($query->getQueryString());
         }
 
         /**
