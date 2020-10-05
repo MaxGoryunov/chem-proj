@@ -4,6 +4,7 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
+    use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use Entities\AddressEntity;
     use Entities\IEntity;
@@ -45,7 +46,7 @@
         public function getById(int $id):IEntity {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
 
-            $query      = (new SelectQueryBuilder("addresses"))
+            $query      = (new SelectQueryBuilder($this->getTableName()))
                             ->whereAnd("`address_is_deleted` = 0")
                             ->whereAnd("`address_id` = " . $id)
                             ->build();
@@ -62,7 +63,13 @@
          * {@inheritDoc}
          */
         public function add(array $data = []):void {
-            
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new InsertQueryBuilder($this->getTableName()))
+                          ->set($data)
+                          ->build();
+
+            $connection->query($query->getQueryString());
         }
 
         /**
