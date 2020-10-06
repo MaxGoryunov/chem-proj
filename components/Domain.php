@@ -2,9 +2,9 @@
 
     namespace Components;
 
-use InvalidArgumentException;
+    use InvalidArgumentException;
 
-/**
+    /**
      * Class used to retrieve different domain related strings, such as factory name
      */
     class Domain {
