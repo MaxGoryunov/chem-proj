@@ -37,44 +37,4 @@
             $this->mySQLConnection = null;
         }
 
-        /**
-         * @covers ::__construct
-         *
-         * @return MySQLConnection
-         */
-        public function testClassHasOnlyOneInstance():MySQLConnection {
-            $instance = new MySQLConnection();
-
-            $this->assertNotSame($instance, $this->mySQLConnection);
-
-            return $instance;
-        }
-
-        /**
-         * @covers ::getConnection
-         *
-         * @return void
-         */
-        public function testClassReturnsSameMySQLConnectionOnEachCall():void {
-            $connection1 = $this->mySQLConnection->getConnection();
-            $connection2 = $this->mySQLConnection->getConnection();
-
-            $this->assertSame($connection1, $connection2);
-        }
-
-        /**
-         * @covers ::getConnection
-         * 
-         * @depends testClassHasOnlyOneInstance
-         *
-         * @param MySQLConnection $instance
-         * @return void
-         */
-        public function testDifferentClassInstancesReturnsSameMySQLConnectionsOnEachCall(MySQLConnection $instance):void {
-            $connection1 = $instance->getConnection();
-            $connection2 = $this->mySQLConnection->getConnection();
-
-            $this->assertSame($connection1, $connection2);
-        }
-
     }

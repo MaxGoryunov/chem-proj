@@ -22,13 +22,9 @@
         private static $connection = null;
 
         /**
-         * Returns the MySQL Database connection
-         * 
-         * @throws Exception if the connection to MySQL has failed
-         *
-         * @return mysqli
+         * @throws Exception if the connection to the Database failed
          */
-        public function getConnection():mysqli {
+        public function __construct() {
             if (!self::$connection) {
                 include_once("./config/dbConfig.php");
 
@@ -45,8 +41,6 @@
 
                 self::$connection = $connection;
             }
-
-            return self::$connection;
         }
 
         /**

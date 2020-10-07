@@ -10,13 +10,6 @@
     interface IDBConnection {
 
         /**
-         * Returns a Database Connection
-         *
-         * @return mixed
-         */
-        public function getConnection();
-
-        /**
          * Performs a Database query
          *
          * @param Query $query
