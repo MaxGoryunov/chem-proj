@@ -1,7 +1,9 @@
 <?php
 
     namespace Components;
-    
+
+    use mysqli;
+
     /**
      * CLass for providing Database Connections
      * 
@@ -22,7 +24,7 @@
          * 
          * @return mixed
          */
-        public static function getConnection(string $connectionType) {
+        public static function getConnection(string $connectionType):mysqli {
             /**
              * If the connection type is present in the predefined connections then it can be accessed
              */
