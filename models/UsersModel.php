@@ -4,7 +4,8 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
-    use DBQueries\SelectQueryBuilder;
+use DBQueries\InsertQueryBuilder;
+use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
     use Entities\UserEntity;
 
@@ -38,7 +39,13 @@
          * {@inheritDoc}
          */
         public function add(array $data = []):void {
-            
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new InsertQueryBuilder($this->getTableName()))
+                          ->set($data)
+                          ->build();
+
+            $connection->query($query->getQueryString());
         }
 
         /**
