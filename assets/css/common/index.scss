@@ -1,0 +1,12 @@
+@import "variables";
+
+.container {
+    &__table {
+        border-radius: 25px;
+        box-shadow: $box-shadow;
+
+        & > .thead-light {
+            border-radius: 25px;
+        }
+    }
+}
