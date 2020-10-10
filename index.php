@@ -22,7 +22,7 @@
 
     $router = new Router();
 
-    $router->run();
+    // $router->run();
 
     include_once("./templates/common/header.php");
-    include_once("./templates/common/index.php");
+    include_once("./templates/genders/add.php");
