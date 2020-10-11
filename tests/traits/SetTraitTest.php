@@ -54,7 +54,7 @@
          * @return void
          */
         public function testSetConstructsCorrectStatement(array $values, string $expected):void {
-            $this->builder->set($values);
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->set($values));
 
             $this->assertEquals($expected, $this->builder->getValues());
         }
