@@ -6,8 +6,8 @@
     use Components\IDBConnection;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
-use DBQueries\UpdateQueryBuilder;
-use Entities\AddressEntity;
+    use DBQueries\UpdateQueryBuilder;
+    use Entities\AddressEntity;
     use Entities\IEntity;
 
     /**
@@ -91,6 +91,13 @@ use Entities\AddressEntity;
          * {@inheritDoc}
          */
         public function delete(int $id):void {
-            
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new UpdateQueryBuilder($this->getTableName()))
+                          ->set(["address_is_deleted" => 1])
+                          ->whereAnd("`address_id` = ". $id)
+                          ->build();
+
+			$connection->query($query->getQueryString());
         }
     }
