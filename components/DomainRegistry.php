@@ -11,7 +11,14 @@
 
         private static $domainData = [];
 
+        /**
+         * @todo Write a method description after stash apply
+         */
         public static function setDomainData(string $filePath):void {
+            if (self::$domainData !== []) {
+                return;
+            }
+            
             if (file_exists($filePath)) {
                 self::$domainData = include_once($filePath);
             }

@@ -30,11 +30,28 @@
          *
          * @return void
          */
-        public function testRegistryAcceptsDomainDataFromFile():void {
-            DomainRegistry::setDomainData("domainData.php");
+        public function testSetDomainDataAcceptsDomainDataFromFile():void {
+            DomainRegistry::setDomainData("./tests/components/domainData.php");
 
-            $data = include_once("domainData.php");
+            $data = include("domainData.php");
 
             $this->assertEquals($data, DomainRegistry::getDomainData());
+        }
+
+        /**
+         * @covers ::setDomainData
+         * @covers ::getDomainData
+         *
+         * @return void
+         */
+        public function testSetDomainDataCanBeSetOnce():void {
+            DomainRegistry::setDomainData("./tests/components/domainData.php");
+            DomainRegistry::setDomainData("./tests/components/newDomainData.php");
+
+            $data    = include("domainData.php");
+            $newData = include("newDomainData.php");
+
+            $this->assertSame($data, DomainRegistry::getDomainData());
+            $this->assertNotSame($newData, DomainRegistry::getDomainData());
         }
     }
