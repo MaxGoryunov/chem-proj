@@ -66,9 +66,12 @@
         /**
          * {@inheritDoc}
          */
-        public function fetchAssoc(Query $query):array {
-            $result = $this->query($query);
-            $fetchAssoc = $result->fetch_assoc();
+        public function fetchAssoc(Query $query, string $alias = ""):array {
+            $result     = $this->query($query);
+            /**
+             * If the alias is not an empty string then it is used as a key, otherwise it is not used
+             */
+            $fetchAssoc = ($alias === "") ? $result->fetch_assoc() : $result->fetch_assoc()[$alias];
 
             return $fetchAssoc ?? [];
         }

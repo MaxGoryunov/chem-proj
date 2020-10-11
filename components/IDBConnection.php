@@ -32,5 +32,5 @@
          * @param Query $query
          * @return array
          */
-        public function fetchAssoc(Query $query):array;
+        public function fetchAssoc(Query $query, string $alias = ""):array;
     }
