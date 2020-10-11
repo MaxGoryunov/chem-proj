@@ -7,14 +7,14 @@
     /**
      * Base class for implementing other controller actions
      */
-    abstract class AbstractAction implements IControllerAction {
+    abstract class AbstractAction {
         
         /**
          * Contains controller object on which the method will be invoked
          *
          * @var IController
          */
-        private $controller;
+        protected $controller;
 
         /**
          * @param IController $controller

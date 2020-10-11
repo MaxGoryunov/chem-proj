@@ -7,7 +7,7 @@
     /**
      * Class used to invoke Controller's 'index' method
      */
-    class IndexAction extends AbstractAction {
+    class IndexAction extends AbstractAction implements IIdIndependentControllerAction {
 
         /**
          * Executes Controller's 'index' method

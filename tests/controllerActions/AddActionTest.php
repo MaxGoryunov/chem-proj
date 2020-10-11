@@ -2,16 +2,16 @@
 
     namespace Tests\ControllerActions;
 
-    use ControllerActions\IndexAction;
+    use ControllerActions\AddAction;
     use Controllers\IController;
     use PHPUnit\Framework\TestCase;
 
     /**
-     * Testing IndexAction class
+     * Testing AddAction class
      * 
-     * @coversDefaultClass IndexAction
+     * @coversDefaultClass AddAction
      */
-    class IndexActionTest extends TestCase {
+    class AddActionTest extends TestCase {
 
         /**
          * @covers ::execute
@@ -24,9 +24,9 @@
                           ->getMock();
 
             $controller->expects($this->once())
-                        ->method("index");
+                       ->method("add");
 
-            $action = new IndexAction($controller);
+            $action = new AddAction($controller);
 
             $this->assertNull($action->execute());
         }
