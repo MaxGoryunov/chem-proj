@@ -18,7 +18,7 @@
         protected $tableName = "user_statuses";
 
         public function getList(int $limit, int $offset):array {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
                           ->whereAnd("`user_status_is_deleted` = 0")

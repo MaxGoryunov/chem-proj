@@ -21,7 +21,7 @@
          * {@inheritDoc}
          */
         public function getList(int $limit, int $offset):array {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
                           ->whereAnd("`gender_is_deleted`")

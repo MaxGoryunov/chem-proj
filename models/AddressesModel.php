@@ -26,7 +26,7 @@
          * @return AddressEntity[]
          */
         public function getList(int $limit, int $offset):array {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
                             ->whereAnd("`address_is_deleted` = 0")
@@ -45,7 +45,7 @@
          * @return AddressEntity
          */
         public function getById(int $id):IEntity {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
                             ->whereAnd("`address_is_deleted` = 0")
@@ -64,7 +64,7 @@
          * {@inheritDoc}
          */
         public function add(array $data = []):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new InsertQueryBuilder($this->getTableName()))
                           ->set($data)
@@ -77,7 +77,7 @@
          * {@inheritDoc}
          */
         public function edit(array $data = []):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new UpdateQueryBuilder($this->getTableName()))
                           ->set($data)

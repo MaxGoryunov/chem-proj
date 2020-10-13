@@ -3,9 +3,11 @@
     namespace Models;
 
     use Components\DBConnectionProvider;
+    use Components\IDBConnection;
     use DataMappers\AbstractDataMapper;
     use DBQueries\SelectQueryBuilder;
     use Factories\AbstractMVCPDMFactory;
+    use mysqli;
     use Traits\TableNameTrait;
 
     /**
@@ -38,12 +40,26 @@
             $this->relatedFactory = $relatedFactory;
         }
 
+        /**
+         * Returns a related Data Mapper
+         *
+         * @return AbstractDataMapper
+         */
         protected function getDataMapper():AbstractDataMapper {
             if (!isset($this->relatedMapper)) {
                 $this->relatedMapper = $this->relatedFactory->getDataMapper();
             }
 
             return $this->relatedMapper;
+        }
+
+        /**
+         * Returns the Database connection
+         *
+         * @return mysqli
+         */
+        protected function connectToDB():mysqli {
+            return DBConnectionProvider::getConnection(IDBConnection::class);
         }
 
         /**
