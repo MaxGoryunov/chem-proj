@@ -2,6 +2,7 @@
   -webkit-transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
   transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
   margin-left: 80px;
+  margin-bottom: 30px;
   width: calc(100% - 80px);
   max-width: 2000px;
 }
