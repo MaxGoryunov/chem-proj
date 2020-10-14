@@ -1,0 +1,10 @@
+.container__table {
+  border-radius: 25px;
+  -webkit-box-shadow: 10px 10px 20px #dcdcdc, -10px -10px 20px #ffffff;
+          box-shadow: 10px 10px 20px #dcdcdc, -10px -10px 20px #ffffff;
+}
+
+.container__table > .thead-light {
+  border-radius: 25px;
+}
+/*# sourceMappingURL=index.css.map */
