@@ -4,8 +4,8 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
-use DBQueries\InsertQueryBuilder;
-use DBQueries\SelectQueryBuilder;
+    use DBQueries\InsertQueryBuilder;
+    use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
     use Entities\UserEntity;
 
@@ -60,6 +60,32 @@ use DBQueries\SelectQueryBuilder;
          */
         public function delete(int $id):void {
             
+        }
+
+        /**
+         * Returns id of the user based on the login and password input
+         *
+         * @param string $login    - user's login
+         * @param string $password - user's password
+         * @return string[]
+         */
+        public function getUserInfoByRegistrationData(string $login, string $password):array {
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $columns    = [
+                "count" => "COUNT(`user_id`)",
+                "user_id"
+            ];
+
+            $query      = (new SelectQueryBuilder($this->getTableName()))
+                          ->what($columns)
+                          ->whereAnd("`user_login` = '$login'")
+                          ->whereAnd("`user_password` = '$password'")
+                          ->build();
+
+            $result   = $connection->query($query->getQueryString());
+            $userInfo = $result->fetch_assoc();
+
+			return $userInfo;
         }
 
         /**
