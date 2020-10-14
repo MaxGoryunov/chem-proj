@@ -15,3 +15,13 @@ vendor/
 
 #Ingore css map files
 *.css.map
+
+#Ignore LOC file
+phploc.phar
+
+#Ignore code coverage files
+tests/_css
+tests/_js
+tests/_icons
+tests/*.html
+tests/*/*.html

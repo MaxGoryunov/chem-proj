@@ -51,7 +51,7 @@
          * @return void
          */
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
-            $this->builder->whereAnd("");
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->whereAnd(""));
 
             $this->assertEquals("", $this->builder->getWhere());
         }
@@ -64,7 +64,7 @@
          * @return void
          */
         public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
-            $this->builder->whereOr("");
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->whereOr(""));
 
             $this->assertEquals("", $this->builder->getWhere());
         }
