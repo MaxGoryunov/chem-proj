@@ -5,6 +5,10 @@
             <label class="container__formlabel" for=""> Название: </label>
             <input class="form-control container__input" type="text" name="gender_name" required><br>
         </div>
+        <div class="form-group">
+            <label class="container__formlabel" for=""> Краткое название: </label>
+            <input class="form-control container__input" type="text" name="gender_short_name" required><br>
+        </div>
         <input type="submit" class="btn btn-outline-primary btn-lg container__actionbutton" value="Добавить">
     </form>
 </div>

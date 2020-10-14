@@ -25,4 +25,4 @@
     // $router->run();
 
     include_once("./templates/common/header.php");
-    include_once("./templates/genders/add.php");
+    include_once("./templates/genders/edit.php");
