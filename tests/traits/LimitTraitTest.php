@@ -54,7 +54,7 @@
          * @return void
          */
         public function testLimitConstructsCorrectStatement(int $limit, string $expected):void {
-            $this->builder->limit($limit);
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->limit($limit));
 
             $this->assertEquals($expected, $this->builder->getLimit());
         }
