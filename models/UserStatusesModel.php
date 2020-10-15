@@ -72,6 +72,13 @@
          * {@inheritDoc}
          */
         public function delete(int $id):void {
-            
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new UpdateQueryBuilder($this->getTableName()))
+                          ->set(["user_status_is_deleted" => 1])
+                          ->whereAnd("`user_status_id` = " . $id)
+                          ->build();
+
+            $connection->query($query->getQueryString());
         }
     }
