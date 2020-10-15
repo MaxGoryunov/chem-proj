@@ -44,6 +44,19 @@
         }
 
         /**
+         * @covers ::where
+         * @covers ::initWhere
+         * @covers ::getWhere
+         *
+         * @return void
+         */
+        public function testWhereBuildsCorrectWhereStatementOnEmptyInput():void {
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where(""));
+
+            $this->assertEquals("", $this->builder->getWhere());
+        }
+
+        /**
          * @covers ::whereAnd
          * @covers ::initWhereAnd
          * @covers ::getWhere
@@ -82,7 +95,7 @@
          * @param string $expected - expected result
          * @return void
          */
-        public function testsWhereBuildCorrectWhereStatement(array $statements, string $expected):void {
+        public function testsWhereAndOrBuildCorrectWhereStatement(array $statements, string $expected):void {
             foreach ($statements as $statement) {
                 if ($statement["type"] == "and") {
                     $this->builder->whereAnd($statement["condition"]);

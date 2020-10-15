@@ -48,6 +48,17 @@
         }
 
         /**
+         * Initiates string starter for first call of 'where' method
+         *
+         * @return void
+         */
+        private function initWhere():void {
+            if ($this->where === "") {
+                $this->where = "WHERE";
+            }
+        }
+
+        /**
          * Specifies the WHERE statement
          *
          * @param string $condition - condition to be added
@@ -58,9 +69,9 @@
                 return $this;
             }
 
-            if ($this->where === "") {
-                $this->where = "WHERE " . $condition;
-            }
+            $this->initWhere();
+
+            $this->where .= " " . $condition;
 
             return $this;
         }
