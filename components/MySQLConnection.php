@@ -22,24 +22,40 @@
         private static $connection = null;
 
         /**
-         * @throws Exception if the connection to the Database failed
+         * Sets up a common MySQL connection if it has not been set up yet
          */
         public function __construct() {
             if (!self::$connection) {
-                include_once("./config/dbConfig.php");
+                self::$connection = $this->establishConnection(include_once(CONFIG . "dbConfig.php"));
+            }
+        }
 
-                /**
-                 * Establishing the connection with MySQL Database
-                 */
-                $connection = new mysqli($dbConfig["host"], $dbConfig["user"], $dbConfig["password"], $dbConfig["database"]);
+        /**
+         * Connects to MySQL Database
+         *
+         * @param array $config
+         * @return mysqli
+         */
+        private function establishConnection(array $config):mysqli {
+            $connection = new mysqli($config["host"], $config["user"], $config["password"], $config["database"]);
 
-                if ($connection->connect_error) {
-                    throw new Exception("Failed to connect to MySQL database: " . $connection->connect_errno);
-                }
+            $this->validateConnection($connection);
+            $connection->set_charset($config["charset"]);
 
-                $connection->set_charset($dbConfig["charset"]);
+            return $connection;
+        }
 
-                self::$connection = $connection;
+        /**
+         * Validates MySQL connection
+         * 
+         * @throws Exception if the connection to the Database failed
+         *
+         * @param mysqli $connection
+         * @return void
+         */
+        public function validateConnection(mysqli $connection):void {
+            if ($connection->connect_error) {
+                throw new Exception("Failed to connect to MySQL database: " . $connection->connect_errno);
             }
         }
 
