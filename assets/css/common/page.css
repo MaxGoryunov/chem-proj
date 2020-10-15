@@ -1,0 +1,64 @@
+.container {
+  -webkit-transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
+  transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
+  margin-left: 80px;
+  width: calc(100% - 80px);
+  max-width: 2000px;
+}
+
+.container__header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.container__actionbutton {
+  display: block;
+  width: 300px;
+  margin: 0 auto;
+  border-radius: 40px;
+  border: none;
+  color: #efefef;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3597ff), to(#1f32e0)) no-repeat;
+  background: linear-gradient(#3597ff, #1f32e0) no-repeat;
+  text-shadow: 0 1.5px 0 #4b5ef0;
+  -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 3px 0px 0 #1626b3;
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 3px 0px 0 #1626b3;
+  -webkit-transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
+  transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
+}
+
+.container__actionbutton:hover {
+  -webkit-box-shadow: 0 3px 0px 0 #1626b3, 0 0px 15px 0px #3597ff;
+          box-shadow: 0 3px 0px 0 #1626b3, 0 0px 15px 0px #3597ff;
+  -webkit-transform: translateY(-2.5px);
+          transform: translateY(-2.5px);
+}
+
+.container__form {
+  width: 80%;
+  max-width: 800px;
+  margin: 30px auto 0;
+}
+
+.container__form > .form-group:last-of-type {
+  margin-bottom: 0;
+}
+
+.container__form .container__formlabel {
+  font-size: 1.25rem;
+  padding-left: 10px;
+}
+
+.container__form .container__input {
+  border-radius: 50px;
+}
+
+.table {
+  overflow: hidden;
+}
+
+.table > thead {
+  border-radius: 25px;
+}
+/*# sourceMappingURL=page.css.map */

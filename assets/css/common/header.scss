@@ -1,0 +1,90 @@
+@import "variables";
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow: auto;
+    background: $background;
+}
+
+.header {
+    width: $header-width;
+    position: fixed;
+    top: 0;
+    border-radius: 0 25px 25px 0;
+    height: 100vh;
+    color: #eee;
+    transition: $header-transition;
+    overflow: hidden;
+    z-index: 3;
+    box-shadow: none;
+    background: $background;
+    /*box-shadow:  34px 34px 68px #eeeded, 
+             -34px -34px 68px #fcfbfb;*/
+    box-shadow: $box-shadow;
+
+    &:hover {
+        width: $full-header-width;
+    }
+
+    &:hover + .container {
+        margin-left: $full-header-width;
+    }
+
+    &__navblock {
+        width: 330px;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+
+        & > .header__navitem {
+            color: #bababa;
+            font-weight: 500;
+            margin: auto 0;
+            border-bottom: 1.75px #ccc solid;
+
+            &:not(.header__navitem--selected):hover > .header__link {
+                color: $primary;
+            }
+
+            &:last-of-type {
+                border-bottom: none;
+            }
+
+            & > .header__link {
+                display: flex;
+                height: $header-nav-item-height;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                transition: 0.2s ease-in-out;
+                color: #999;
+
+                & > .header__icon {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: $header-nav-item-height;
+                    width: $header-nav-item-height;
+                    font-size: 1.75rem;
+                }
+
+                & > .header__text {
+                    padding-left: 15px;
+                    font-size: 1.25rem;
+                }
+            }
+
+            &--selected {
+                background: linear-gradient(to right, $primary, $primary-darker) no-repeat;
+
+                & > .header__link {
+                    color: #eee;
+                }
+            }
+        }
+    }
+
+}
