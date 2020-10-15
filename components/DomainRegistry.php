@@ -28,7 +28,21 @@
             return self::$domainData;
         }
 
-        public static function getDomain(string $domainName) {
-            throw new OutOfRangeException("Domain not found");
+        public static function getDomain(string $domainName):Domain {
+            if (!isset(self::$domainData[$domainName])) {
+                throw new OutOfRangeException("Domain not found");
+            }
+
+            $domainData = self::$domainData[$domainName];
+
+            $domain = (new Domain($domainName))
+                      ->setDomainSingular($domainData[0])
+                      ->setFactoryName($domainData[1]);
+
+            if ((isset($domainData[2])) && (isset($domainData[3]))) {
+                $domain->setTranslation($domainData[2], $domainData[3]);
+            }
+
+            return $domain;
         }
     }
