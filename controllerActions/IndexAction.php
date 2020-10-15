@@ -2,8 +2,6 @@
 
     namespace ControllerActions;
 
-    use Controllers\IController;
-
     /**
      * Class used to invoke Controller's 'index' method
      */

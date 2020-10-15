@@ -2,16 +2,16 @@
 
     namespace Tests\ControllerActions;
 
-    use ControllerActions\EditAction;
+    use ControllerActions\DeleteAction;
     use Controllers\IController;
     use PHPUnit\Framework\TestCase;
 
     /**
-     * Testing EditAction class
+     * Testing DeleteAction class
      * 
-     * @coversDefaultClass EditAction
+     * @coversDefaultClass DeleteAction
      */
-    class EditActionTest extends TestCase {
+    class DeleteActionTest extends TestCase {
 
         /**
          * @covers ::execute
@@ -24,10 +24,10 @@
                           ->getMock();
 
             $controller->expects($this->once())
-                       ->method("edit");
+                       ->method("delete");
 
-            $action = new EditAction($controller);
+            $action = new DeleteAction($controller);
 
-            $this->assertNull($action->execute(12));
+            $this->assertNull($action->execute(11));
         }
     }
