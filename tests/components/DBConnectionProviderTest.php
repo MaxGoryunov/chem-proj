@@ -11,7 +11,7 @@
     /**
      * Testing TDBConnectionProvider class
      * 
-     * @@coversDefaultClass DBConnectionProvider
+     * @@coversDefaultClass Components\DBConnectionProvider
      */
     class DBConnectionProviderTest extends TestCase {
         
