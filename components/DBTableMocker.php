@@ -10,11 +10,18 @@
     class DBTableMocker {
 
         /**
-         * Name of the column which is being changed
+         * Contains an array of stored table columns
          *
-         * @var string
+         * @var string[][]
          */
-        private $currentColumn = "";
+        private $columns = [];
+
+        /**
+         * Column which is being changed
+         *
+         * @var string[]
+         */
+        private $currentColumn = [];
 
         /**
          * Returns an array of table columns with their description
@@ -27,28 +34,36 @@
 
             $query      = new Query("DESCRIBE `$tableName`");
 
-            $result  = $connection->query($query->getQueryString());
-            $columns = $result->fetch_all(MYSQLI_ASSOC);
+            $result        = $connection->query($query->getQueryString());
+            $columns       = $result->fetch_all(MYSQLI_ASSOC);
+            
+            foreach ($columns as $column) {
+                $this->columns[$column["Field"]] = $column;
+            }
 
             return $columns;
         }
 
         /**
-         * Sets the current column
+         * Sets the column which is being modified
          *
-         * @param string $column
-         * @return void
+         * @param string $columnName
+         * @return self
          */
-        public function column(string $column):void {
-            $this->currentColumn = $column;
+        public function column(string $columnName):self {
+            if (array_key_exists($columnName, $this->columns)) {
+                $this->currentColumn = $this->columns[$columnName];
+            }
+
+            return $this;
         }
 
         /**
-         * Returns the current column
+         * Returns the current column's name
          *
          * @return string
          */
         public function getCurrentColumn():string {
-            return $this->currentColumn;
+            return $this->currentColumn["Field"] ?? "";
         }
     }

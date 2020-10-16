@@ -2,9 +2,10 @@
 
     namespace Tests\Components;
 
-    use Components\DBTableMocker;
-    use mysqli;
-    use PHPUnit\Framework\TestCase;
+use Components\DBConnectionProvider;
+use Components\DBTableMocker;
+use Components\IDBConnection;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing DBTableMocker class
@@ -12,6 +13,31 @@
      * @coversDefaultClass DBTableMocker
      */
     class DBTableMockerTest extends TestCase {
+
+        /**
+         * Contains tested class object
+         *
+         * @var DBTableMocker
+         */
+        protected $mocker;
+
+        /**
+         * Creates tested class object
+         *
+         * @return void
+         */
+        protected function setUp():void {
+            $this->mocker = new DBTableMocker();
+        }
+
+        /**
+         * Removes tested class object
+         *
+         * @return void
+         */
+        protected function tearDown():void {
+            $this->mocker = null;
+        }
 
         /**
          * @covers ::getTableDescription
@@ -23,11 +49,23 @@
          * @param (string|null)[] $expected - expected result
          * @return void
          */
-        public function testGetTableDescription(string $tableName, array $expected):void {
-            $tableMocker = new DBTableMocker();
-            
-            $this->assertContains($expected, $tableMocker->getTableDescription($tableName));
-            $this->assertEquals("", $tableMocker->getCurrentColumn());
+        public function testGetTableDescription(string $tableName, array $expected):void {            
+            $this->assertContains($expected, $this->mocker->getTableDescription($tableName));
+            $this->assertEquals("", $this->mocker->getCurrentColumn());
+        }
+
+        /**
+         * @covers ::getTableDescription
+         * @covers ::column
+         * @covers ::getCurrentColumn
+         *
+         * @return void
+         */
+        public function testColumnDoesNotSetUpCurrentColumnOnInvalidColumnNameInput():void {
+            $this->mocker->getTableDescription("addresses");
+
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("id"));
+            $this->assertEquals("", $this->mocker->getCurrentColumn());
         }
 
         /**
@@ -42,12 +80,10 @@
          * @return void
          */
         public function testColumnMethodSetsUpWorkingColumn(string $table, string $column):void {
-            $tableMocker = new DBTableMocker();
+            $this->mocker->getTableDescription($table);
 
-            $tableMocker->getTableDescription($table);
-
-            $this->assertNull($tableMocker->column($column));
-            $this->assertEquals($column, $tableMocker->getCurrentColumn());
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column($column));
+            $this->assertEquals($column, $this->mocker->getCurrentColumn());
         }
 
         /**
