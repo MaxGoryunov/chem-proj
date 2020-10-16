@@ -2,8 +2,6 @@
 
     namespace Models;
 
-    use Components\DBConnectionProvider;
-    use Components\IDBConnection;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use DBQueries\UpdateQueryBuilder;
@@ -22,21 +20,9 @@
         
         /**
          * {@inheritDoc}
-         * 
-         * @return AddressEntity[]
          */
-        public function getList(int $limit, int $offset):array {
-            $connection = $this->connectToDB();
-
-            $query      = (new SelectQueryBuilder($this->getTableName()))
-                            ->whereAnd("`address_is_deleted` = 0")
-                            ->limit($limit, $offset)
-                            ->build();
-
-            $result        = $connection->query($query->getQueryString());
-            $addressesList = $result->fetch_all(MYSQLI_ASSOC);
-
-            return $addressesList;
+        protected function getDomainName():string {
+            return "address";
         }
 
         /**

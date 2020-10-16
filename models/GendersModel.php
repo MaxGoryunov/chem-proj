@@ -2,9 +2,6 @@
 
     namespace Models;
 
-    use Components\DBConnectionProvider;
-    use Components\IDBConnection;
-    use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
 
     /**
@@ -20,18 +17,8 @@
         /**
          * {@inheritDoc}
          */
-        public function getList(int $limit, int $offset):array {
-            $connection = $this->connectToDB();
-
-            $query      = (new SelectQueryBuilder($this->getTableName()))
-                          ->whereAnd("`gender_is_deleted`")
-                          ->limit($limit, $offset)
-                          ->build();
-
-            $result      = $connection->query($query->getQueryString());
-            $gendersList = $result->fetch_all(MYSQLI_ASSOC);
-
-            return $gendersList;
+        protected function getDomainName():string {
+            return "gender";
         }
 
         /**

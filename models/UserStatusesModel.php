@@ -17,18 +17,11 @@
          */
         protected $tableName = "user_statuses";
 
-        public function getList(int $limit, int $offset):array {
-            $connection = $this->connectToDB();
-
-            $query      = (new SelectQueryBuilder($this->getTableName()))
-                          ->whereAnd("`user_status_is_deleted` = 0")
-                          ->limit($limit, $offset)
-                          ->build();
-
-            $result           = $connection->query($query->getQueryString());
-            $userStatusesList = $result->fetch_all(MYSQLI_ASSOC);
-
-            return $userStatusesList;
+        /**
+         * {@inheritDoc}
+         */
+        protected function getDomainName():string {
+            return "user_status";
         }
 
         /**

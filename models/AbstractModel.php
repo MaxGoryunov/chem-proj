@@ -54,6 +54,30 @@
         }
 
         /**
+         * {@inheritDoc}
+         */
+        public function getList(int $limit, int $offset):array {
+            $connection = $this->connectToDB();
+
+            $query      = (new SelectQueryBuilder($this->getTableName()))
+                            ->whereAnd("`" . $this->getDomainName() . "_is_deleted` = 0")
+                            ->limit($limit, $offset)
+                            ->build();
+
+            $result    = $connection->query($query->getQueryString());
+            $itemsList = $result->fetch_all(MYSQLI_ASSOC);
+
+            return $itemsList;
+        }
+
+        /**
+         * Returns domain name in singular
+         *
+         * @return string
+         */
+        protected abstract function getDomainName():string;
+
+        /**
          * Returns the Database connection
          *
          * @return mysqli
