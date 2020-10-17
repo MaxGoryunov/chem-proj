@@ -25,7 +25,7 @@
 
             $viewData = array_merge($fullUserStatus, compact("title", "addressesList"));
 
-            $this->getView()->render(__METHOD__, $viewData);
+            $this->getView()->render(__FUNCTION__, $viewData);
         }
 
         /**

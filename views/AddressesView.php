@@ -11,8 +11,20 @@
          * {@inheritDoc}
          */
         public function render(string $template, array $data = []):void {
-            echo "<pre>";
+            extract($data);
+            
+            $filePath = "./templates/";
 
-            print_r($data);
+            if ($template == "index") {
+                $filePath .= "common/";
+            } else {
+                $filePath .= "addresses/";
+            }
+
+            $filePath .= $template . ".php";
+
+            if (file_exists($filePath)) {
+                include_once($filePath);
+            }
         }
     }
