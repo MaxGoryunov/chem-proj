@@ -51,6 +51,7 @@
 
         /**
          * @covers ::getConnection
+         * @uses Components\MySQLConnection
          *
          * @return void
          */
