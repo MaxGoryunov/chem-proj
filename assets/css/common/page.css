@@ -42,10 +42,6 @@
   margin: 30px auto 0;
 }
 
-.container__form > .form-group:last-of-type {
-  margin-bottom: 0;
-}
-
 .container__form .container__formlabel {
   font-size: 1.25rem;
   padding-left: 10px;
@@ -53,6 +49,11 @@
 
 .container__form .container__input {
   border-radius: 50px;
+}
+
+.container__form .container__registration-redirect {
+  text-align: center;
+  margin-top: 10px;
 }
 
 .table {
