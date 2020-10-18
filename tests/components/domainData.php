@@ -1,9 +1,9 @@
 <?php
 
     $domainData = array(
-        "addresses" => ["address", "AddressesFactory", "адреса", "адреса"],
-        "companies" => ["company", "CompaniesFactory", "компании", "компании"],
-        "medicines" => ["medicine", "MedicinesFactory", "препараты", "препарата"]
+        "addresses" => ["address", "адреса", "адреса"],
+        "companies" => ["company", "компании", "компании"],
+        "medicines" => ["medicine", "препараты", "препарата"]
     );
 
     return $domainData;

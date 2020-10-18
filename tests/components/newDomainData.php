@@ -1,10 +1,10 @@
 <?php
 
     $newDomainData = array(
-        "addresses" => ["address", "AddressesFactory", "адреса", "адреса"],
-        "companies" => ["company", "CompaniesFactory", "компании", "компании"],
-        "medicines" => ["medicine", "MedicinesFactory", "препараты", "препарата"],
-        "countries" => ["country", "CountriesFactory", "страны", "страны"]
+        "addresses" => ["address", "адреса", "адреса"],
+        "companies" => ["company", "компании", "компании"],
+        "medicines" => ["medicine", "препараты", "препарата"],
+        "countries" => ["country", "страны", "страны"]
     );
 
     return $newDomainData;

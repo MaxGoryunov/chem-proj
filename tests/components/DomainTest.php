@@ -63,22 +63,6 @@
         }
 
         /**
-         * @covers ::setFactoryName
-         * @covers ::getFactoryName
-         * 
-         * @dataProvider provideFactoryNames
-         *
-         * @param string $factoryName
-         * @return void
-         */
-        public function testGetFactoryNameReturnsCorrectValue(string $factoryName):void {
-            $domain = $this->setUpMock();
-
-            $this->assertInstanceOf(Domain::class, $domain->setFactoryName($factoryName));
-            $this->assertEquals($factoryName, $domain->getFactoryName());
-        }
-
-        /**
          * @covers ::setTranslation
          * @covers ::getTranslation
          * 
@@ -108,15 +92,6 @@
 
             $this->assertInstanceOf(Domain::class, $domain->setTranslation(...$translation));
             $this->assertEquals($translation[1], $domain->getTranslationClause());
-        }
-
-        public function testSetFactoryNameThrowsExceptionOnEmptyInput():void {
-            $this->expectException(InvalidArgumentException::class);
-            $this->expectExceptionMessage("Factory name must be a valid string");
-            
-            $domain = $this->setUpMock();
-
-            $domain->setFactoryName("");
         }
 
         /**

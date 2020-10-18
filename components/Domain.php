@@ -24,13 +24,6 @@
         private $domainSingular;
 
         /**
-         * Name of the related factory
-         *
-         * @var string
-         */
-        private $factoryName;
-
-        /**
          * Translated equivalent of the domain name
          * 
          * As manual translation is yet to be introduced, the translated version of the domain has to be stored manually
@@ -63,22 +56,6 @@
          */
         public function setDomainSingular(string $domainSingular):self {
             $this->domainSingular = $domainSingular;
-
-            return $this;
-        }
-
-        /**
-         * Sets related factory name
-         *
-         * @param string $factoryName
-         * @return self
-         */
-        public function setFactoryName(string $factoryName):self {
-            if ($factoryName === "") {
-                throw new InvalidArgumentException("Factory name must be a valid string");
-            }
-
-            $this->factoryName = $factoryName;
 
             return $this;
         }

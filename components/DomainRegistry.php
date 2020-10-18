@@ -36,11 +36,10 @@
             $domainData = self::$domainData[$domainName];
 
             $domain = (new Domain($domainName))
-                      ->setDomainSingular($domainData[0])
-                      ->setFactoryName($domainData[1]);
+                      ->setDomainSingular($domainData[0]);
 
-            if ((isset($domainData[2])) && (isset($domainData[3]))) {
-                $domain->setTranslation($domainData[2], $domainData[3]);
+            if ((isset($domainData[1])) && (isset($domainData[2]))) {
+                $domain->setTranslation($domainData[1], $domainData[2]);
             }
 
             return $domain;

@@ -63,19 +63,17 @@
          *
          * @param string $domainPlural      - domain name in plural
          * @param string $domainSingular    - domain name in singular
-         * @param string $factoryName       - name of the related factory
          * @param string $translation       - translated domain name
          * @param string $translationClause - translated domain name in clause
          * @return void
          */
-        public function testGetDomainReturnsCorrectDomain(string $domainPlural, string $domainSingular, string $factoryName, string $translation, string $translationClause):void {
+        public function testGetDomainReturnsCorrectDomain(string $domainPlural, string $domainSingular, string $translation, string $translationClause):void {
             DomainRegistry::setDomainData("./tests/components/domainData.php");
 
             $domain = DomainRegistry::getDomain($domainPlural);
 
             $this->assertInstanceOf(Domain::class, $domain);
             $this->assertEquals($domainSingular, $domain->getDomainSingular());
-            $this->assertEquals($factoryName, $domain->getFactoryName());
             $this->assertEquals($translation, $domain->getTranslation());
             $this->assertEquals($translationClause, $domain->getTranslationClause());
         }
@@ -85,9 +83,9 @@
          */
         public function provideDomainNames():array {
             return [
-                "addresses" => ["addresses", "address", "AddressesFactory", "адреса", "адреса"],
-                "companies" => ["companies", "company", "CompaniesFactory", "компании", "компании"],
-                "medicines" => ["medicines", "medicine", "MedicinesFactory", "препараты", "препарата"]
+                "addresses" => ["addresses", "address", "адреса", "адреса"],
+                "companies" => ["companies", "company", "компании", "компании"],
+                "medicines" => ["medicines", "medicine", "препараты", "препарата"]
             ];
         }
     }
