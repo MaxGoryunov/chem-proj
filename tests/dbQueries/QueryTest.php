@@ -9,7 +9,7 @@
     /**
      * Testing Query class
      * 
-     * @coversDefaultClass Query
+     * @coversDefaultClass \DBQueries\Query
      */
     class QueryTest extends TestCase {
 

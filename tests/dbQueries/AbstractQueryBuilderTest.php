@@ -1,12 +1,14 @@
 <?php
 
+    namespace Tests\DBQueries;
+    
     use DBQueries\AbstractQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
     /**
      * Testing AbstractQueryBuilder
      * 
-     * @coversDefaultClass AbstractQueryBuilder
+     * @coversDefaultClass DBQueries\AbstractQueryBuilder
      */
     class AbstractQueryBuilderTest extends TestCase {
         

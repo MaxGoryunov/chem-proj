@@ -8,7 +8,7 @@
     /**
      * Testing SelectQueryBuilder
      * 
-     * @coversDefaultClass SelectQueryBuilder
+     * @coversDefaultClass DBQueries\SelectQueryBuilder
      */
     class SelectQueryBuilderTest extends TestCase {
         
@@ -48,7 +48,7 @@
          * @return void
          */
         public function testWhatBuildsCorrectWhatStatement(array $columns, string $expected):void {
-            $this->selectBuilder->what($columns);
+            $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->what($columns));
 
             $this->assertEquals($expected, $this->selectBuilder->getWhat());
         }
@@ -64,7 +64,7 @@
          * @return void
          */
         public function testGroupByBuildsCorrectGroupByStatement(string $columnName, string $expected):void {
-            $this->selectBuilder->groupBy($columnName);
+            $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->groupBy($columnName));
 
             $this->assertEquals($expected, $this->selectBuilder->getGroupBy());
         }
@@ -80,7 +80,7 @@
          * @return void
          */
         public function testHavingBuildsCorrectHavingStatement(string $condition, string $expected):void {
-            $this->selectBuilder->having($condition);
+            $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->having($condition));
 
             $this->assertEquals($expected, $this->selectBuilder->getHaving());
         }
@@ -96,7 +96,7 @@
          * @return void
          */
         public function testOrderByBuildsCorrectOrderByStatement(array $columns, string $expected):void {
-            $this->selectBuilder->orderBy($columns);
+            $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->orderBy($columns));
 
             $this->assertEquals($expected, $this->selectBuilder->getOrderBy());
         }
@@ -108,7 +108,7 @@
          * @return void
          */
         public function testLimitBuildsCorrectLimitStatementWithZeroOffset():void {
-            $this->selectBuilder->limit(5);
+            $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->limit(5));
 
             $this->assertEquals("LIMIT 0, 5", $this->selectBuilder->getLimit());
         }
@@ -120,14 +120,14 @@
          * @return void
          */
         public function testLimitBuildsCorrectLimitStatementWithPositiveOffset():void {
-            $this->selectBuilder->limit(5, 3);
+            $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->limit(5, 3));
 
             $this->assertEquals("LIMIT 3, 5", $this->selectBuilder->getLimit());
         }
 
         /**
          * @covers ::join
-         * @covers ::getJoin
+         * @covers ::getJoins
          * 
          * @dataProvider provideJoins
          *
@@ -138,9 +138,9 @@
         public function testJoinBuildsCorrectJoinStatement(array $joins, string $expected):void {
             foreach ($joins as $join) {
                 if (isset($join["joinType"])) {
-                    $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"], $join["joinType"]);
+                    $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"], $join["joinType"]));
                 } else {
-                    $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"]);
+                    $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->join($join["table"], $join["connectField"], $join["foreignConnectField"]));
                 }
             }
 
@@ -208,6 +208,24 @@
                         "medicine_doze"
                     ],
                     "`medicine_id` AS `id`, `medicine_name` AS `name`, `medicine_price`, `medicine_doze`"
+                ],
+                "functions"   => [
+                    [
+                        "COUNT(*)",
+                        "AVG(*)",
+                        "MIN(*)",
+                        "MAX(*)"
+                    ],
+                    "COUNT(*), AVG(*), MIN(*), MAX(*)"
+                ],
+                "functionsKeys"   => [
+                    [
+                        "count"   => "COUNT(*)",
+                        "avg"     => "AVG(*)",
+                        "min"     => "MIN(*)",
+                        "max"     => "MAX(*)"
+                    ],
+                    "COUNT(*) AS `count`, AVG(*) AS `avg`, MIN(*) AS `min`, MAX(*) AS `max`"
                 ]
             ];
         }

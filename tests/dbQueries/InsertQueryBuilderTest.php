@@ -1,12 +1,14 @@
 <?php
 
+    namespace Tests\DBQueries;
+    
     use DBQueries\InsertQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
     /**
      * Testing InsertQueryBuilder class
      * 
-     * @coversDefaultClass InsertQueryBuilder
+     * @coversDefaultClass \DBQueries\InsertQueryBuilder
      */
     class InsertQueryBuilderTest extends TestCase {
         
