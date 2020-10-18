@@ -99,6 +99,13 @@
             $this->assertCount(2, $this->autoloader->getAutoloaders());
         }
 
+        /**
+         * @covers ::unregister
+         * @covers ::register
+         * @covers ::getAutoloaders
+         *
+         * @return void
+         */
         public function testRegisterUnregisterDefaultFunctionSequence():void {
             $this->assertCount(2, $this->autoloader->getAutoloaders());
 
@@ -115,6 +122,11 @@
             $this->assertCount(2, $this->autoloader->getAutoloaders());
         }
 
+        /**
+         * @coversNothing
+         *
+         * @return void
+         */
         public function testPHPThrowsFatalErrorWithoutAutoloaderFunction():void {
             $this->expectErrorMessage("Class 'Components\Router' not found");
 
@@ -123,16 +135,22 @@
             $router = new Router();
         }
 
+        /**
+         * @covers ::register
+         * @small
+         *
+         * @return void
+         */
         public function testRegisterSpeed():void {
             $time = microtime(true);
 
-            for ($i = 0; $i < 10000000; $i++) { 
+            for ($i = 0; $i < 100000; $i++) { 
                 $this->autoloader->register();
             }
 
             $time = microtime(true) - $time;
 
-            $this->assertLessThan(1.4, $time);
+            $this->assertLessThan(3, $time);
         }
 
         /**
@@ -143,10 +161,10 @@
         public function provideAutoloaderFunctions():array {
             return [
                 "include"            => [function (string $className) {
-                    include_once("./$className.php");
+                    @include_once("./$className.php");
                 }],
                 "require"            => [function (string $className) {
-                    require_once("./$className.php");
+                    @require_once("./$className.php");
                 }],
                 "checkFileExistence" => [function (string $className) {
                     $filePath = "./$className.php";

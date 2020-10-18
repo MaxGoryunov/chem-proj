@@ -32,11 +32,7 @@
 		public function getAutoloaders():array {
 			$autoloaders = spl_autoload_functions();
 
-			if (!$autoloaders) {
-				return [];
-			}
-
-			return $autoloaders;
+			return (array)$autoloaders;
 		}
 
 		/**
