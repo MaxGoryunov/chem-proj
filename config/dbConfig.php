@@ -12,3 +12,5 @@
         "database" => "chemistry",
         "charset" => "utf8"
     );
+
+    return $dbConfig;

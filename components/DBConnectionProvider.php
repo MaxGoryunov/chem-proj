@@ -26,10 +26,8 @@
             /**
              * If the connection type is present in the predefined connections then it can be accessed
              */
-            if (in_array($connectionType, array_keys(self::$connections))) {
-                $connection = self::$connections[$connectionType]::getInstance();
-
-                return $connection->getConnection();
+            if (array_key_exists($connectionType, self::$connections)) {
+                return new self::$connections[$connectionType];
             }
 
             throw new \InvalidArgumentException("Supplied argument of unknown type");

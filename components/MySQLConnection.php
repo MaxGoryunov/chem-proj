@@ -26,7 +26,7 @@
          */
         public function __construct() {
             if (!self::$connection) {
-                self::$connection = $this->establishConnection(include_once(CONFIG . "dbConfig.php"));
+                self::$connection = $this->establishConnection(include_once("./config/dbConfig.php"));
             }
         }
 

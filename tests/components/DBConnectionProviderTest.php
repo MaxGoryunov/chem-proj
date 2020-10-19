@@ -4,9 +4,11 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
+    use Components\MySQLConnection;
     use InvalidArgumentException;
-    use mysqli;
     use PHPUnit\Framework\TestCase;
+
+    include_once("./config/constants.php");
 
     /**
      * Testing TDBConnectionProvider class
@@ -46,19 +48,7 @@
          * @return void
          */
         public function testClassProvidesConnection():void {
-            $this->assertInstanceOf(mysqli::class, $this->connectionProvider::getConnection(IDBConnection::class));
-        }
-
-        /**
-         * @covers ::getConnection
-         *
-         * @return void
-         */
-        public function testClassProvidesSameConnectionOnEachCall():void {
-            $connection1 = $this->connectionProvider::getConnection(IDBConnection::class);
-            $connection2 = $this->connectionProvider::getConnection(IDBConnection::class);
-
-            $this->assertSame($connection1, $connection2);
+            $this->assertInstanceOf(MySQLConnection::class, $this->connectionProvider::getConnection(IDBConnection::class));
         }
 
         /**
