@@ -6,8 +6,8 @@
     use Components\IDBConnection;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
-use DBQueries\UpdateQueryBuilder;
-use Entities\IEntity;
+    use DBQueries\UpdateQueryBuilder;
+    use Entities\IEntity;
 
     /**
      * Model containing Genders business logic
