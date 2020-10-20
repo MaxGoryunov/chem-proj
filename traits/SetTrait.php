@@ -1,5 +1,9 @@
 <?php
 
+    namespace Traits;
+
+    use DBQueries\IQueryBuilder;
+
     /**
      * Trait supports SET `column_name` = VALUE statements
      */
@@ -13,11 +17,20 @@
         private $values = "";
 
         /**
+         * Returns VALUES statement
+         *
+         * @return string
+         */
+        public function getValues():string {
+            return $this->values;
+        }
+
+        /**
          * Sets $values based on given array of data
          *
          * @param array $values
          * 
-         * @return UpdateQueryBuilder|InsertQueryBuilder
+         * @return $this
          */
         public function set(array $values = []):IQueryBuilder {
             $set = "";

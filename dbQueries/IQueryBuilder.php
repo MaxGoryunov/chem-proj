@@ -1,5 +1,7 @@
 <?php
 
+    namespace DBQueries;
+    
     /**
      * Interface for building queries to DB
      */

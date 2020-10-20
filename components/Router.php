@@ -1,5 +1,7 @@
 <?php
 
+	namespace Components;
+	
 	/**
 	 * Class for providing routing within the site
 	 */
@@ -34,26 +36,34 @@
 			/**
 			 * @todo Implement a more efficient algorithm as this works for O(n) where n is the overall number of patterns
 			 */
-            foreach ($this->routes as $controller => $patterns) {
+			foreach ($this->routes as $factory => $patterns) {
 				foreach ($patterns as $pattern => $action) {
-                    $completePattern = ROOT . $pattern;
+					$completePattern = ROOT . $pattern;
                     
 					if (preg_match("~$completePattern$~", $userUri, $matches)) {
 						/**
+						 * Id of the specified item
+						 * 
 						 * If the id of some item is specified in the URL then it is contained in the first submask
 						 * 
 						 * @var string $id
 						 */
 						$id = $matches[1] ?? '';
-						
-						$controllerObj = new $controller();
+
+						/**
+						 * Factory used for creating MVCPDM components
+						 * 
+						 * @var IMVCPDMFactory
+						 */
+						$factoryObj = new $factory();
+
+						$proxyController = $factoryObj->getProxy();
 
 						if ($id) {
-							$controllerObj->$action($id);
+							$proxyController->$action($id);
 						} else {
-							$controllerObj->$action();
+							$proxyController->$action();
 						}
-						exit();
 					}
 				}
 			}

@@ -1,5 +1,7 @@
 <?php
 
+    namespace Components;
+    
     /**
      * Class which represents connection with MySQL Database
      * 
@@ -18,7 +20,7 @@
         /**
          * Connection to MySQL Database
          *
-         * @var mysqli|null
+         * @var \mysqli
          */
         private $connection = null;
 
@@ -47,10 +49,10 @@
             /**
              * Establishing the connection with MySQL Database
              */
-            $connection = new mysqli($dbConfig["host"], $dbConfig["user"], $dbConfig["password"], $dbConfig["database"]);
+            $connection = new \mysqli($dbConfig["host"], $dbConfig["user"], $dbConfig["password"], $dbConfig["database"]);
 
             if ($connection->connect_error) {
-                throw new Exception("Failed to connect to MySQL database: " . $connection->connect_errno);
+                throw new \Exception("Failed to connect to MySQL database: " . $connection->connect_errno);
             }
 
             $connection->set_charset($dbConfig["charset"]);
@@ -63,9 +65,9 @@
         /**
          * Returns the MySQL Database connection
          *
-         * @return mysqli
+         * @return \mysqli
          */
-        public function getConnection():mysqli {
+        public function getConnection():\mysqli {
             return $this->connection;
         }
 

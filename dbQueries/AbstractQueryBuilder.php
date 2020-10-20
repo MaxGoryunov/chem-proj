@@ -1,5 +1,7 @@
 <?php
 
+    namespace DBQueries;
+
     /**
      * Abstract class for different specific queries: Select, Update, Insert and Delete
      */
@@ -19,5 +21,14 @@
          */
         public function __construct(string $tableName) {
             $this->tableName = $tableName;
+        }
+
+        /**
+         * Returns DB Table to which the query is made
+         *
+         * @return string
+         */
+        public function getTableName():string {
+            return $this->tableName;
         }
     }

@@ -1,5 +1,9 @@
 <?php
 
+    namespace Models;
+
+    use Entities\IEntity;
+
     /**
      * Interface specifies common Model methods
      */

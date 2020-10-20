@@ -1,5 +1,7 @@
 <?php
 
+    namespace Entities;
+    
     /**
      * Interface for Database Table Entities
      */

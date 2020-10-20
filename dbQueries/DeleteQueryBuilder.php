@@ -1,5 +1,10 @@
 <?php
 
+    namespace DBQueries;
+
+    use Traits\LimitTrait;
+    use Traits\WhereTrait;
+
     /**
      * Class for building a Delete query
      */
@@ -14,9 +19,9 @@
          */
         public function build():IQuery {
             return new Query("
-                DELETE FROM `{$this->tableName}`
-                {$this->where}
-                {$this->limit};
+                DELETE FROM `{$this->getTableName()}`
+                {$this->getWhere()}
+                {$this->getLimit()};
             ");
         }
     }
