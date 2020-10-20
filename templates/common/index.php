@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="container__header"><?= $header; ?></h2>
+    <h2 class="header"><?= $header; ?></h2>
     <a href="./add" class="btn btn-outline-primary btn-lg container__actionbutton" role="button">Добавить</a>
     <table class="table container__table">
         <thead class="thead-light">

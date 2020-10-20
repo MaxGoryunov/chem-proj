@@ -6,12 +6,6 @@
   max-width: 2000px;
 }
 
-.container__header {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
 .container__actionbutton {
   display: block;
   width: 300px;
@@ -52,6 +46,12 @@
 
 .container__form .container__input {
   border-radius: 50px;
+}
+
+.header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .table {

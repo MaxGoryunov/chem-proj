@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="container__header">Добавление адреса</h2>
+    <h2 class="header">Добавление адреса</h2>
     <form class="container__form" method="POST">
         <div class="form-group">
             <label class="container__formlabel" for=""> Название: </label>
