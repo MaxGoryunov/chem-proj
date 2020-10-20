@@ -4,6 +4,7 @@
     use DBQueries\IQueryBuilder;
     use PHPUnit\Framework\TestCase;
     use Traits\WhereTrait;
+    use DBQueries\SelectQueryBuilder;
 
     /**
      * Testing WhereTrait trait
@@ -87,6 +88,8 @@
          * @covers ::initWhereOr
          * @covers ::whereAnd
          * @covers ::initWhereAnd
+         * @covers ::where
+         * @covers ::initWhere
          * @covers ::getWhere
          * 
          * @dataProvider provideMixedWhereConditions
@@ -99,6 +102,8 @@
             foreach ($statements as $statement) {
                 if ($statement["type"] == "and") {
                     $this->builder->whereAnd($statement["condition"]);
+                } elseif ($statement["type"] == "") {
+                    $this->builder->where($statement["condition"]);
                 } else {
                     $this->builder->whereOr($statement["condition"]);
                 }
@@ -117,9 +122,13 @@
          * @return void
          */
         public function testBadUsageOfWhereMethods():void {
+            $this->builder->where("");
             $this->builder->whereAnd("");
             $this->builder->whereOr("");
+            $this->builder->where("");
             $this->builder->whereAnd("");
+            $this->builder->where("");
+            $this->assertEquals("", $this->builder->getWhere());
 
             $this->builder->whereAnd("`medicine_id` = 1");
             $this->builder->whereOr("");
@@ -173,8 +182,12 @@
                 "mixed"        => [
                     [
                         [
-                            "type"      => "or",
+                            "type"      => "",
                             "condition" => "`medicine_id` = 1"
+                        ],
+                        [
+                            "type"      => "or",
+                            "condition" => "`medicine_id` = 3"
                         ],
                         [
                             "type"      => "and",
@@ -185,7 +198,7 @@
                             "condition" => "`medicine_doze` > 30"
                         ]
                     ],
-                    "WHERE 0 OR `medicine_id` = 1 AND `medicine_price` < 750 OR `medicine_doze` > 30"
+                    "WHERE `medicine_id` = 1 OR `medicine_id` = 3 AND `medicine_price` < 750 OR `medicine_doze` > 30"
                 ]
             ];
         }
