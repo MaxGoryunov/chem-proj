@@ -2,10 +2,8 @@
 
     namespace Tests\Components;
 
-use Components\DBConnectionProvider;
-use Components\DBTableMocker;
-use Components\IDBConnection;
-use PHPUnit\Framework\TestCase;
+    use Components\DBTableMocker;
+    use PHPUnit\Framework\TestCase;
 
     /**
      * Testing DBTableMocker class
@@ -84,6 +82,23 @@ use PHPUnit\Framework\TestCase;
 
             $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column($column));
             $this->assertEquals($column, $this->mocker->getCurrentColumn());
+        }
+
+        /**
+         * @covers ::getTableDescription
+         * @covers ::column
+         * @covers ::type
+         * @covers ::getType
+         *
+         * @return void
+         */
+        public function testTypeDoesNotModifyTypeOnEmptyInput():void {
+            $this->mocker->getTableDescription("addresses");
+
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_id")
+            ->type(""));
+
+            $this->assertEquals("int(10)", $this->mocker->getType());
         }
 
         /**

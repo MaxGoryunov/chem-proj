@@ -66,4 +66,23 @@
         public function getCurrentColumn():string {
             return $this->currentColumn["Field"] ?? "";
         }
+
+        /**
+         * Sets type of the current column
+         *
+         * @param string $type
+         * @return self
+         */
+        public function type(string $type):self {
+            return $this;
+        }
+
+        /**
+         * Returns type of the current column
+         *
+         * @return string
+         */
+        public function getType():string {
+            return "int(10)";
+        }
     }
