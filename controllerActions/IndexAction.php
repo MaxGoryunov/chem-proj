@@ -9,9 +9,17 @@
 
         /**
          * Executes Controller's 'index' method
+         * 
+         * @todo Implement the if statement with instanceof after the Interface Segregation
          * {@inheritDoc}
          */
         public function execute():void {
-            $this->controller->index();
+            if (method_exists($this->factory, "getProxy")) {
+                $controller = $this->factory->getProxy();
+            } else {
+                $controller = $this->factory->getController();
+            }
+
+            $controller->index();
         }
     }

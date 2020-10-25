@@ -3,6 +3,7 @@
     namespace ControllerActions;
 
     use Controllers\IController;
+    use Factories\AbstractFactory;
 
     /**
      * Base class for implementing other controller actions
@@ -10,16 +11,16 @@
     abstract class AbstractAction {
         
         /**
-         * Contains controller object on which the method will be invoked
+         * Contains the factory object from which the Controller will be retrieved
          *
-         * @var IController
+         * @var AbstractFactory
          */
-        protected $controller;
+        protected $factory;
 
         /**
-         * @param IController $controller
+         * @param AbstractFactory $factory
          */
-        public function __construct(IController $controller) {
-            $this->controller = $controller;
+        public function __construct(AbstractFactory $factory) {
+            $this->factory = $factory;
         }
     }

@@ -4,7 +4,8 @@
 
     use ControllerActions\IndexAction;
     use Controllers\IController;
-    use PHPUnit\Framework\TestCase;
+use Factories\AbstractFactory;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing IndexAction class
@@ -26,7 +27,13 @@
             $controller->expects($this->once())
                         ->method("index");
 
-            $action = new IndexAction($controller);
+            $factory = $this->getMockForAbstractClass(AbstractFactory::class);
+
+            $factory->expects($this->any())
+                    ->method("getProxy")
+                    ->will($this->returnValue($controller));
+
+            $action = new IndexAction($factory);
 
             $this->assertNull($action->execute());
         }
