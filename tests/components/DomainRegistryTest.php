@@ -13,6 +13,31 @@
      * @coversDefaultClass DomainRegistry
      */
     class DomainRegistryTest extends TestCase {
+
+        /**
+         * Contains tested class object
+         *
+         * @var DomainRegistry
+         */
+        protected $domainRegistry;
+
+        /**
+         * Creates tested class object
+         *
+         * @return void
+         */
+        protected function setUp():void {
+            $this->domainRegistry = new DomainRegistry();
+        }
+        
+        /**
+         * Removes tested class object
+         *
+         * @return void
+         */
+        protected function tearDown():void {
+            $this->domainRegistry = null;
+        }
         
         /**
          * @covers ::getDomain
@@ -22,7 +47,7 @@
         public function testGetDomainThrowsExceptionWhenDomainIsNotFound():void {
             $this->expectException(OutOfRangeException::class);
 
-            $domain = DomainRegistry::getDomain("asd");
+            $domain = $this->domainRegistry->getDomain("asd");
         }
 
         /**
@@ -32,11 +57,11 @@
          * @return void
          */
         public function testSetDomainDataAcceptsDomainDataFromFile():void {
-            DomainRegistry::setDomainData("./tests/components/domainData.php");
+            $this->domainRegistry->setDomainData("./tests/components/domainData.php");
 
             $data = include("domainData.php");
 
-            $this->assertEquals($data, DomainRegistry::getDomainData());
+            $this->assertEquals($data, $this->domainRegistry->getDomainData());
         }
 
         /**
@@ -46,14 +71,14 @@
          * @return void
          */
         public function testDomainDataCanBeSetOnce():void {
-            DomainRegistry::setDomainData("./tests/components/domainData.php");
-            DomainRegistry::setDomainData("./tests/components/newDomainData.php");
+            $this->domainRegistry->setDomainData("./tests/components/domainData.php");
+            $this->domainRegistry->setDomainData("./tests/components/newDomainData.php");
 
             $data    = include("domainData.php");
             $newData = include("newDomainData.php");
 
-            $this->assertSame($data, DomainRegistry::getDomainData());
-            $this->assertNotSame($newData, DomainRegistry::getDomainData());
+            $this->assertSame($data, $this->domainRegistry->getDomainData());
+            $this->assertNotSame($newData, $this->domainRegistry->getDomainData());
         }
 
         /**
@@ -68,9 +93,9 @@
          * @return void
          */
         public function testGetDomainReturnsCorrectDomain(string $domainPlural, string $domainSingular, string $translation, string $translationClause):void {
-            DomainRegistry::setDomainData("./tests/components/domainData.php");
+            $this->domainRegistry->setDomainData("./tests/components/domainData.php");
 
-            $domain = DomainRegistry::getDomain($domainPlural);
+            $domain = $this->domainRegistry->getDomain($domainPlural);
 
             $this->assertInstanceOf(Domain::class, $domain);
             $this->assertEquals($domainSingular, $domain->getDomainSingular());

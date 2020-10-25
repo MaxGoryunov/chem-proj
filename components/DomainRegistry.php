@@ -14,7 +14,7 @@
         /**
          * @todo Write a method description after stash apply
          */
-        public static function setDomainData(string $filePath):void {
+        public function setDomainData(string $filePath):void {
             if (self::$domainData !== []) {
                 return;
             }
@@ -24,11 +24,11 @@
             }
         }
 
-        public static function getDomainData():array {
+        public function getDomainData():array {
             return self::$domainData;
         }
 
-        public static function getDomain(string $domainName):Domain {
+        public function getDomain(string $domainName):Domain {
             if (!isset(self::$domainData[$domainName])) {
                 throw new OutOfRangeException("Domain not found");
             }
