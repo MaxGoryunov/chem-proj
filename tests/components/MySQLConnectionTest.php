@@ -62,6 +62,7 @@
 
         /**
          * @covers ::getConnection
+         * @covers ::getInstance
          *
          * @return void
          */

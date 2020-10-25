@@ -43,6 +43,10 @@
         /**
          * @covers ::getConnection
          * 
+         * @uses Components\MySQLConnection::getInstance
+         * @uses Components\MySQLConnection::getConnection
+         * @uses Components\MySQLConnection::__construct
+         * 
          * @return void
          */
         public function testClassProvidesConnection():void {
@@ -51,7 +55,10 @@
 
         /**
          * @covers ::getConnection
-         * @uses Components\MySQLConnection
+         * 
+         * @uses Components\MySQLConnection::getInstance
+         * @uses Components\MySQLConnection::getConnection
+         * @uses Components\MySQLConnection::__construct
          *
          * @return void
          */
