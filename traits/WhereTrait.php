@@ -82,7 +82,7 @@
          * @param string $condition  - condition to be added
          * @return $this
          */
-        public function whereAnd(string $condition = ""):IQueryBuilder {
+        public function and(string $condition = ""):IQueryBuilder {
             if ($condition === "") {
                 return $this;
             }
@@ -100,7 +100,7 @@
          * @param string $condition  - condition to be added
          * @return $this
          */
-        public function whereOr(string $condition = ""):IQueryBuilder {
+        public function or(string $condition = ""):IQueryBuilder {
             if ($condition === "") {
                 return $this;
             }

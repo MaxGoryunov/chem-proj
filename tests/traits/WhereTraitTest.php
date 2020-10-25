@@ -58,35 +58,35 @@
         }
 
         /**
-         * @covers ::whereAnd
+         * @covers ::and
          * @covers ::initWhereAnd
          * @covers ::getWhere
 
          * @return void
          */
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->whereAnd(""));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and(""));
 
             $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
-         * @covers ::whereOr
+         * @covers ::or
          * @covers ::initWhereOr
          * @covers ::getWhere
 
          * @return void
          */
         public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->whereOr(""));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or(""));
 
             $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
-         * @covers ::whereOr
+         * @covers ::or
          * @covers ::initWhereOr
-         * @covers ::whereAnd
+         * @covers ::and
          * @covers ::initWhereAnd
          * @covers ::where
          * @covers ::initWhere
@@ -101,11 +101,11 @@
         public function testsWhereAndOrBuildCorrectWhereStatement(array $statements, string $expected):void {
             foreach ($statements as $statement) {
                 if ($statement["type"] == "and") {
-                    $this->builder->whereAnd($statement["condition"]);
+                    $this->builder->and($statement["condition"]);
                 } elseif ($statement["type"] == "") {
                     $this->builder->where($statement["condition"]);
                 } else {
-                    $this->builder->whereOr($statement["condition"]);
+                    $this->builder->or($statement["condition"]);
                 }
             }
 
@@ -113,9 +113,9 @@
         }
 
         /**
-         * @covers ::whereOr
+         * @covers ::or
          * @covers ::initWhereOr
-         * @covers ::whereAnd
+         * @covers ::and
          * @covers ::initWhereAnd
          * @covers ::getWhere
          *
@@ -123,17 +123,17 @@
          */
         public function testBadUsageOfWhereMethods():void {
             $this->builder->where("");
-            $this->builder->whereAnd("");
-            $this->builder->whereOr("");
+            $this->builder->and("");
+            $this->builder->or("");
             $this->builder->where("");
-            $this->builder->whereAnd("");
+            $this->builder->and("");
             $this->builder->where("");
             $this->assertEquals("", $this->builder->getWhere());
 
-            $this->builder->whereAnd("`medicine_id` = 1");
-            $this->builder->whereOr("");
-            $this->builder->whereOr("`medicine_price` < 750");
-            $this->builder->whereAnd("");
+            $this->builder->and("`medicine_id` = 1");
+            $this->builder->or("");
+            $this->builder->or("`medicine_price` < 750");
+            $this->builder->and("");
 
             $this->assertEquals("WHERE 1 AND `medicine_id` = 1 OR `medicine_price` < 750", $this->builder->getWhere());
         }
