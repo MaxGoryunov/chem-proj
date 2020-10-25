@@ -33,7 +33,7 @@
         /**
          * Connects to MySQL Database
          *
-         * @param array $config
+         * @param string[] $config
          * @return mysqli
          */
         private function establishConnection(array $config):mysqli {
@@ -48,6 +48,7 @@
         /**
          * Validates MySQL connection
          * 
+         * @codeCoverageIgnore
          * @throws Exception if the connection to the Database failed
          *
          * @param mysqli $connection

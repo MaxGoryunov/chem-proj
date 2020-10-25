@@ -3,9 +3,11 @@
     namespace Tests\Components;
 
     use Components\MySQLConnection;
-    use PHPUnit\Framework\TestCase;
+use mysqli;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
-    /**
+/**
      * Testing MySQLConnection class
      * 
      * @coversDefaultClass MySQLConnection
@@ -17,24 +19,45 @@
          *
          * @var MySQLConnection
          */
-        protected $mySQLConnection;
+        // protected $mySQLConnection;
 
         /**
          * Creates tested class object
          *
          * @return void
          */
-        protected function setUp():void {
-            $this->mySQLConnection = new MySQLConnection();
-        }
+        // protected function setUp():void {
+        //     $this->mySQLConnection = new MySQLConnection();
+        // }
 
         /**
          * Removes tested class object
          *
          * @return void
          */
-        protected function tearDown():void {
-            $this->mySQLConnection = null;
+        // protected function tearDown():void {
+        //     $this->mySQLConnection = null;
+        // }
+
+        /**
+         * @covers ::establishConnection
+         * @covers ::validateConnection
+         *
+         * @return void
+         */
+        public function testEstablishConnectionSetsUpCorrectMySQLiObject():void {
+            $mySQLConnectionReflection = new ReflectionClass(MySQLConnection::class);
+            $establishConnection       = $mySQLConnectionReflection->getMethod("establishConnection");
+
+            $establishConnection->setAccessible(true);
+
+            $this->assertInstanceOf(mysqli::class, $establishConnection->invokeArgs(new MySQLConnection(), [[
+                "host"     => "localhost",
+                "user"     => "root",
+                "password" => "",
+                "database" => "chemistry",
+                "charset"  => "utf8"
+            ]]));
         }
 
     }
