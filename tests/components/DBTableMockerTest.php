@@ -49,7 +49,7 @@
          */
         public function testGetTableDescription(string $tableName, array $expected):void {            
             $this->assertContains($expected, $this->mocker->getTableDescription($tableName));
-            $this->assertEquals("", $this->mocker->getCurrentColumn());
+            $this->assertEquals([], $this->mocker->getCurrentColumn());
         }
 
         /**
@@ -63,7 +63,7 @@
             $this->mocker->getTableDescription("addresses");
 
             $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("id"));
-            $this->assertEquals("", $this->mocker->getCurrentColumn());
+            $this->assertEquals([], $this->mocker->getCurrentColumn());
         }
 
         /**
@@ -81,24 +81,28 @@
             $this->mocker->getTableDescription($table);
 
             $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column($column));
-            $this->assertEquals($column, $this->mocker->getCurrentColumn());
+            $this->assertEquals($column, $this->mocker->getCurrentColumn()["Field"]);
         }
 
         /**
-         * @covers ::getTableDescription
          * @covers ::column
-         * @covers ::type
-         * @covers ::getType
+         * @covers ::canBeNull
+         * @covers ::getCurrentColumn
          *
          * @return void
          */
-        public function testTypeDoesNotModifyTypeOnEmptyInput():void {
+        public function testCanBeNullSetsNullPropertyOfColumn():void {
             $this->mocker->getTableDescription("addresses");
 
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_id")
-            ->type(""));
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_name")
+            ->canBeNull(true));
 
-            $this->assertEquals("int(10)", $this->mocker->getType());
+            $this->assertEquals("YES", $this->mocker->getCurrentColumn()["Null"]);
+
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_name")
+            ->canBeNull(false));
+
+            $this->assertEquals("NO", $this->mocker->getCurrentColumn()["Null"]);
         }
 
         /**

@@ -48,7 +48,7 @@
          * Sets the column which is being modified
          *
          * @param string $columnName
-         * @return self
+         * @return $this
          */
         public function column(string $columnName):self {
             if (array_key_exists($columnName, $this->columns)) {
@@ -59,30 +59,25 @@
         }
 
         /**
-         * Returns the current column's name
+         * Returns the current column
          *
-         * @return string
+         * @return string[]
          */
-        public function getCurrentColumn():string {
-            return $this->currentColumn["Field"] ?? "";
+        public function getCurrentColumn():array {
+            return $this->currentColumn;
         }
 
         /**
-         * Sets type of the current column
+         * Sets the NULL status of the column
          *
-         * @param string $type
-         * @return self
+         * @param bool $status
+         * @return $this
          */
-        public function type(string $type):self {
+        public function canBeNull(bool $status):self {
+            $this->currentColumn["Null"] = ($status) ? "YES" : "NO";
+
             return $this;
         }
 
-        /**
-         * Returns type of the current column
-         *
-         * @return string
-         */
-        public function getType():string {
-            return "int(10)";
-        }
+        
     }
