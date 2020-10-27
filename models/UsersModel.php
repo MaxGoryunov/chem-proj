@@ -89,6 +89,26 @@
         }
 
         /**
+         * Returns user salt which is used to safely store passwords in the Database
+         *
+         * @param string $email - user email from authorisation page
+         * @return string
+         */
+        public function getSaltByUserEmail(string $email):string {
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new SelectQueryBuilder($this->getTableName()))
+                          ->what(["user_salt"])
+                          ->whereAnd("`user_email` = '$email'")
+                          ->build();
+
+            $result   = $connection->query($query->getQueryString());
+            $userSalt = $result->fetch_assoc()["user_salt"];
+
+			return $userSalt;
+        }
+
+        /**
          * Calculates number of registered users
          * 
          * This method is meant to protect Database from creating two accounts with the same login
