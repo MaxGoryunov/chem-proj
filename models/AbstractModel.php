@@ -3,9 +3,11 @@
     namespace Models;
 
     use Components\DBConnectionProvider;
+    use Components\IDBConnection;
     use DataMappers\AbstractDataMapper;
     use DBQueries\SelectQueryBuilder;
     use Factories\AbstractMVCPDMFactory;
+    use mysqli;
     use Traits\TableNameTrait;
 
     /**
@@ -38,12 +40,50 @@
             $this->relatedFactory = $relatedFactory;
         }
 
+        /**
+         * Returns a related Data Mapper
+         *
+         * @return AbstractDataMapper
+         */
         protected function getDataMapper():AbstractDataMapper {
             if (!isset($this->relatedMapper)) {
                 $this->relatedMapper = $this->relatedFactory->getDataMapper();
             }
 
             return $this->relatedMapper;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function getList(int $limit, int $offset):array {
+            $connection = $this->connectToDB();
+
+            $query      = (new SelectQueryBuilder($this->getTableName()))
+                            ->whereAnd("`" . $this->getDomainName() . "_is_deleted` = 0")
+                            ->limit($limit, $offset)
+                            ->build();
+
+            $result    = $connection->query($query->getQueryString());
+            $itemsList = $result->fetch_all(MYSQLI_ASSOC);
+
+            return $itemsList;
+        }
+
+        /**
+         * Returns domain name in singular
+         *
+         * @return string
+         */
+        protected abstract function getDomainName():string;
+
+        /**
+         * Returns the Database connection
+         *
+         * @return mysqli
+         */
+        protected function connectToDB():mysqli {
+            return DBConnectionProvider::getConnection(IDBConnection::class);
         }
 
         /**
