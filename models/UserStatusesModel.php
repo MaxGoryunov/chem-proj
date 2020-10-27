@@ -5,7 +5,6 @@
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
     use DBQueries\InsertQueryBuilder;
-    use DBQueries\SelectQueryBuilder;
     use DBQueries\UpdateQueryBuilder;
     use Entities\IEntity;
 
