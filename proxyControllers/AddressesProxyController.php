@@ -1,8 +1,10 @@
 <?php
 
     namespace ProxyControllers;
-    
-    /**
+
+use Factories\UsersFactory;
+
+/**
      * Proxy Controller for actions related to addresses
      */
     class AddressesProxyController extends AbstractProxyController {
@@ -23,7 +25,11 @@
          * @return void
          */
         public function edit(int $id):void {
-            
+            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+
+            if ($userAdminStatus) {
+                $this->getController()->edit($id);
+            }
         }
 
         /**
