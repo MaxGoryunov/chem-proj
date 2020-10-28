@@ -4,7 +4,8 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
-    use DBQueries\SelectQueryBuilder;
+    use DBQueries\InsertQueryBuilder;
+    use DBQueries\UpdateQueryBuilder;
     use Entities\IEntity;
 
     /**
@@ -36,20 +37,40 @@
          * {@inheritDoc}
          */
         public function add(array $data = []):void {
-            
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new InsertQueryBuilder($this->getTableName()))
+                          ->set($data)
+                          ->build();
+
+            $connection->query($query->getQueryString());
         }
 
         /**
          * {@inheritDoc}
          */
         public function edit(array $data = []):void {
-            
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new UpdateQueryBuilder($this->getTableName()))
+                          ->set($data)
+                          ->whereAnd("`user_status_id` = " . $data["id"])
+                          ->build();
+                        
+            $connection->query($query->getQueryString());
         }
 
         /**
          * {@inheritDoc}
          */
         public function delete(int $id):void {
-            
+            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+
+            $query      = (new UpdateQueryBuilder($this->getTableName()))
+                          ->set(["user_status_is_deleted" => 1])
+                          ->whereAnd("`user_status_id` = " . $id)
+                          ->build();
+
+            $connection->query($query->getQueryString());
         }
     }
