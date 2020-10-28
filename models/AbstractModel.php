@@ -36,7 +36,7 @@
          *
          * @param AbstractMVCPDMFactory $relatedFactory
          */
-        public function __construct(AbstractMVCPDMFactory $relatedFactory) {
+        public function __construct(AbstractMVCPDMFactory $relatedFactory = null) {
             $this->relatedFactory = $relatedFactory;
         }
 
