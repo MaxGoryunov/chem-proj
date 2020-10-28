@@ -49,19 +49,6 @@
         /**
          * {@inheritDoc}
          */
-        public function add(array $data = []):void {
-            $connection = $this->connectToDB();
-
-            $query      = (new InsertQueryBuilder($this->getTableName()))
-                          ->set($data)
-                          ->build();
-
-            $connection->query($query->getQueryString());
-        }
-
-        /**
-         * {@inheritDoc}
-         */
         public function edit(array $data = []):void {
             $connection = $this->connectToDB();
 
@@ -77,7 +64,7 @@
          * {@inheritDoc}
          */
         public function delete(int $id):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new UpdateQueryBuilder($this->getTableName()))
                           ->set(["address_is_deleted" => 1])

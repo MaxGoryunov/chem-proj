@@ -19,6 +19,10 @@
          */
         protected $tableName = "users";
 
+        protected function getDomainName():string {
+            return "user";
+        }
+
         /**
          * {@inheritDoc}
          * @return UserEntity[]
@@ -33,19 +37,6 @@
          */
         public function getById(int $id):IEntity {
             return new UserEntity();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function add(array $data = []):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
-
-            $query      = (new InsertQueryBuilder($this->getTableName()))
-                          ->set($data)
-                          ->build();
-
-            $connection->query($query->getQueryString());
         }
 
         /**
