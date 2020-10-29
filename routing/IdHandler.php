@@ -5,23 +5,7 @@
     /**
      * Class for handling id extraction from user URI
      */
-    class IdHandler implements IRoutingHandler {
-
-        /**
-         * Contains next handler in the CoR
-         *
-         * @var IRoutingHandler
-         */
-        private $nextHandler;
-
-        /**
-         * {@inheritDoc}
-         */
-        public function setNextHandler(IRoutingHandler $nextHandler):IRoutingHandler {
-            $this->nextHandler = $nextHandler;
-
-            return $nextHandler;
-        }
+    class IdHandler extends AbstractHandler {
 
         /**
          * {@inheritDoc}

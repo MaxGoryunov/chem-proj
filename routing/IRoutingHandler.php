@@ -10,7 +10,7 @@
         /**
          * Sets the next handler in a chain of responsibility
          * 
-         * Method returns a handler so that the assignment can be chained
+         * Method returns the supplied handler so that the assignment can be chained
          *
          * @param IRoutingHandler $nextHandler
          * @return IRoutingHandler
