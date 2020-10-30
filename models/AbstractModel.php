@@ -5,7 +5,8 @@
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
     use DataMappers\AbstractDataMapper;
-    use DBQueries\SelectQueryBuilder;
+use DBQueries\InsertQueryBuilder;
+use DBQueries\SelectQueryBuilder;
     use Factories\AbstractMVCPDMFactory;
     use mysqli;
     use Traits\TableNameTrait;
@@ -36,9 +37,16 @@
          *
          * @param AbstractMVCPDMFactory $relatedFactory
          */
-        public function __construct(AbstractMVCPDMFactory $relatedFactory) {
+        public function __construct(AbstractMVCPDMFactory $relatedFactory = null) {
             $this->relatedFactory = $relatedFactory;
         }
+
+        /**
+         * Returns domain name in singular
+         *
+         * @return string
+         */
+        protected abstract function getDomainName():string;
 
         /**
          * Returns a related Data Mapper
@@ -71,11 +79,17 @@
         }
 
         /**
-         * Returns domain name in singular
-         *
-         * @return string
+         * {@inheritDoc}
          */
-        protected abstract function getDomainName():string;
+        public function add(array $data = []):void {
+            $connection = $this->connectToDB();
+
+            $query      = (new InsertQueryBuilder($this->getTableName()))
+                          ->set($data)
+                          ->build();
+
+            $connection->query($query->getQueryString());
+        }
 
         /**
          * Returns the Database connection

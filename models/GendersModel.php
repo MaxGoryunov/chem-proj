@@ -35,19 +35,6 @@
         /**
          * {@inheritDoc}
          */
-        public function add(array $data = []):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
-
-            $query      = (new InsertQueryBuilder($this->getTableName()))
-                          ->set($data)
-                          ->build();
-
-            $connection->query($query->getQueryString());
-        }
-
-        /**
-         * {@inheritDoc}
-         */
         public function edit(array $data = []):void {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
 
