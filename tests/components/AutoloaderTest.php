@@ -46,7 +46,7 @@
          * @return void
          */
         public function testRegisterMethodRegistersDefaultFunction():void {
-            $this->autoloader->register();
+            $this->assertNull($this->autoloader->register());
 
             $this->assertContains("spl_autoload", $this->autoloader->getAutoloaders());
             /**
@@ -92,11 +92,24 @@
 
             $this->assertContains($func, $this->autoloader->getAutoloaders());
 
-            $this->autoloader->unregister($func);
+            $this->assertNull($this->autoloader->unregister($func));
 
             $this->assertNotContains($func, $this->autoloader->getAutoloaders());
 
             $this->assertCount(2, $this->autoloader->getAutoloaders());
+        }
+
+        /**
+         * @covers ::unregister
+         *
+         * @return void
+         */
+        public function testUnregisterMethodDoesNothingOnEmptyInput():void {
+            $autoloaderCount = count($this->autoloader->getAutoloaders());
+
+            $this->autoloader->unregister();
+
+            $this->assertEquals($autoloaderCount, count($this->autoloader->getAutoloaders()));
         }
 
         /**
