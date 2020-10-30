@@ -6,7 +6,13 @@
   max-width: 2000px;
 }
 
-.container__actionbutton {
+.container__header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.container__action-button {
   display: block;
   width: 300px;
   margin: 0 auto;
@@ -22,7 +28,7 @@
   transition: 0.5s cubic-bezier(0.5, 1.7, 0.55, 0.85);
 }
 
-.container__actionbutton:hover {
+.container__action-button:hover {
   -webkit-box-shadow: 0 3px 0px 0 #1626b3, 0 0px 15px 0px #3597ff;
           box-shadow: 0 3px 0px 0 #1626b3, 0 0px 15px 0px #3597ff;
   -webkit-transform: translateY(-2.5px);
@@ -46,12 +52,6 @@
 
 .container__form .container__input {
   border-radius: 50px;
-}
-
-.header {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
 
 .table {
