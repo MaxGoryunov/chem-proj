@@ -6,50 +6,61 @@
      * Class for creating tokens. Will be used later to create tokens for user connections
      */
     class TokenGenerator {
+
+        /**
+         * Key for generating only token with symbols from [0-9] range
+         * 
+         * @var string
+         */
+        public const DIGITS = "digits";
+
         /**
          * Symbols used to create a token
          *
          * @var string[]
          */
         private $symbols = [];
-        /**
-         * Length of the symbols array
-         * 
-         * @var int
-         */
-        private $length;
 
         /**
          * Controls creation of symbols used in tokens
          * 
-         * The initialization of the symbols is done in Lazy Load manner so that the array is not created during the creation of the object
+         * The resulting array depends on the keys supplied in $keys variable and may include digits, letters or both digits and letters.
          *
-         * @return int
+         * @param string[] $keys
+         * @return (int|string)[]
          */
-        public function initSymbols():int {
-            if (empty($this->symbols)) {
-                $this->symbols = array_merge(range(0, 9), range("a", "z"), range("A", "Z"));
+        public function initSymbols(array $keys):array {
+            if (in_array(self::DIGITS, $keys)) {
+                $this->symbols = array_merge($this->symbols, range(0, 9));
                 $this->length  = count($this->symbols);
             }
 
-            return $this->length;
+            return $this->symbols;
         }
+
         /**
          * Function returns a token, user can specify the token length if needed
          *
          * @param int $length - length of the token
+         * @param string[] $keys
          * @return string
          */
-        public function generateToken(int $length = 32):string {
-            $this->initSymbols();
+        public function generateToken(int $length = 32, array $keys = [self::DIGITS]):string {
+            $this->initSymbols($keys);
 
-            $token = "";
+            /**
+             * Flipping the array solves two problems: 
+             * 1. All repeating values are deleted because same keys overwrite each other
+             * 2. array_rand can return the index and there is no need to build a statement like arr[array_rand(arr)]
+             */
+            $this->symbols = array_flip($this->symbols);
+            $token         = "";
 
             for ($i = 0; $i < $length; $i++) {
                 /**
-                 * One is subtracted from Length in order to avoid LengthException
+                 * As the array is flipped, array_rand returns the symbol instead of its index
                  */
-                $token .= $this->symbols[mt_rand(0, $this->length - 1)];
+                $token .= array_rand($this->symbols);
             }
 
             return $token;

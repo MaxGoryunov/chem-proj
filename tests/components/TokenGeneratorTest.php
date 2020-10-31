@@ -41,10 +41,14 @@
         /**
          * @covers ::initSymbols
          * 
+         * @dataProvider provideInitSymbolsKeys
+         *
+         * @param string[] $keys
+         * @param (string|int)[] $expected
          * @return void
          */
-        public function testInitSymbolsReturnsActualNumberOfSymbols():void {
-            $this->assertEquals(62, $this->tokenGenerator->initSymbols());
+        public function testInitSymbolsReturnsInitiatedSymbols(array $keys, array $expected):void {
+            $this->assertEquals($expected, $this->tokenGenerator->initSymbols($keys));
         }
         
         /**
@@ -58,7 +62,17 @@
          * @return void
          */
         public function testGeneratorReturnsTokenOfSuppliedLength(int $length, int $expected):void {
-            $this->assertEquals($expected, strlen($this->tokenGenerator->generateToken($length)));
+            $this->assertEquals($expected, strlen($this->tokenGenerator->generateToken($length, ["digits"])));
+        }
+
+        /**
+         * @covers ::initSymbols
+         * @covers ::generateToken
+         *
+         * @return void
+         */
+        public function testGenerateTokenReturnsOnlyDigitsOnDigitsKey():void {
+            $this->assertEquals(0, preg_match("/([a-zA-Z])+/", $this->tokenGenerator->generateToken(32, [TokenGenerator::DIGITS])));
         }
 
         /**
@@ -71,6 +85,15 @@
                 "negative" => [-3, 0],
                 "zero"     => [0, 0],
                 "positive" => [20, 20]
+            ];
+        }
+
+        /**
+         * @return (string[]|int[])[][]
+         */
+        public function provideInitSymbolsKeys():array {
+            return [
+                "digits" => [["digits"], range(0, 9)]
             ];
         }
     }
