@@ -36,13 +36,6 @@
         public function getController():IController;
 
         /**
-         * Returns a specified ProxyController
-         *
-         * @return IController
-         */
-        public function getProxy():IController;
-
-        /**
          * Returns a specifies Data Mapper
          *
          * @return IDataMapper
