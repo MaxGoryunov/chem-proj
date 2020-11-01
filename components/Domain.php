@@ -5,7 +5,7 @@
     use InvalidArgumentException;
 
     /**
-     * Class used to retrieve different domain related strings, such as factory name
+     * Class used to retrieve different domain related strings, such as domain name in singular
      */
     class Domain {
 

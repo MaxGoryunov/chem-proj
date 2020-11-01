@@ -87,7 +87,7 @@
          * @param string[] $translation
          * @return void
          */
-        public function testFetTranslationClauseReturnsCorrectValue(array $translation):void {
+        public function testSetTranslationClauseReturnsCorrectValue(array $translation):void {
             $domain = $this->setUpMock();
 
             $this->assertInstanceOf(Domain::class, $domain->setTranslation(...$translation));

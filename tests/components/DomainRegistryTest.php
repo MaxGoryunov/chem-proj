@@ -71,7 +71,7 @@
          * @return void
          */
         public function testDomainDataCanBeSetOnce():void {
-            $this->domainRegistry->setDomainData("./tests/components/domainData.php");
+            $this->assertNull($this->domainRegistry->setDomainData("./tests/components/domainData.php"));
             $this->domainRegistry->setDomainData("./tests/components/newDomainData.php");
 
             $data    = include("domainData.php");
@@ -101,6 +101,32 @@
             $this->assertEquals($domainSingular, $domain->getDomainSingular());
             $this->assertEquals($translation, $domain->getTranslation());
             $this->assertEquals($translationClause, $domain->getTranslationClause());
+        }
+
+        /**
+         * @covers ::getDomain
+         * 
+         * @return void
+         */
+        public function testGetDomainReturnsSameDomainOnRepetitiveCall():void {
+            $this->domainRegistry->setDomainData("./tests/components/domainData.php");
+
+            $domain[] = $this->domainRegistry->getDomain("addresses");
+            $domain[] = $this->domainRegistry->getDomain("medicines");
+            $domain[] = $this->domainRegistry->getDomain("companies");
+
+            $domain[] = $this->domainRegistry->getDomain("addresses");
+            $domain[] = $this->domainRegistry->getDomain("medicines");
+            $domain[] = $this->domainRegistry->getDomain("companies");
+
+
+            $this->assertSame($domain[0], $domain[3]);
+            $this->assertSame($domain[1], $domain[4]);
+            $this->assertSame($domain[2], $domain[5]);
+
+            $this->assertNotSame($domain[0], $domain[1]);
+            $this->assertNotSame($domain[1], $domain[2]);
+            $this->assertNotSame($domain[0], $domain[2]);
         }
 
         /**
