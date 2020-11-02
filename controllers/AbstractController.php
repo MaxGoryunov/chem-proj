@@ -9,7 +9,7 @@
     /**
      * Base class for implementing other Controllers
      */
-    abstract class AbstractController implements IController {
+    abstract class AbstractController {
         
         /**
          * Related Factory used to get other components of MVCPDM structure
