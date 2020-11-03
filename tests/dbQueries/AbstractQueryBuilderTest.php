@@ -20,6 +20,7 @@
         protected $builder;
 
         /**
+         * @covers ::__construct
          * @covers ::getTableName
          * 
          * @dataProvider provideTableNames
