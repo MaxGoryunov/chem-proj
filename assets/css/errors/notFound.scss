@@ -1,0 +1,25 @@
+@import "../common/variables";
+
+.container {
+
+    &__error-sign {
+        text-align: center;
+        font-size: 25rem;
+        font-weight: 700;
+        line-height: 25rem;
+        margin-bottom: 30px;
+        
+        & > .container__error-number {
+            color: #aaa;
+            transition: color 0.4s ease-in-out;
+
+            &:hover {
+                color: #222;
+            }
+        }
+    }
+
+    &__description {
+        text-align: center;
+    }
+}

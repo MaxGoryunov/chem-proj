@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="<?= CSS; ?>common/header.css">
     <link rel="stylesheet" href="<?= CSS; ?>common/page.css">
     <link rel="stylesheet" href="<?= CSS; ?>common/index.css">
+    <link rel="stylesheet" href="<?= CSS; ?>errors/notFound.css">
     <? if (isset($cssFile)): ?>
     <link rel="stylesheet" href="<?= CSS . $cssFile; ?>.css">
     <? endif; ?>
