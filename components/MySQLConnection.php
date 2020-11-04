@@ -74,7 +74,7 @@
          * {@inheritDoc}
          */
         public function fetchAll(Query $query, int $resultType = MYSQLI_ASSOC):array {
-            $result  = $this->query($query);
+            $result   = $this->query($query);
             $fetchAll = $result->fetch_all($resultType);
 
             return $fetchAll;
@@ -84,7 +84,7 @@
          * {@inheritDoc}
          */
         public function fetchAssoc(Query $query, string $alias = ""):array {
-            $result     = $this->query($query);
+            $result = $this->query($query);
             /**
              * If the alias is not an empty string then it is used as a key, otherwise it is not used
              */
