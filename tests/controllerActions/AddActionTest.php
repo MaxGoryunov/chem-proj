@@ -4,7 +4,8 @@
 
     use ControllerActions\AddAction;
     use Controllers\IController;
-    use PHPUnit\Framework\TestCase;
+use Factories\AbstractFactory;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing AddAction class
@@ -26,7 +27,13 @@
             $controller->expects($this->once())
                        ->method("add");
 
-            $action = new AddAction($controller);
+            $factory = $this->getMockForAbstractClass(AbstractFactory::class);
+
+            $factory->expects($this->any())
+                    ->method("getProxy")
+                    ->will($this->returnValue($controller));
+
+            $action = new AddAction($factory);
 
             $this->assertNull($action->execute());
         }
