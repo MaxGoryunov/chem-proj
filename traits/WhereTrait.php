@@ -17,12 +17,29 @@
         private $where = "";
 
         /**
+         * Contains the condition string which is being added to the overall WHERE statement
+         *
+         * @var string
+         */
+        private $currentCondition = "";
+
+        /**
          * Returns WHERE statement
          *
          * @return string
          */
         public function getWhere():string {
             return $this->where;
+        }
+
+        
+        /**
+         * Returns the condition being constructed
+         *
+         * @return string
+         */
+        public function getCurrentCondition():string {
+            return $this->currentCondition;
         }
 
         /**

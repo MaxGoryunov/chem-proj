@@ -48,6 +48,7 @@
          * @covers ::where
          * @covers ::initWhere
          * @covers ::getWhere
+         * @covers ::getCurrentCondition
          *
          * @return void
          */
@@ -55,32 +56,36 @@
             $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where(""));
 
             $this->assertEquals("", $this->builder->getWhere());
+            $this->assertEquals("", $this->builder->getCurrentCondition());
         }
 
         /**
          * @covers ::and
          * @covers ::initWhereAnd
          * @covers ::getWhere
-
+         * @covers ::getCurrentCondition
          * @return void
          */
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
             $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and(""));
 
             $this->assertEquals("", $this->builder->getWhere());
+            $this->assertEquals("", $this->builder->getCurrentCondition());
         }
 
         /**
          * @covers ::or
          * @covers ::initWhereOr
          * @covers ::getWhere
-
+         * @covers ::getCurrentCondition
+         * 
          * @return void
          */
         public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
             $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or(""));
 
             $this->assertEquals("", $this->builder->getWhere());
+            $this->assertEquals("", $this->builder->getCurrentCondition());
         }
 
         /**
@@ -110,6 +115,20 @@
             }
 
             $this->assertEquals($expected, $this->builder->getWhere());
+        }
+
+        /**
+         * @covers ::equals
+         * @covers ::getWhere
+         * @covers ::getCurrentCondition
+         *
+         * @return void
+         */
+        public function testEqualsBuildsCorrectStatementOnEmptyInput():void {
+            $this->builder->equals("");
+
+            $this->assertEquals("", $this->builder->getWhere());
+            $this->assertEquals("", $this->builder->getCurrentCondition());
         }
 
         /**
