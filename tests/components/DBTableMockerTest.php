@@ -94,15 +94,33 @@
         public function testCanBeNullSetsNullPropertyOfColumn():void {
             $this->mocker->getTableDescription("addresses");
 
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_name")
-            ->canBeNull(true));
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_name")->canBeNull(true));
 
             $this->assertEquals("YES", $this->mocker->getCurrentColumn()["Null"]);
 
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_name")
-            ->canBeNull(false));
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_name")->canBeNull(false));
 
             $this->assertEquals("NO", $this->mocker->getCurrentColumn()["Null"]);
+        }
+
+        /**
+         * @covers ::getTableDescription
+         * @covers ::column
+         * @covers ::autoIncrement
+         * @covers ::getCurrentColumn
+         *
+         * @return void
+         */
+        public function testAutoIncrementSetsExtraPropertyOfColumn():void {
+            $this->mocker->getTableDescription("addresses");
+
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_id")->autoIncrement(true));
+
+            $this->assertEquals("auto_increment", $this->mocker->getCurrentColumn()["Extra"]);
+
+            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_id")->autoIncrement(false));
+
+            $this->assertEquals("", $this->mocker->getCurrentColumn()["Extra"]);
         }
 
         /**

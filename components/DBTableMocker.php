@@ -45,6 +45,15 @@
         }
 
         /**
+         * Returns the current column
+         *
+         * @return string[]
+         */
+        public function getCurrentColumn():array {
+            return $this->currentColumn;
+        }
+
+        /**
          * Sets the column which is being modified
          *
          * @param string $columnName
@@ -59,15 +68,6 @@
         }
 
         /**
-         * Returns the current column
-         *
-         * @return string[]
-         */
-        public function getCurrentColumn():array {
-            return $this->currentColumn;
-        }
-
-        /**
          * Sets the NULL status of the column
          *
          * @param bool $status
@@ -79,5 +79,15 @@
             return $this;
         }
 
-        
+        /**
+         * Sets the Extra property of the column and defined if the column is auto incremented or not
+         *
+         * @param bool $status
+         * @return $this
+         */
+        public function autoIncrement(bool $status):self {
+            $this->currentColumn["Extra"] = ($status) ? "auto_increment" : "";
+
+            return $this;
+        }
     }
