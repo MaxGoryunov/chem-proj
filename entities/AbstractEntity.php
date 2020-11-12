@@ -5,19 +5,12 @@
     /**
      * Base class for implementing other Entities
      */
-    abstract class AbstractEntity implements IEntity {
+    abstract class AbstractEntity {
         
         /**
          * Unique id of object
          *
          * @var int
          */
-        protected $id = 0;
-
-        /**
-         * {@inheritDoc}
-         */
-        public function getId():int {
-            return $this->id;
-        }
+        protected $id;
     }
