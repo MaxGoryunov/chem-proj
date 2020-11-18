@@ -46,7 +46,19 @@
          * @return void
          */
         public function add():void {
+            $title          = "Добавление адреса";
+			$fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+			
+			if (isset($_POST["name"])) {
+				$name = $_POST["name"];
+                $data = compact("name");
 
+                $this->getModel()->add($data);
+			}
+
+            $viewData = array_merge($fullUserStatus, compact("title"));
+            
+			$this->getView()->render(__FUNCTION__, $viewData);
         }
 
         /**
