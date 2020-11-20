@@ -25,4 +25,4 @@
     // $router->run();
 
     include_once("./templates/common/header.php");
-    include_once("./templates/user_statuses/delete.php");
+    include_once("./templates/user_statuses/add.php");
