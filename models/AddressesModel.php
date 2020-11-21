@@ -49,20 +49,6 @@
         /**
          * {@inheritDoc}
          */
-        public function edit(array $data = []):void {
-            $connection = $this->connectToDB();
-
-            $query      = (new UpdateQueryBuilder($this->getTableName()))
-                          ->set($data)
-                          ->whereAnd("`address_id` = " . $data["id"])
-                          ->build();
-                        
-            $connection->query($query->getQueryString());
-        }
-
-        /**
-         * {@inheritDoc}
-         */
         public function delete(int $id):void {
             $connection = $this->connectToDB();
 

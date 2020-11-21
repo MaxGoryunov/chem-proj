@@ -5,9 +5,10 @@
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
     use DataMappers\AbstractDataMapper;
-use DBQueries\InsertQueryBuilder;
-use DBQueries\SelectQueryBuilder;
-    use Factories\AbstractMVCPDMFactory;
+    use DBQueries\InsertQueryBuilder;
+    use DBQueries\SelectQueryBuilder;
+use DBQueries\UpdateQueryBuilder;
+use Factories\AbstractMVCPDMFactory;
     use mysqli;
     use Traits\TableNameTrait;
 
@@ -87,6 +88,20 @@ use DBQueries\SelectQueryBuilder;
             $query      = (new InsertQueryBuilder($this->getTableName()))
                           ->set($data)
                           ->build();
+
+            $connection->query($query->getQueryString());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function edit(array $data = []):void {
+            $connection = $this->connectToDB();
+
+            $query      = (new UpdateQueryBuilder($this->getTableName()))
+                            ->set($data)
+                            ->whereAnd("`" . $this->getDomainName() . "_id` = " . $data["id"])
+                            ->build();
 
             $connection->query($query->getQueryString());
         }

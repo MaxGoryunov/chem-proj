@@ -35,20 +35,6 @@
         /**
          * {@inheritDoc}
          */
-        public function edit(array $data = []):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
-
-            $query      = (new UpdateQueryBuilder($this->getTableName()))
-                          ->set($data)
-                          ->whereAnd("`gender_id` = " . $data["id"])
-                          ->build();
-
-            $connection->query($query->getQueryString());
-        }
-
-        /**
-         * {@inheritDoc}
-         */
         public function delete(int $id):void {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
 
