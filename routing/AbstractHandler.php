@@ -20,4 +20,19 @@
             return $nextHandler;
         }
 
+        /**
+         * Passes the URI to the next Handler in the CoR if it exists
+         *
+         * @param string[] $partedUri  - URI string as an array
+         * @param string[] $invokeData - data for Router method
+         * @return string[]
+         */
+        protected function passToNext(array $partedUri, array $invokeData = []):array {
+            if (isset($this->nextHandler)) {
+                return $this->nextHandler->handle($partedUri, $invokeData);
+            }
+
+            return $invokeData;
+        }
+
     }

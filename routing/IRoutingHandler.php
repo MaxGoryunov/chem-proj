@@ -20,8 +20,8 @@
         /**
          * Handles the extraction of a part of user URI and sends the request down the CoR
          *
-         * @param string[] $partedUri
-         * @param string[] $invokeData
+         * @param string[] $partedUri  - URI string as an array
+         * @param string[] $invokeData - data for Router method
          * @return string[]
          */
         public function handle(array $partedUri, array $invokeData = []):array;

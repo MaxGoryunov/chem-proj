@@ -36,10 +36,6 @@ use Factories\UserStatusesFactory;
                 Router::headerTo("");
             }
 
-            if (isset($this->nextHandler)) {
-                return $this->nextHandler->handle($partedUri, $invokeData);
-            }
-
-            return $invokeData;
+            return $this->passToNext($partedUri, $invokeData);
         }
     }
