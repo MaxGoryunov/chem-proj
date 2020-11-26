@@ -10,7 +10,7 @@
     /**
      * Testing Autoloader class
      * 
-     * @coversDefaultClass Autoloader
+     * @coversDefaultClass Components\Autoloader
      */
     class AutoloaderTest extends TestCase {
 
