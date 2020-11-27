@@ -61,7 +61,7 @@
          * @param int $expected - expected Token length
          * @return void
          */
-        public function testGeneratorReturnsTokenOfSuppliedLength(int $length, int $expected):void {
+        public function testGenerateTokenReturnsTokenOfSuppliedLength(int $length, int $expected):void {
             $this->assertEquals($expected, strlen($this->tokenGenerator->generateToken($length, ["digits"])));
         }
 
@@ -72,7 +72,7 @@
          * @return void
          */
         public function testGenerateTokenReturnsOnlyDigitsOnDigitsKey():void {
-            $this->assertEquals(0, preg_match("/([a-zA-Z])+/", $this->tokenGenerator->generateToken(32, [TokenGenerator::DIGITS])));
+            $this->assertEquals(1, preg_match("/^([0-9])+$/", $this->tokenGenerator->generateToken(32, [TokenGenerator::DIGITS])));
         }
 
         /**
@@ -93,7 +93,8 @@
          */
         public function provideInitSymbolsKeys():array {
             return [
-                "digits" => [["digits"], range(0, 9)]
+                "digits"  => [["digits"], range(0, 9)],
+                "letters" => [["letters"], array_merge(range("a", "z"), range("A", "Z"))]
             ];
         }
     }

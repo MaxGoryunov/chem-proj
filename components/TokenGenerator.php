@@ -15,6 +15,11 @@
         public const DIGITS = "digits";
 
         /**
+         * Key for generating only token with symbols from [a-Z] range
+         */
+        public const LETTERS = "letters";
+
+        /**
          * Symbols used to create a token
          *
          * @var string[]
@@ -32,7 +37,10 @@
         public function initSymbols(array $keys):array {
             if (in_array(self::DIGITS, $keys)) {
                 $this->symbols = array_merge($this->symbols, range(0, 9));
-                $this->length  = count($this->symbols);
+            }
+            
+            if (in_array(self::LETTERS, $keys)) {
+                $this->symbols = array_merge($this->symbols, array_merge(range("a", "z"), range("A", "Z")));
             }
 
             return $this->symbols;
