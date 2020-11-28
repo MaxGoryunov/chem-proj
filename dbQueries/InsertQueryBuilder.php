@@ -14,10 +14,17 @@
         /**
          * {@inheritDoc}
          */
-        public function build():IQuery {
-            return new Query("
+        public function getQueryString():string {
+            return "
                 INSERT INTO `{$this->getTableName()}`
                 SET {$this->getValues()};
-            ");
+            ";
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function build():IQuery {
+            return new Query($this);
         }
     }
