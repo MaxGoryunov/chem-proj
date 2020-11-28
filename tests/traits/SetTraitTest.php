@@ -8,7 +8,7 @@
     /**
      * Testing SetTrait trait
      * 
-     * @coversDefaultClass SetTrait
+     * @coversDefaultClass Traits\SetTrait
      */
     class SetTraitTest extends TestCase {
 
