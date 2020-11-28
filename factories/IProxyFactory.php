@@ -2,9 +2,9 @@
 
     namespace Factories;
 
-use Controllers\IController;
+    use Controllers\IController;
 
-/**
+    /**
      * Interface for Factories which can create Controller Proxies
      */
     interface IProxyFactory {
