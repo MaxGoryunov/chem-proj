@@ -3,9 +3,7 @@
     namespace Components;
 
     use OutOfRangeException;
-use SplObjectStorage;
-
-/**
+    /**
      * Class for storing instantiated Domains
      */
     class DomainRegistry {
@@ -25,7 +23,10 @@ use SplObjectStorage;
         private static $domains = [];
 
         /**
-         * @todo Write a method description after stash apply
+         * Sets the file from which the domain data will be extracted
+         *
+         * @param string $filePath
+         * @return void
          */
         public function setDomainData(string $filePath):void {
             if (self::$domainData !== [[]]) {
@@ -37,10 +38,21 @@ use SplObjectStorage;
             }
         }
 
+        /**
+         * Returns the domain data from which Domain instances are built
+         *
+         * @return string[][]
+         */
         public function getDomainData():array {
             return self::$domainData;
         }
 
+        /**
+         * Returns a Domain based on the supplied domainPlural string
+         *
+         * @param string $domainName
+         * @return Domain
+         */
         public function getDomain(string $domainName):Domain {
             if (isset(self::$domains[$domainName])) {
                 return self::$domains[$domainName];
