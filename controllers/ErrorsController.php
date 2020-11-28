@@ -22,4 +22,18 @@ use Factories\UsersFactory;
 
             $this->getView()->render(__FUNCTION__, $viewData);
         }
+
+        /**
+         * Creates a page when user tries to access control pages
+         *
+         * @return void
+         */
+        public function notAdmin():void {
+            $title          = "Вы не обладаете правами администратора";
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+
+            $viewData = array_merge($fullUserStatus, compact("title"));
+            
+            $this->getView()->render(__FUNCTION__, $viewData);
+        }
     }
