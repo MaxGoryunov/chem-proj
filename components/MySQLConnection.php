@@ -6,6 +6,7 @@
     use Exception;
     use mysqli;
     use mysqli_result;
+    use mysqli_sql_exception;
 
     /**
      * Class which represents connection with MySQL Database
@@ -32,32 +33,34 @@
 
         /**
          * Connects to MySQL Database
+         * 
+         * @todo Make method public and change its test
          *
          * @param string[] $config
          * @return mysqli
          */
         private function establishConnection(array $config):mysqli {
-            $connection = new mysqli($config["host"], $config["user"], $config["password"], $config["database"]);
+            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-            $this->validateConnection($connection);
-            $connection->set_charset($config["charset"]);
+            try {
+                $connection = new mysqli($config["host"], $config["user"], $config["password"], $config["database"]);
+
+                $connection->set_charset($config["charset"]);
+            } catch (mysqli_sql_exception $e) {
+                $this->fail($e);
+            }
 
             return $connection;
         }
 
         /**
-         * Validates MySQL connection
-         * 
-         * @codeCoverageIgnore
-         * @throws Exception if the connection to the Database failed
+         * Throws an exception on connection fail
          *
-         * @param mysqli $connection
+         * @param mysqli_sql_exception $e
          * @return void
          */
-        public function validateConnection(mysqli $connection):void {
-            if ($connection->connect_error) {
-                throw new Exception("Failed to connect to MySQL database: " . $connection->connect_errno);
-            }
+        public function fail(mysqli_sql_exception $e):void {
+            throw new mysqli_sql_exception($e->getMessage(), $e->getCode());
         }
 
         /**

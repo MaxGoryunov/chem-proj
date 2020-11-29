@@ -3,13 +3,14 @@
     namespace Tests\Components;
 
     use Components\MySQLConnection;
-use DBQueries\Query;
-use mysqli;
-use mysqli_result;
+    use DBQueries\Query;
+    use mysqli;
+    use mysqli_result;
+use mysqli_sql_exception;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
+    use ReflectionClass;
 
-/**
+    /**
      * Testing MySQLConnection class
      * 
      * @coversDefaultClass MySQLConnection
@@ -35,6 +36,19 @@ use ReflectionClass;
                 "database" => "chemistry",
                 "charset"  => "utf8"
             ]]));
+        }
+
+        /**
+         * @covers ::fail
+         *
+         * @return void
+         */
+        public function testFailThrowsException():void {
+            $this->expectException(mysqli_sql_exception::class);
+
+            $connection = new MySQLConnection();
+
+            $this->assertNull($connection->fail(new mysqli_sql_exception()));
         }
 
         /**
