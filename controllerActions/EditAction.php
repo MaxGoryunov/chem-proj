@@ -12,6 +12,12 @@
          * {@inheritDoc}
          */
         public function execute(int $id):void {
-            $this->controller->edit($id);
+            if (method_exists($this->factory, "getProxy")) {
+                $controller = $this->factory->getProxy();
+            } else {
+                $controller = $this->factory->getController();
+            }
+
+            $controller->edit($id);
         }
     }

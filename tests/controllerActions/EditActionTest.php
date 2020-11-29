@@ -4,7 +4,8 @@
 
     use ControllerActions\EditAction;
     use Controllers\IController;
-    use PHPUnit\Framework\TestCase;
+use Factories\AbstractFactory;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing EditAction class
@@ -26,7 +27,13 @@
             $controller->expects($this->once())
                        ->method("edit");
 
-            $action = new EditAction($controller);
+            $factory = $this->getMockForAbstractClass(AbstractFactory::class);
+
+            $factory->expects($this->once())
+                    ->method("getProxy")
+                    ->will($this->returnValue($controller));
+
+            $action = new EditAction($factory);
 
             $this->assertNull($action->execute(12));
         }
