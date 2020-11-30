@@ -128,4 +128,22 @@
 
             return $this;
         }
+
+        /**
+         * Completes the building of the statement with '=' sign 
+         *
+         * @param string $value
+         * @return $this
+         */
+        public function equals(string $value = ""):IQueryBuilder {
+            if ($value === "") {
+                return $this;
+            }
+
+            $this->currentCondition .= "= '$value'";
+            $this->where            .= $this->currentCondition;
+            $this->currentCondition  = "";
+
+            return $this;
+        }
     }
