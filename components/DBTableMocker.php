@@ -34,8 +34,8 @@
 
             $query      = new Query("DESCRIBE `$tableName`");
 
-            $result        = $connection->query($query->getQueryString());
-            $columns       = $result->fetch_all(MYSQLI_ASSOC);
+            $result  = $connection->query($query->getQueryString());
+            $columns = $result->fetch_all(MYSQLI_ASSOC);
             
             foreach ($columns as $column) {
                 $this->columns[$column["Field"]] = $column;
