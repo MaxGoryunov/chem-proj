@@ -36,8 +36,23 @@
          */
         public function edit(int $id):void {
             $title          = "Редактирование адреса";
-            $addressesModel = $this->getModel();
-            $address        = $addressesModel->getById($id);
+            /**
+             * @todo Might have to move address instantiation below if statement
+             */
+            $address        = $this->getModel()->getById($id);
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+			
+			if (isset($_POST["name"])) {
+				$name = $_POST["name"];
+				$id   = $id;
+                $data = compact("name", "id");
+                
+                $this->getModel()->edit($data);
+            }
+            
+            $viewData = array_merge($fullUserStatus, compact("title", "address"));
+            
+            $this->getView()->render(__FUNCTION__, $viewData);
         }
 
         /**
