@@ -26,8 +26,24 @@ use Factories\UsersFactory;
             $this->getView()->render(__FUNCTION__, $viewData);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public function edit(int $id):void {
+            $title          = "Редактирование статуса пользователя";
+            $userStatus     = $this->getModel()->getById($id);
+			$fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+			
+			if (isset($_POST["name"])) {
+				$name = $_POST["name"];
+                $data = compact("name", "id");
+                
+                $this->getModel()->edit($data);
+            }
             
+            $viewData = array_merge($fullUserStatus, compact("title", "userStatus"));
+            
+            $this->getView()->render(__FUNCTION__, $viewData);
         }
 
         /**
