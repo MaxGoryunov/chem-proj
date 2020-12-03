@@ -39,18 +39,6 @@
         }
 
         /**
-         * @covers ::setNextHandler
-         *
-         * @return void
-         */
-        public function testSetNextHandlerReturnsSuppliedHandler():void {
-            $nextHandler = $this->getMockBuilder(IRoutingHandler::class)
-                           ->getMock();
-
-            $this->assertSame($nextHandler, $this->handler->setNextHandler($nextHandler));
-        }
-
-        /**
          * @covers ::handle
          * 
          * @dataProvider providePartedUriWithValidId
