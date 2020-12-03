@@ -136,19 +136,6 @@
         }
 
         /**
-         * @coversNothing
-         *
-         * @return void
-         */
-        public function testPHPThrowsFatalErrorWithoutAutoloaderFunction():void {
-            $this->expectErrorMessage("Class 'Components\Router' not found");
-
-            spl_autoload_unregister("spl_autoload");
-
-            $router = new Router();
-        }
-
-        /**
          * @covers ::register
          * @small
          *
