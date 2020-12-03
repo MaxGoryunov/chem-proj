@@ -7,8 +7,8 @@
     use DataMappers\AbstractDataMapper;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
-use DBQueries\UpdateQueryBuilder;
-use Factories\AbstractMVCPDMFactory;
+    use DBQueries\UpdateQueryBuilder;
+    use Factories\AbstractMVCPDMFactory;
     use mysqli;
     use Traits\TableNameTrait;
 
@@ -102,6 +102,21 @@ use Factories\AbstractMVCPDMFactory;
                             ->set($data)
                             ->whereAnd("`" . $this->getDomainName() . "_id` = " . $data["id"])
                             ->build();
+
+            $connection->query($query->getQueryString());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function delete(int $id):void {
+            $connection = $this->connectToDB();
+            $domainName = $this->getDomainName();
+
+            $query      = (new UpdateQueryBuilder($this->getTableName()))
+                          ->set([$domainName . "_is_deleted" => 1])
+                          ->whereAnd("`{$domainName}_id` = " . $id)
+                          ->build();
 
             $connection->query($query->getQueryString());
         }

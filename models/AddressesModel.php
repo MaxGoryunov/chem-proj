@@ -45,18 +45,4 @@
             
 			return $addressEntity;
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function delete(int $id):void {
-            $connection = $this->connectToDB();
-
-            $query      = (new UpdateQueryBuilder($this->getTableName()))
-                          ->set(["address_is_deleted" => 1])
-                          ->whereAnd("`address_id` = ". $id)
-                          ->build();
-
-			$connection->query($query->getQueryString());
-        }
     }
