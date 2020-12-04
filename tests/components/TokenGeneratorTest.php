@@ -93,8 +93,9 @@
          */
         public function provideInitSymbolsKeys():array {
             return [
-                "digits"  => [["digits"], range(0, 9)],
-                "letters" => [["letters"], array_merge(range("a", "z"), range("A", "Z"))]
+                "digits"            => [["digits"], range(0, 9)],
+                "letters"           => [["letters"], array_merge(range("a", "z"), range("A", "Z"))],
+                "letters_lowercase" => [["letters_lowercase"], range("a", "z")]
             ];
         }
     }

@@ -16,8 +16,17 @@
 
         /**
          * Key for generating only token with symbols from [a-Z] range
+         * 
+         * @var string
          */
         public const LETTERS = "letters";
+
+        /**
+         * Key for generating only token with symbols from [a-z] range
+         * 
+         * @var string
+         */
+        public const LETTERS_LOWERCASE = "letters_lowercase";
 
         /**
          * Symbols used to create a token
@@ -30,6 +39,8 @@
          * Controls creation of symbols used in tokens
          * 
          * The resulting array depends on the keys supplied in $keys variable and may include digits, letters or both digits and letters.
+         * 
+         * @todo Implement a more effective algorithm
          *
          * @param string[] $keys
          * @return (int|string)[]
@@ -41,6 +52,10 @@
             
             if (in_array(self::LETTERS, $keys)) {
                 $this->symbols = array_merge($this->symbols, array_merge(range("a", "z"), range("A", "Z")));
+            }
+
+            if (in_array(self::LETTERS_LOWERCASE, $keys)) {
+                $this->symbols = array_merge($this->symbols, range("a", "z"));
             }
 
             return $this->symbols;
