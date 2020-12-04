@@ -13,13 +13,6 @@
      * MVCPDM stands for Model - View - Controller - Proxy - Data Mapper
      */
     interface IMVCPDMFactory {
-        
-        /**
-         * Returns a specified Model
-         *
-         * @return IModel
-         */
-        public function getModel():IModel;
 
         /**
          * Returns a specified View
@@ -34,11 +27,4 @@
          * @return IController
          */
         public function getController():IController;
-
-        /**
-         * Returns a specifies Data Mapper
-         *
-         * @return IDataMapper
-         */
-        public function getDataMapper():IDataMapper;
     }

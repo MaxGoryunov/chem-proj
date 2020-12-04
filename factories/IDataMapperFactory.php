@@ -10,7 +10,7 @@
     interface IDataMapperFactory {
         
         /**
-         * Returns a specifies Data Mapper
+         * Returns a specified Data Mapper
          *
          * @return IDataMapper
          */
