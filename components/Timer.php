@@ -17,8 +17,10 @@
         /**
          * Sets the first breakpoint
          */
-        public function __construct() {
-            $this->breakpoints[] = microtime(true);
+        public function __construct(bool $setUpBreakpoint = true) {
+            if ($setUpBreakpoint) {
+                $this->breakpoints[] = microtime(true);
+            }
         }
 
         /**
@@ -27,6 +29,6 @@
          * @return float
          */
         public function getLastBreakpoint():float {
-            return $this->breakpoints[array_key_last($this->breakpoints)];
+            return $this->breakpoints[array_key_last($this->breakpoints)] ?? 0;
         }
     }
