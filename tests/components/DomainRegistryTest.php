@@ -6,8 +6,9 @@
     use Components\DomainRegistry;
     use OutOfRangeException;
     use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
-    /**
+/**
      * Testing DomainRegistry class
      * 
      * @coversDefaultClass DomainRegistry
@@ -127,6 +128,27 @@
             $this->assertNotSame($domain[0], $domain[1]);
             $this->assertNotSame($domain[1], $domain[2]);
             $this->assertNotSame($domain[0], $domain[2]);
+        }
+
+        /**
+         * @covers ::setDomainData
+         * @covers ::getDomainData
+         *
+         * @return void
+         */
+        public function testSetDomainDataAcceptsDataFromConfig():void {
+            $reflection = new ReflectionClass($this->domainRegistry);
+            $domainData = $reflection->getProperty("domainData");
+
+            $domainData->setAccessible(true);
+
+            $domainData->setValue($this->domainRegistry, [[]]);
+
+            $this->domainRegistry->setDomainData("./config/domainData.php");
+
+            $data = include("./config/domainData.php");
+
+            $this->assertEquals($data, $this->domainRegistry->getDomainData());
         }
 
         /**

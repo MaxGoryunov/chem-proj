@@ -34,7 +34,7 @@
             }
             
             if (file_exists($filePath)) {
-                self::$domainData = include_once($filePath);
+                self::$domainData = include($filePath);
             }
         }
 
@@ -65,7 +65,7 @@
             $domainData = self::$domainData[$domainName];
 
             self::$domains[$domainName] = (new Domain($domainName))
-                      ->setDomainSingular($domainData[0]);
+                                            ->setDomainSingular($domainData[0]);
 
             if ((isset($domainData[1])) && (isset($domainData[2]))) {
                 self::$domains[$domainName]->setTranslation($domainData[1], $domainData[2]);
