@@ -25,4 +25,4 @@
     $router->run();
 
     include_once("./templates/common/header.php");
-    include_once("./templates/errors/notAdmin.php");
+    include_once("./templates/errors/notAuthorised.php");
