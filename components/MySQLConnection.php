@@ -54,7 +54,9 @@
         }
 
         /**
-         * Throws an exception on connection fail
+         * Throws a new sql exception
+         * 
+         * @throws mysqli_sql_exception
          *
          * @param mysqli_sql_exception $e
          * @return void

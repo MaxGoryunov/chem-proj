@@ -9,13 +9,29 @@
 use mysqli_sql_exception;
 use PHPUnit\Framework\TestCase;
     use ReflectionClass;
+use ReflectionMethod;
 
-    /**
+/**
      * Testing MySQLConnection class
      * 
      * @coversDefaultClass MySQLConnection
      */
     class MySQLConnectionTest extends TestCase {
+
+        /**
+         * Returns the protected or private tested class method
+         *
+         * @param string $methodName
+         * @return ReflectionMethod
+         */
+        protected function getInnerMethod(string $methodName):ReflectionMethod {
+            $reflection = new ReflectionClass(MySQLConnection::class);
+            $method     = $reflection->getMethod($methodName);
+
+            $method->setAccessible(true);
+
+            return $method;
+        }
 
         /**
          * @covers ::establishConnection
@@ -24,13 +40,29 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testEstablishConnectionSetsUpCorrectMySQLiObject():void {
-            $mySQLConnectionReflection = new ReflectionClass(MySQLConnection::class);
-            $establishConnection       = $mySQLConnectionReflection->getMethod("establishConnection");
-
-            $establishConnection->setAccessible(true);
+            $establishConnection = $this->getInnerMethod("establishConnection");
 
             $this->assertInstanceOf(mysqli::class, $establishConnection->invokeArgs(new MySQLConnection(), [[
                 "host"     => "localhost",
+                "user"     => "root",
+                "password" => "",
+                "database" => "chemistry",
+                "charset"  => "utf8"
+            ]]));
+        }
+
+        /**
+         * @covers ::establishConnection
+         *
+         * @return void
+         */
+        public function testEstablishConnectionThrowsExceptionOnMySQLiError():void {
+            $this->expectException(mysqli_sql_exception::class);
+
+            $establishConnection = $this->getInnerMethod("establishConnection");
+
+            $this->assertInstanceOf(mysqli::class, $establishConnection->invokeArgs(new MySQLConnection(), [[
+                "host"     => "aaaaa",
                 "user"     => "root",
                 "password" => "",
                 "database" => "chemistry",
