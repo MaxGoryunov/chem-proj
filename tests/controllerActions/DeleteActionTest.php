@@ -4,7 +4,8 @@
 
     use ControllerActions\DeleteAction;
     use Controllers\IController;
-    use PHPUnit\Framework\TestCase;
+use Factories\AbstractFactory;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing DeleteAction class
@@ -26,7 +27,13 @@
             $controller->expects($this->once())
                        ->method("delete");
 
-            $action = new DeleteAction($controller);
+            $factory = $this->getMockForAbstractClass(AbstractFactory::class);
+
+            $factory->expects($this->once())
+                    ->method("getProxy")
+                    ->will($this->returnValue($controller));
+
+            $action = new DeleteAction($factory);
 
             $this->assertNull($action->execute(11));
         }
