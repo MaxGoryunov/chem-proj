@@ -17,11 +17,18 @@
         /**
          * {@inheritDoc}
          */
-        public function build():IQuery {
-            return new Query("
+        public function getQueryString():string {
+            return "
                 DELETE FROM `{$this->getTableName()}`
                 {$this->getWhere()}
                 {$this->getLimit()};
-            ");
+            ";
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function build():IQuery {
+            return new Query($this);
         }
     }

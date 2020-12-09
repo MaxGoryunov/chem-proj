@@ -9,7 +9,7 @@
     /**
      * Testing Query class
      * 
-     * @coversDefaultClass Query
+     * @coversDefaultClass \DBQueries\Query
      */
     class QueryTest extends TestCase {
 
@@ -34,7 +34,7 @@
 
             $queryBuilder->expects($this->once())
                         ->method("build")
-                        ->will($this->returnValue(new Query($queryString)));
+                        ->will($this->returnValue(new Query($queryBuilder)));
 
             $query = $queryBuilder->build();
 

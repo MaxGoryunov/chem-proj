@@ -8,7 +8,7 @@
     /**
      * Testing UpdateQueryBuilder
      * 
-     * @coversDefaultClass UpdateQueryBuilder
+     * @coversDefaultClass \DBQueries\UpdateQueryBuilder
      */
     class UpdateQueryBuilderTest extends TestCase {
 

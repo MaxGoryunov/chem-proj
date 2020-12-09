@@ -8,7 +8,7 @@
     /**
      * Testing AbstractQueryBuilder
      * 
-     * @coversDefaultClass AbstractQueryBuilder
+     * @coversDefaultClass DBQueries\AbstractQueryBuilder
      */
     class AbstractQueryBuilderTest extends TestCase {
         

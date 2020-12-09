@@ -8,7 +8,7 @@
     /**
      * Testing InsertQueryBuilder class
      * 
-     * @coversDefaultClass InsertQueryBuilder
+     * @coversDefaultClass \DBQueries\InsertQueryBuilder
      */
     class InsertQueryBuilderTest extends TestCase {
         

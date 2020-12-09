@@ -8,7 +8,7 @@
     /**
      * Testing SelectQueryBuilder
      * 
-     * @coversDefaultClass SelectQueryBuilder
+     * @coversDefaultClass DBQueries\SelectQueryBuilder
      */
     class SelectQueryBuilderTest extends TestCase {
         
@@ -127,7 +127,7 @@
 
         /**
          * @covers ::join
-         * @covers ::getJoin
+         * @covers ::getJoins
          * 
          * @dataProvider provideJoins
          *
