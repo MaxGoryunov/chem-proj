@@ -88,7 +88,7 @@
 
             $this->initWhere();
 
-            $this->where .= " " . $condition;
+            $this->where .= " `$condition`";
 
             return $this;
         }
@@ -106,7 +106,7 @@
 
             $this->initWhereAnd();
 
-            $this->where .= " AND " . $condition;
+            $this->where .= " AND `$condition`";
 
             return $this;
         }
@@ -124,7 +124,7 @@
 
             $this->initWhereOr();
             
-            $this->where .= " OR " . $condition;
+            $this->where .= " OR `$condition`";
 
             return $this;
         }
@@ -140,7 +140,7 @@
                 return $this;
             }
 
-            $this->currentCondition .= "= '$value'";
+            $this->currentCondition .= " = '$value'";
             $this->where            .= $this->currentCondition;
             $this->currentCondition  = "";
 
