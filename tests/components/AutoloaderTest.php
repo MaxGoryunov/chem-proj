@@ -4,7 +4,6 @@
 
     use Closure;
     use Components\Autoloader;
-    use Components\Router;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -64,10 +63,10 @@
          * @param Closure $func
          * @return void
          */
-        public function testRegisterMethodRegistersSuppliedFunction(Closure $func):void {
+        public function testRegisterUserAutoloaderMethodRegistersSuppliedFunction(Closure $func):void {
             $this->assertNotContains($func, $this->autoloader->getAutoloaders());
 
-            $this->autoloader->register($func);
+            $this->autoloader->registerUserAutoloader($func);
 
             $this->assertContains($func, $this->autoloader->getAutoloaders());
             /**
@@ -87,12 +86,12 @@
          * @param Closure $func
          * @return void
          */
-        public function testUnregisterMethodUnregistersSuppliedFunction(Closure $func):void {
-            $this->autoloader->register($func);
+        public function testUnregisterUserAutoloaderMethodUnregistersSuppliedFunction(Closure $func):void {
+            $this->autoloader->registerUserAutoloader($func);
 
             $this->assertContains($func, $this->autoloader->getAutoloaders());
 
-            $this->assertNull($this->autoloader->unregister($func));
+            $this->assertNull($this->autoloader->unregisterUserAutoloader($func));
 
             $this->assertNotContains($func, $this->autoloader->getAutoloaders());
 
@@ -107,7 +106,7 @@
         public function testUnregisterMethodDoesNothingOnEmptyInput():void {
             $autoloaderCount = count($this->autoloader->getAutoloaders());
 
-            $this->autoloader->unregister();
+            $this->autoloader->unregisterUserAutoloader();
 
             $this->assertEquals($autoloaderCount, count($this->autoloader->getAutoloaders()));
         }
@@ -126,7 +125,7 @@
 
             $this->assertCount(2, $this->autoloader->getAutoloaders());
 
-            $this->autoloader->unregister();
+            $this->autoloader->unregisterUserAutoloader();
 
             $this->assertCount(2, $this->autoloader->getAutoloaders());
 

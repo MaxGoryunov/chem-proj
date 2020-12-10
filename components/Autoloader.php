@@ -25,6 +25,16 @@
 		}
 
 		/**
+		 * Registers user's autoloader function
+		 *
+		 * @param Closure $autoloader
+		 * @return void
+		 */
+		public function registerUserAutoloader(Closure $autoloader):void {
+			spl_autoload_register($autoloader);
+		}
+
+		/**
 		 * Returns registered autoloaders
 		 *
 		 * @return (string|Closure)[]
@@ -42,7 +52,7 @@
 		 *
 		 * @return void
 		 */
-		public function unregister(Closure $autoloader = null):void {
+		public function unregisterUserAutoloader(Closure $autoloader = null):void {
 			if (!isset($autoloader)) {
 				return;
 			}
