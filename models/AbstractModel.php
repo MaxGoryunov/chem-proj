@@ -136,26 +136,26 @@
          * @return int
          */
         public function calculateRecordCount():int {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
             $columns    = ["count" => "count(*)"];
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
                             ->what($columns)
                             ->build();
 
-			$res   = mysqli_query($connection, $query->getQueryString());
-            $count = mysqli_fetch_assoc($res)['count'];
+			$result = $connection->query($query->getQueryString());
+            $count  = $result->fetch_assoc()["count"];
             
 			return $count;
         }
 
         /**
-         * Returns the number of the current
+         * Returns the number of the current page
          *
+         * @param string $requestUri
          * @return int
          */
-        public function getCurrentPageNumber():int {
-            $requestUri = $_SERVER['REQUEST_URI'];
+        public function getCurrentPageNumber(string $requestUri):int {
 			$uriParted  = explode('/', $requestUri);
 			$pageString = $uriParted[count($uriParted) - 1];
 			$pageParted = explode('=', $pageString);
