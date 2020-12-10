@@ -44,7 +44,7 @@
          * @dataProvider providePartedUriWithValidId
          *
          * @param string[] $partedUri -  array of uri parts
-         * @param int $expected - expected result
+         * @param int $expected       - expected result
          * @return void
          */
         public function testHandleReturnsIdWithValidId(array $partedUri, int $expected):void {
@@ -57,30 +57,11 @@
          * @dataProvider providePartedUriWithInvalidId
          *
          * @param string[] $partedUri - array of uri parts
-         * @param int $expected - expected result
+         * @param int $expected       - expected result
          * @return void
          */
         public function testHandleDoesNotReturnInvalidId(array $partedUri, int $expected):void {
             $this->assertNotContains($expected, $this->handler->handle($partedUri));
-        }
-
-        /**
-         * @covers ::setNextHandler
-         * @covers ::handle
-         *
-         * @return void
-         */
-        public function testHandleInvokesNextHandlerMethod():void {
-            $nextHandler = $this->getMockBuilder(IRoutingHandler::class)
-                           ->onlyMethods(["handle", "setNextHandler"])
-                           ->getMock();
-
-            $nextHandler->expects($this->once())
-                        ->method("handle")
-                        ->will($this->returnValue([]));
-
-            $this->handler->setNextHandler($nextHandler);
-            $this->handler->handle(["", "chem-proj", "addresses", "edit", "11"]);
         }
 
         /**

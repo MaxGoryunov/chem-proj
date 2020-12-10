@@ -33,7 +33,7 @@ use Factories\UserStatusesFactory;
                 /**
                  * @todo Implement error pages
                  */
-                Router::headerTo("");
+                Router::headerTo("./errors/not_found");
             }
 
             return $this->passToNext($partedUri, $invokeData);
