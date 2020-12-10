@@ -69,7 +69,22 @@ use Factories\UsersFactory;
             $this->getView()->render(__FUNCTION__, $viewData);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public function delete(int $id):void {
-            
+            $title          = "Удаление гендера";
+            $gender         = $this->getModel()->getById($id);
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+
+            if (isset($_POST["delete"])) {
+                $this->getModel()->delete($id);
+
+                header("Location: ../list");
+            }
+
+            $viewData = array_merge($fullUserStatus, compact("title", $gender));
+
+            $this->getView()->render(__FUNCTION__, $viewData);
         }
     }
