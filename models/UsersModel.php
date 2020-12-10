@@ -126,8 +126,8 @@
                            ->whereAnd("`user_email` = '$email'")
                            ->build();
 
-            $res   = mysqli_query($connection, $query->getQueryString());
-            $count = mysqli_fetch_assoc($res)["count"];
+            $result = $connection->query($query->getQueryString());
+            $count  = $result->fetch_assoc()["count"];
             
             return $count;
         }
@@ -151,8 +151,8 @@
                           ->whereAnd("`user_id` = " . $userId)
                           ->build();
 
-            $res         = mysqli_query($connection, $query->getQueryString());
-            $userIsAdmin = mysqli_fetch_assoc($res)['user_is_admin'];
+            $result      = $connection->query($query->getQueryString());
+            $userIsAdmin = $result->fetch_assoc()["user_is_admin"];
 
             return (bool)$userIsAdmin;
         }
