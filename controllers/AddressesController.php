@@ -83,6 +83,14 @@
          * @return void
          */
         public function delete(int $id):void {
+            $title = "Удаление адреса";
+            $address = $this->getModel()->getById($id);
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
 
+            if (isset($_POST["delete"])) {
+                $this->getModel()->delete($id);
+            }
+
+			header('Location: ../list');
         }
     }
