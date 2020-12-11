@@ -100,15 +100,6 @@
         }
 
         /**
-         * Returns related factory name
-         *
-         * @return string
-         */
-        public function getFactoryName():string {
-            return $this->factoryName;
-        }
-
-        /**
          * Returns translated version of domain name
          *
          * @return string
