@@ -15,13 +15,6 @@
     interface IMVCPDMFactory {
 
         /**
-         * Returns a specified View
-         *
-         * @return IView
-         */
-        public function getView():IView;
-
-        /**
          * Returns a specified Controller
          *
          * @return IController
