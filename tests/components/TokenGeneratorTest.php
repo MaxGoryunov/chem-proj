@@ -5,6 +5,7 @@
 
     use Components\TokenGenerator;
     use PHPUnit\Framework\TestCase;
+    use ReflectionClass;
 
     /**
      * Testing TokenGenerator class
@@ -39,6 +40,24 @@
         }
 
         /**
+         * @covers ::getKey
+         * 
+         * @dataProvider provideKeys
+         *
+         * @param string[] $range  - range of string keys
+         * @param string $expected - expected result
+         * @return void
+         */
+        public function testGetKeyReturnsCorrectKeys(array $range, string $expected):void {
+            $reflection = new ReflectionClass($this->tokenGenerator);
+            $getKey     = $reflection->getMethod("getKey");
+
+            $getKey->setAccessible(true);
+
+            $this->assertEquals($expected, $getKey->invokeArgs($this->tokenGenerator, [$range]));
+        }
+
+        /**
          * @covers ::initSymbols
          * 
          * @dataProvider provideInitSymbolsKeys
@@ -62,7 +81,7 @@
          * @return void
          */
         public function testGenerateTokenReturnsTokenOfSuppliedLength(int $length, int $expected):void {
-            $this->assertEquals($expected, strlen($this->tokenGenerator->generateToken($length, ["digits"])));
+            $this->assertEquals($expected, strlen($this->tokenGenerator->generateToken($length, [TokenGenerator::DIGITS])));
         }
 
         /**
@@ -73,6 +92,17 @@
          */
         public function testGenerateTokenReturnsOnlyDigitsOnDigitsKey():void {
             $this->assertEquals(1, preg_match("/^([0-9])+$/", $this->tokenGenerator->generateToken(32, [TokenGenerator::DIGITS])));
+        }
+
+        /**
+         * @return (string|string[])[][]
+         */
+        public function provideKeys():array {
+            return [
+                [["aaa"], "aaa"],
+                [["aaa", "bbb", "ccc"], "aaabbbccc"],
+                [["aaa", "BBB". "cCc"], "aaaBBBcCc"]
+            ];
         }
 
         /**
@@ -93,9 +123,9 @@
          */
         public function provideInitSymbolsKeys():array {
             return [
-                "digits"            => [["digits"], range(0, 9)],
-                "letters"           => [["letters"], array_merge(range("a", "z"), range("A", "Z"))],
-                "letters_lowercase" => [["letters_lowercase"], range("a", "z")]
+                "digits"            => [[TokenGenerator::DIGITS], range(0, 9)],
+                "letters"           => [[TokenGenerator::LETTERS], array_merge(range("a", "z"), range("A", "Z"))],
+                "letters_lowercase" => [[TokenGenerator::LETTERS_LOWERCASE], range("a", "z")]
             ];
         }
     }

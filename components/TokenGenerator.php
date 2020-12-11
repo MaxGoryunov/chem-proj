@@ -10,23 +10,30 @@
         /**
          * Key for generating only token with symbols from [0-9] range
          * 
-         * @var string
+         * @var string[]
          */
-        public const DIGITS = "digits";
+        public const DIGITS = ["09"];
 
         /**
          * Key for generating only token with symbols from [a-Z] range
          * 
-         * @var string
+         * @var string[]
          */
-        public const LETTERS = "letters";
+        public const LETTERS = ["az", "AZ"];
 
         /**
          * Key for generating only token with symbols from [a-z] range
          * 
-         * @var string
+         * @var string[]
          */
-        public const LETTERS_LOWERCASE = "letters_lowercase";
+        public const LETTERS_LOWERCASE = ["az"];
+
+        /**
+         * Initiated ranges which can be used for generating tokens
+         *
+         * @var array
+         */
+        private$ranges = [];
 
         /**
          * Symbols used to create a token
@@ -36,27 +43,55 @@
         private $symbols = [];
 
         /**
+         * Sets the predefined ranges state to false
+         */
+        public function __construct() {
+            $this->ranges = [
+                $this->getKey(self::DIGITS)            => [],
+                $this->getKey(self::LETTERS)           => [],
+                $this->getKey(self::LETTERS_LOWERCASE) => []
+            ];
+        }
+
+        /**
+         * Returns a generated key based on the given array
+         *
+         * @param string[] $range
+         * @return string
+         */
+        private function getKey(array $range):string {
+            return implode("", $range);
+        }
+
+        /**
          * Controls creation of symbols used in tokens
          * 
          * The resulting array depends on the keys supplied in $keys variable and may include digits, letters or both digits and letters.
          * 
          * @todo Implement a more effective algorithm
          *
-         * @param string[] $keys
+         * @param string[][] $keys
          * @return (int|string)[]
          */
         public function initSymbols(array $keys):array {
-            if (in_array(self::DIGITS, $keys)) {
-                $this->symbols = array_merge($this->symbols, range(0, 9));
-            }
-            
-            if (in_array(self::LETTERS, $keys)) {
-                $this->symbols = array_merge($this->symbols, array_merge(range("a", "z"), range("A", "Z")));
+            foreach ($keys as $ranges) {
+                $rangeKey = $this->getKey($ranges);
+
+                /**
+                 * If the range is empty then the is is created from smaller ranges
+                 */
+                if ($this->ranges[$rangeKey] === []) {
+                    $generatedRanges = [];
+
+                    foreach ($ranges as $range) {
+                        $generatedRanges[] = range(...str_split($range));
+                    }
+
+                    $this->ranges[$rangeKey] = array_merge(...$generatedRanges);
+                }
             }
 
-            if (in_array(self::LETTERS_LOWERCASE, $keys)) {
-                $this->symbols = array_merge($this->symbols, range("a", "z"));
-            }
+            $this->symbols = array_merge(...array_values($this->ranges));
 
             return $this->symbols;
         }
