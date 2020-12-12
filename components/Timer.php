@@ -15,11 +15,19 @@
         private $breakpoints = [];
 
         /**
+         * Contains the number of breakpoints
+         *
+         * @var int
+         */
+        private $length = 0;
+
+        /**
          * Sets the first breakpoint
          */
         public function __construct(bool $setUpBreakpoint = true) {
             if ($setUpBreakpoint) {
                 $this->breakpoints[] = microtime(true);
+                $this->length = 1;
             }
         }
 
@@ -29,6 +37,16 @@
          * @return float
          */
         public function getLastBreakpoint():float {
-            return $this->breakpoints[array_key_last($this->breakpoints)] ?? 0;
+            return $this->breakpoints[$this->length - 1] ?? 0;
+        }
+
+        /**
+         * Creates a new breakpoint
+         *
+         * @return void
+         */
+        public function breakpoint():void {
+            $this->breakpoints[] = microtime(true);
+            $this->length++;
         }
     }

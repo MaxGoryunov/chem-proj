@@ -46,7 +46,7 @@
         public function testTimerSetsBreakpointOnCreation():void {
             $currentTime = microtime(true);
 
-            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 3));
+            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 5));
         }
 
         /**
@@ -59,5 +59,31 @@
             $timer = new Timer(false);
 
             $this->assertEquals(0, $timer->getLastBreakpoint());
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::breakpoint
+         *
+         * @return void
+         */
+        public function testTimerAddsBreakpoint():void {
+            $currentTime = microtime(true);
+
+            $this->assertNull($this->timer->breakpoint());
+            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 5));
+
+            sleep(1);
+
+            $currentTime = microtime(true);
+
+            $this->assertNull($this->timer->breakpoint());
+            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 5));
+
+            sleep(1);
+            $currentTime = microtime(true);
+
+            $this->assertNull($this->timer->breakpoint());
+            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 5));
         }
     }
