@@ -22,7 +22,7 @@
          *
          * @param string $connectionType - type of connection, supposed to be the Connection Interface
          * 
-         * @return mixed
+         * @return MySQLConnection
          */
         public static function getConnection(string $connectionType) {
             /**
