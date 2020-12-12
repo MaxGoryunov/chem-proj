@@ -28,6 +28,10 @@
             $this->builder = new class() implements IQueryBuilder {
                 use SetTrait;
 
+                public function getQueryString():string {
+                    return "";
+                }
+
                 public function build():IQuery {
                     return new class() implements IQuery {};
                 }

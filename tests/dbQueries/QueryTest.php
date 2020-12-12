@@ -28,9 +28,13 @@
              * @var \PHPUnit\Framework\MockObject\MockObject|AbstractQueryBuilder
              */
             $queryBuilder = $this->getMockBuilder(AbstractQueryBuilder::class)
-                            ->onlyMethods(["build"])
+                            ->onlyMethods(["build", "getQueryString"])
                             ->disableOriginalConstructor()
                             ->getMock();
+
+            $queryBuilder->expects($this->once())
+                            ->method("getQueryString")
+                            ->will($this->returnValue($queryString));
 
             $queryBuilder->expects($this->once())
                         ->method("build")
