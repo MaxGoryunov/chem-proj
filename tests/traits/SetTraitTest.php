@@ -47,6 +47,8 @@
          * @covers ::getValues
          * 
          * @dataProvider provideValues
+         * 
+         * @small
          *
          * @param array $values - values passed to 'set' method
          * @param string $expected - expected result
