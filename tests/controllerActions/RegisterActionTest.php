@@ -4,6 +4,7 @@
 
     use ControllerActions\RegisterAction;
     use Controllers\IController;
+    use Factories\AbstractFactory;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -27,7 +28,13 @@
             $controller->expects($this->once())
                        ->method("register");
 
-            $action = new RegisterAction($controller);
+            $factory = $this->getMockForAbstractClass(AbstractFactory::class);
+
+            $factory->expects($this->once())
+                    ->method("getProxy")
+                    ->will($this->returnValue($controller));
+
+            $action = new RegisterAction($factory);
 
             $this->assertNull($action->execute());
         }

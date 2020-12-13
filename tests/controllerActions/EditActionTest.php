@@ -4,8 +4,8 @@
 
     use ControllerActions\EditAction;
     use Controllers\IController;
-use Factories\AbstractFactory;
-use PHPUnit\Framework\TestCase;
+    use Factories\AbstractFactory;
+    use PHPUnit\Framework\TestCase;
 
     /**
      * Testing EditAction class
