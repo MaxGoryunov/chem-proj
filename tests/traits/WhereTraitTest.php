@@ -183,17 +183,38 @@
             $this->builder->where("");
             $this->builder->and("");
             $this->builder->or("");
-            $this->builder->where("");
-            $this->builder->and("");
-            $this->builder->where("");
+
+            $this->assertEquals("Or", $this->builder->getLinkType());
             $this->assertEquals("", $this->builder->getWhere());
 
-            $this->builder->and("`medicine_id` = 1");
+            $this->builder->where("");
+            $this->builder->and("");
+            $this->builder->where("");
+
+            $this->assertEquals("None", $this->builder->getLinkType());
+            $this->assertEquals("", $this->builder->getWhere());
+
+            $this->builder->where("");
             $this->builder->or("");
-            $this->builder->or("`medicine_price` < 750");
             $this->builder->and("");
 
-            $this->assertEquals("WHERE 1 AND `medicine_id` = 1 OR `medicine_price` < 750", $this->builder->getWhere());
+            $this->assertEquals("And", $this->builder->getLinkType());
+            $this->assertEquals("", $this->builder->getWhere());
+
+            $this->builder->and("medicine_id");
+            $this->builder->or("");
+
+            $this->assertEquals("Or", $this->builder->getLinkType());
+            $this->assertEquals("", $this->builder->getWhere());
+            $this->assertEquals("medicine_id", $this->builder->getCurrentCondition());
+
+            $this->builder->or("medicine_price");
+            $this->builder->and("");
+
+            $this->assertEquals("And", $this->builder->getLinkType());
+            $this->assertEquals("", $this->builder->getWhere());
+            $this->assertEquals("medicine_price", $this->builder->getCurrentCondition());
+
         }
 
         /**
