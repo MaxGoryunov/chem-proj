@@ -22,31 +22,42 @@
         private $isDeleted = false;
 
         /**
-         * Sets up a new Address
+         * Simple magic setter for all properties
+         * 
+         * Property names are first converted from snake_case to camelCase and then if such property exists then it is set
          *
-         * @param int $id
          * @param string $name
+         * @param mixed $value
          */
-        public function __construct(int $id, string $name) {
-            $this->id   = $id;
-            $this->name = $name;
+        public function __set(string $name, $value) {
+            $name = $this->snakeToCamelCase($name);
+
+            if (property_exists($this, $name)) {
+                $this->$name = $value;
+            }
         }
 
         /**
-         * Returns name of the Address
+         * Returns class property
          *
+         * @param string $name
+         * @return mixed
+         */
+        public function __get(string $name) {
+            $name = $this->snakeToCamelCase($name);
+
+            if (property_exists($this, $name)) {
+                return $this->$name;
+            }
+        }
+
+        /**
+         * Parses snake_case to camelCase
+         *
+         * @param string $propertyName
          * @return string
          */
-        public function getName():string {
-            return $this->name;
-        }
-
-        /**
-         * Returns the deletion state of the Address
-         *
-         * @return bool
-         */
-        public function getIsDeleted():bool {
-            return $this->isDeleted;
+        private function snakeToCamelCase(string $propertyName):string {
+            return lcfirst(str_replace(["_", "Address"], "", ucwords($propertyName, "_")));
         }
     }
