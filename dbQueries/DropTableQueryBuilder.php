@@ -3,17 +3,17 @@
     namespace DBQueries;
 
     /**
-     * Class for building a DESCRIBE query
+     * Class for building a DROP TABLE query
      */
-    class DescribeQueryBuilder extends AbstractQueryBuilder {
+    class DropTableQueryBuilder extends AbstractQueryBuilder {
 
         /**
          * {@inheritDoc}
          */
         public function getQueryString():string {
-            return "DESCRIBE `{$this->getTableName()}`;";
+            return "DROP TABLE IF EXISTS `{$this->getTableName()}`;";
         }
-        
+
         /**
          * {@inheritDoc}
          */
