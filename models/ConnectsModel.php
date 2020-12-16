@@ -4,6 +4,7 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
+    use DBQueries\DeleteQueryBuilder;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
@@ -16,7 +17,9 @@
         /**
          * {@inheritDoc}
          */
-        protected $tableName = "connects";
+        protected function getDomainName():string {
+            return "connects";
+        }
 
         /**
          * {@inheritDoc}
@@ -55,8 +58,14 @@
         /**
          * {@inheritDoc}
          */
-        public function delete(int $id):void {
-            
+        public function delete(int $userId):void {
+            $connection = $this->connectToDB();
+
+            $query = (new DeleteQueryBuilder($this->getTableName()))
+                        ->whereAnd("`connect_user_id` = " . $userId)
+                        ->build();
+
+            $connection->query($query->getQueryString());
         }
 
         /**
