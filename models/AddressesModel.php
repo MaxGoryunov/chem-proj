@@ -2,9 +2,7 @@
 
     namespace Models;
 
-    use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
-    use DBQueries\UpdateQueryBuilder;
     use Entities\AddressEntity;
     use Entities\IEntity;
 

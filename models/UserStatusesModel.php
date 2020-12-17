@@ -2,10 +2,6 @@
 
     namespace Models;
 
-    use Components\DBConnectionProvider;
-    use Components\IDBConnection;
-    use DBQueries\InsertQueryBuilder;
-    use DBQueries\UpdateQueryBuilder;
     use Entities\IEntity;
 
     /**
