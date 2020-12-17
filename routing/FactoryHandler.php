@@ -22,20 +22,19 @@ use Factories\UserStatusesFactory;
             "genders"       => GendersFactory::class,
             "user_statuses" => UserStatusesFactory::class
         ];
-        
+
         /**
          * {@inheritDoc}
          */
-        public function handle(array $partedUri, array $invokeData = []):array {
+        protected function fillData(array $partedUri, array $invokeData = []):array {
             if (isset(self::FACTORIES[$partedUri[2]])) {
                 $invokeData["factory"] = self::FACTORIES[$partedUri[2]];
-            } else {
-                /**
-                 * @todo Implement error pages
-                 */
-                Router::headerTo("./errors/not_found");
+
+                return $invokeData;
             }
 
-            return $this->passToNext($partedUri, $invokeData);
+            Router::headerTo("./errors/not_found");
+
+            return [];
         }
     }

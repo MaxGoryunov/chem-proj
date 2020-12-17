@@ -35,4 +35,21 @@
             return $invokeData;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        public function handle(array $partedUri, array $invokeData = []):array {
+            $invokeData = $this->fillData($partedUri, $invokeData);
+
+            return $this->passToNext($partedUri, $invokeData);
+        }
+
+        /**
+         * Works with give data and URI string array
+         *
+         * @param string[] $partedUri
+         * @param string[] $invokeData
+         * @return string[]
+         */
+        protected abstract function fillData(array $partedUri, array $invokeData = []):array;
     }
