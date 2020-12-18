@@ -9,17 +9,24 @@
 	 */
 	class Autoloader {
 
+		
+		/**
+		 * Returns registered autoloaders
+		 *
+		 * @return (string|Closure)[]
+		 */
+		public function getAutoloaders():array {
+			$autoloaders = spl_autoload_functions();
+
+			return (array)$autoloaders;
+		}
+
 		/**
 		 * Registers an autoloader function
 		 *
 		 * @return void
 		 */
-		public function register(Closure $autoloader = null):void {
-			if (isset($autoloader)) {
-				spl_autoload_register($autoloader);
-				return;
-			}
-
+		public function register():void {
 			spl_autoload_extensions(".php");
 			spl_autoload_register();
 		}
@@ -32,17 +39,6 @@
 		 */
 		public function registerUserAutoloader(Closure $autoloader):void {
 			spl_autoload_register($autoloader);
-		}
-
-		/**
-		 * Returns registered autoloaders
-		 *
-		 * @return (string|Closure)[]
-		 */
-		public function getAutoloaders():array {
-			$autoloaders = spl_autoload_functions();
-
-			return (array)$autoloaders;
 		}
 
 		/**
