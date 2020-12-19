@@ -32,6 +32,15 @@
         }
 
         /**
+         * Returns all stored breakpoints
+         *
+         * @return float[]
+         */
+        public function getAllBreakpoints():array {
+            return $this->breakpoints;
+        }
+
+        /**
          * Returns the last breakpoint
          *
          * @return float

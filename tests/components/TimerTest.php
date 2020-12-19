@@ -46,7 +46,7 @@
         public function testTimerSetsBreakpointOnCreation():void {
             $currentTime = microtime(true);
 
-            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 5));
+            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 3));
         }
 
         /**
@@ -71,19 +71,35 @@
             $currentTime = microtime(true);
 
             $this->assertNull($this->timer->breakpoint());
-            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 5));
+            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 3));
 
             sleep(1);
 
             $currentTime = microtime(true);
 
             $this->assertNull($this->timer->breakpoint());
-            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 5));
+            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 3));
 
             sleep(1);
             $currentTime = microtime(true);
 
             $this->assertNull($this->timer->breakpoint());
-            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 5));
+            $this->assertEquals(0, bccomp($currentTime, $this->timer->getLastBreakpoint(), 3));
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::getAllBreakpoints
+         *
+         * @return void
+         */
+        public function testGetAllBreakpointsReturnsAllBreakpoints():void {
+            for ($i = 0; $i < 3; $i++) { 
+                $times[] = microtime(true);
+
+                $this->timer->breakpoint();
+                $this->assertEquals(0, bccomp($times[$i], $this->timer->getLastBreakpoint(), 3));
+                $this->assertCount(2 + $i, $this->timer->getAllBreakpoints());
+            }
         }
     }
