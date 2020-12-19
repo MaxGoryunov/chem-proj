@@ -125,7 +125,8 @@
             return [
                 "digits"            => [[TokenGenerator::DIGITS], range(0, 9)],
                 "letters"           => [[TokenGenerator::LETTERS], array_merge(range("a", "z"), range("A", "Z"))],
-                "letters_lowercase" => [[TokenGenerator::LETTERS_LOWERCASE], range("a", "z")]
+                "letters_lowercase" => [[TokenGenerator::LETTERS_LOWERCASE], range("a", "z")],
+                "letters_uppercase" => [[TokenGenerator::LETTERS_UPPERCASE], range("A", "Z")]
             ];
         }
     }

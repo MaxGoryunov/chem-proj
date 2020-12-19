@@ -29,11 +29,18 @@
         public const LETTERS_LOWERCASE = ["az"];
 
         /**
+         * key for generating only token with symbols from [A-Z] range
+         * 
+         * @var string[]
+         */
+        public const LETTERS_UPPERCASE = ["AZ"];
+
+        /**
          * Initiated ranges which can be used for generating tokens
          *
          * @var array
          */
-        private$ranges = [];
+        private $ranges = [];
 
         /**
          * Symbols used to create a token
@@ -49,7 +56,8 @@
             $this->ranges = [
                 $this->getKey(self::DIGITS)            => [],
                 $this->getKey(self::LETTERS)           => [],
-                $this->getKey(self::LETTERS_LOWERCASE) => []
+                $this->getKey(self::LETTERS_LOWERCASE) => [],
+                $this->getKey(self::LETTERS_UPPERCASE) => []
             ];
         }
 
