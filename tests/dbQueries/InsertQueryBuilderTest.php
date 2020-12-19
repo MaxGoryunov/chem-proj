@@ -38,6 +38,7 @@
         }
 
         /**
+         * @covers ::getQueryString
          * @covers ::build
          * 
          * @uses DBQueries\AbstractQueryBuilder

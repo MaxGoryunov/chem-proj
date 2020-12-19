@@ -173,6 +173,7 @@
          * @covers ::limit
          * @covers ::getLimit
          * @covers ::getHaving
+         * @covers ::getQueryString
          * @covers ::build
          * 
          * @uses DBQueries\AbstractQueryBuilder
