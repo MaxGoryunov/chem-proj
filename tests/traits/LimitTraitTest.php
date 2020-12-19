@@ -8,7 +8,7 @@
     /**
      * Testing LimitTrait trait
      * 
-     * @coversDefaultClass LimitTrait
+     * @coversDefaultClass Traits\LimitTrait
      */
     class LimitTraitTest extends TestCase {
 

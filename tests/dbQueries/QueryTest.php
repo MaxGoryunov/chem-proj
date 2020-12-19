@@ -14,6 +14,7 @@
     class QueryTest extends TestCase {
 
         /**
+         * @covers ::__construct
          * @covers ::getQueryString
          * 
          * @dataProvider provideQueryStrings

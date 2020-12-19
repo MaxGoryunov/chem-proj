@@ -8,7 +8,7 @@
     /**
      * Testing WhereTrait trait
      * 
-     * @coversDefaultClass WhereTrait
+     * @coversDefaultClass Traits\WhereTrait
      */
     class WhereTraitTest extends TestCase {
         
