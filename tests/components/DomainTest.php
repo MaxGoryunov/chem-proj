@@ -36,6 +36,8 @@
          * @covers ::getDomainPlural
          * 
          * @dataProvider provideDomainsPlural
+         * 
+         * @small
          *
          * @param string $domainPlural
          * @return void
@@ -51,6 +53,8 @@
          * @covers ::getDomainSingular
          * 
          * @dataProvider provideDomainsSingular
+         * 
+         * @small
          *
          * @param string $domainSingular
          * @return void
@@ -67,6 +71,8 @@
          * @covers ::getTranslation
          * 
          * @dataProvider provideTranslations
+         * 
+         * @small
          *
          * @param string[] $translation
          * @return void
@@ -83,6 +89,8 @@
          * @covers ::getTranslationClause
          * 
          * @dataProvider provideTranslations
+         * 
+         * @small
          *
          * @param string[] $translation
          * @return void
@@ -98,6 +106,8 @@
          * @covers ::setTranslation
          * 
          * @dataProvider provideEmptyTranslations
+         * 
+         * @small
          *
          * @param array $translation
          * @return void
