@@ -88,7 +88,7 @@
         /**
          * {@inheritDoc}
          */
-        public function fetchAssoc(Query $query, string $alias = ""):array {
+        public function fetchAssoc(Query $query, string $alias = "") {
             $result = $this->query($query);
             /**
              * If the alias is not an empty string then it is used as a key, otherwise it is not used

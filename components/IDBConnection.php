@@ -30,7 +30,7 @@
          * Returns a single matched row from Database Table
          *
          * @param Query $query
-         * @return array
+         * @return array|string
          */
-        public function fetchAssoc(Query $query, string $alias = ""):array;
+        public function fetchAssoc(Query $query, string $alias = "");
     }

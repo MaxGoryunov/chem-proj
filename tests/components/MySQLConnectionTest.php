@@ -4,8 +4,7 @@
 
     use Components\MySQLConnection;
     use DBQueries\Query;
-use DBQueries\SelectQueryBuilder;
-use mysqli;
+    use mysqli;
     use mysqli_result;
     use mysqli_sql_exception;
     use PHPUnit\Framework\TestCase;
@@ -195,4 +194,53 @@ use mysqli;
             $this->assertEquals($assocArr, $this->connection->fetchAll($queryMock));
         }
 
+        /**
+         * @covers ::fetchAssoc
+         *
+         * @return void
+         */
+        public function testFetchAllReturnsResultArray():void {
+            $reflection = new ReflectionClass($this->connection);
+            $connection = $reflection->getProperty("connection");
+
+            $connection->setAccessible(true);
+
+            $mysqliMock = $this->getMockBuilder(mysqli::class)
+                            ->onlyMethods(["query"])
+                            ->getMock();
+
+            $queryMock  = $this->getMockBuilder(Query::class)
+                            ->disableOriginalConstructor()
+                            ->onlyMethods(["getQueryString"])
+                            ->getMock();
+
+            $resultMock = $this->getMockBuilder(mysqli_result::class)
+                            ->disableOriginalConstructor()
+                            ->onlyMethods(["fetch_assoc"])
+                            ->getMock();
+
+            $mysqliMock->expects($this->exactly(2))
+                        ->method("query")
+                        ->will($this->returnValue($resultMock));
+
+            $userInfo = [
+                "id"      => "12",
+                "name"    => "John",
+                "surname" => "Doe"
+            ];
+
+            $resultMock->expects($this->exactly(2))
+                        ->method("fetch_assoc")
+                        ->will($this->returnValue($userInfo));
+
+            $queryMock->expects($this->exactly(2))
+                        ->method("getQueryString")
+                        ->will($this->returnValue("SELECT * FROM `users` WHERE `user_id` = 12;"));
+
+            $connection->setValue($this->connection, $mysqliMock);
+
+            $this->assertEquals($userInfo, $this->connection->fetchAssoc($queryMock));
+
+            $this->assertEquals($userInfo["id"], $this->connection->fetchAssoc($queryMock, "id"));
+        }
     }
