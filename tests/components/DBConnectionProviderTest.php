@@ -11,7 +11,7 @@
     /**
      * Testing TDBConnectionProvider class
      * 
-     * @@coversDefaultClass DBConnectionProvider
+     * @@coversDefaultClass Components\DBConnectionProvider
      */
     class DBConnectionProviderTest extends TestCase {
         
@@ -43,6 +43,10 @@
         /**
          * @covers ::getConnection
          * 
+         * @uses Components\MySQLConnection::getInstance
+         * @uses Components\MySQLConnection::getConnection
+         * @uses Components\MySQLConnection::__construct
+         * 
          * @return void
          */
         public function testClassProvidesConnection():void {
@@ -51,6 +55,10 @@
 
         /**
          * @covers ::getConnection
+         * 
+         * @uses Components\MySQLConnection::getInstance
+         * @uses Components\MySQLConnection::getConnection
+         * @uses Components\MySQLConnection::__construct
          *
          * @return void
          */

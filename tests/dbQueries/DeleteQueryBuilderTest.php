@@ -8,7 +8,7 @@
     /**
      * Testing DeleteQueryBuilder
      * 
-     * @coversDefaultClass DeleteQueryBuilder
+     * @coversDefaultClass \DBQueries\DeleteQueryBuilder
      */
     class DeleteQueryBuilderTest extends TestCase {
 
