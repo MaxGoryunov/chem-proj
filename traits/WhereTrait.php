@@ -65,7 +65,7 @@
          */
         private function initWhereAnd():void {
             if ($this->where === "") {
-                $this->where = "WHERE 1";
+                $this->where = "WHERE 1 ";
             }
         }
 
@@ -76,7 +76,7 @@
          */
         private function initWhereOr():void {
             if ($this->where === "") {
-                $this->where = "WHERE 0";
+                $this->where = "WHERE 0 ";
             }
         }
 
@@ -144,7 +144,7 @@
          */
         public function equals(string $value = ""):IQueryBuilder {
             if ($value !== "") {
-                $this->currentCondition .= " = '$value'";
+                $this->currentCondition = "`{$this->currentCondition}` = '$value'";
                 
                 $this->push();
             }
@@ -182,7 +182,7 @@
         private function push():void {
             $this->{"initWhere" . $this->getInitLink()}();
 
-            $this->where           .= " {$this->getQueryLink()} {$this->currentCondition}"; 
+            $this->where           .= "{$this->getQueryLink()} {$this->currentCondition}"; 
             $this->linkType         = "";
             $this->currentCondition = "";
         }

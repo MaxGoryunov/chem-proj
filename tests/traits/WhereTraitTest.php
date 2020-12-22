@@ -184,34 +184,34 @@
             $this->builder->and("");
             $this->builder->or("");
 
-            $this->assertEquals("Or", $this->builder->getLinkType());
+            $this->assertEquals("", $this->builder->getLinkType());
             $this->assertEquals("", $this->builder->getWhere());
 
             $this->builder->where("");
             $this->builder->and("");
             $this->builder->where("");
 
-            $this->assertEquals("None", $this->builder->getLinkType());
+            $this->assertEquals("", $this->builder->getLinkType());
             $this->assertEquals("", $this->builder->getWhere());
 
             $this->builder->where("");
             $this->builder->or("");
             $this->builder->and("");
 
-            $this->assertEquals("And", $this->builder->getLinkType());
+            $this->assertEquals("", $this->builder->getLinkType());
             $this->assertEquals("", $this->builder->getWhere());
 
             $this->builder->and("medicine_id");
             $this->builder->or("");
 
-            $this->assertEquals("Or", $this->builder->getLinkType());
+            $this->assertEquals("And", $this->builder->getLinkType());
             $this->assertEquals("", $this->builder->getWhere());
             $this->assertEquals("medicine_id", $this->builder->getCurrentCondition());
 
             $this->builder->or("medicine_price");
             $this->builder->and("");
 
-            $this->assertEquals("And", $this->builder->getLinkType());
+            $this->assertEquals("Or", $this->builder->getLinkType());
             $this->assertEquals("", $this->builder->getWhere());
             $this->assertEquals("medicine_price", $this->builder->getCurrentCondition());
 
