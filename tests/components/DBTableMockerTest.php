@@ -49,78 +49,6 @@
          */
         public function testGetTableDescription(string $tableName, array $expected):void {            
             $this->assertContains($expected, $this->mocker->getTableDescription($tableName));
-            $this->assertEquals([], $this->mocker->getCurrentColumn());
-        }
-
-        /**
-         * @covers ::getTableDescription
-         * @covers ::column
-         * @covers ::getCurrentColumn
-         *
-         * @return void
-         */
-        public function testColumnDoesNotSetUpCurrentColumnOnInvalidColumnNameInput():void {
-            $this->mocker->getTableDescription("addresses");
-
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("id"));
-            $this->assertEquals([], $this->mocker->getCurrentColumn());
-        }
-
-        /**
-         * @covers ::getTableDescription
-         * @covers ::column
-         * @covers ::getCurrentColumn
-         * 
-         * @dataProvider provideColumns
-         *
-         * @param string $table  - table which the column belongs t0
-         * @param string $column - name of the column
-         * @return void
-         */
-        public function testColumnMethodSetsUpWorkingColumn(string $table, string $column):void {
-            $this->mocker->getTableDescription($table);
-
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column($column));
-            $this->assertEquals($column, $this->mocker->getCurrentColumn()["Field"]);
-        }
-
-        /**
-         * @covers ::column
-         * @covers ::canBeNull
-         * @covers ::getCurrentColumn
-         *
-         * @return void
-         */
-        public function testCanBeNullSetsNullPropertyOfColumn():void {
-            $this->mocker->getTableDescription("addresses");
-
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_name")->canBeNull(true));
-
-            $this->assertEquals("YES", $this->mocker->getCurrentColumn()["Null"]);
-
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_name")->canBeNull(false));
-
-            $this->assertEquals("NO", $this->mocker->getCurrentColumn()["Null"]);
-        }
-
-        /**
-         * @covers ::getTableDescription
-         * @covers ::column
-         * @covers ::autoIncrement
-         * @covers ::getCurrentColumn
-         *
-         * @return void
-         */
-        public function testAutoIncrementSetsExtraPropertyOfColumn():void {
-            $this->mocker->getTableDescription("addresses");
-
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_id")->autoIncrement(true));
-
-            $this->assertEquals("auto_increment", $this->mocker->getCurrentColumn()["Extra"]);
-
-            $this->assertInstanceOf(DBTableMocker::class, $this->mocker->column("address_id")->autoIncrement(false));
-
-            $this->assertEquals("", $this->mocker->getCurrentColumn()["Extra"]);
         }
 
         /**
@@ -161,17 +89,6 @@
                         "Extra"   => "auto_increment"
                     )
                 ]
-            ];
-        }
-
-        /**
-         * @return string[][]
-         */
-        public function provideColumns():array {
-            return [
-                "address_id" => ["addresses", "address_id"],
-                "address_name" => ["addresses", "address_name"],
-                "medicine_id" => ["medicines", "medicine_id"]
             ];
         }
     }
