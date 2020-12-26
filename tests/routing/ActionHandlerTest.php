@@ -2,23 +2,21 @@
 
     namespace Tests\Routing;
 
-    use Factories\AddressesFactory;
-    use Factories\GendersFactory;
-    use Factories\UserStatusesFactory;
-    use PHPUnit\Framework\TestCase;
-    use Routing\FactoryHandler;
+use ControllerActions\AddAction;
+use ControllerActions\EditAction;
+use ControllerActions\IndexAction;
+use PHPUnit\Framework\TestCase;
+use Routing\ActionHandler;
 
-    /**
-     * Testing FactoryHandler class
-     * 
-     * @coversDefaultClass FactoryHandler
+/**
+     * @coversDefaultClass ActionHandler
      */
-    class FactoryHandlerTest extends TestCase {
+    class ActionHandlerTest extends TestCase {
 
         /**
          * Contains tested class object
          *
-         * @var FactoryHandler
+         * @var ActionHandler
          */
         protected $handler;
 
@@ -28,7 +26,7 @@
          * @return void
          */
         protected function setUp():void {
-            $this->handler = new FactoryHandler();
+            $this->handler = new ActionHandler();
         }
 
         /**
@@ -43,13 +41,11 @@
         /**
          * @covers ::handle
          * 
-         * @dataProvider providePartedUriWithValidFactoryName
+         * @dataProvider providePartedUriWithActionNames
          *
-         * @param string[] $partedUri - array of URI parts
-         * @param string $expected    - expected result
          * @return void
          */
-        public function testHandleReturnsFactoryName(array $partedUri, string $expected):void {
+        public function testHandleReturnsActionName(array $partedUri, string $expected):void {
             $this->assertContains($expected, $this->handler->handle($partedUri));
         }
 
@@ -61,7 +57,7 @@
          * @return void
          */
         public function testHandleRedirectsToErrorPageOnFailedInput():void {
-            $partedUri = ["", "chem-proj", "aaa"];
+            $partedUri = ["", "chem-proj", "addresses", "aaa"];
 
             $this->handler->handle($partedUri);
             $this->assertContains("Location: ./errors/not_found", xdebug_get_headers());
@@ -70,13 +66,12 @@
         /**
          * @return (string|string[])[][]
          */
-        public function providePartedUriWithValidFactoryName():array {
-            $offset = ["", "chem-proj"];
-
+        public function providePartedUriWithActionNames():array {
+            $offset = ["", "chem-proj", "addresses"];
             return [
-                [array_merge($offset, ["addresses", "edit", "12"]), AddressesFactory::class],
-                [array_merge($offset, ["genders", "add"]), GendersFactory::class],
-                [array_merge($offset, ["user_statuses", "index"]), UserStatusesFactory::class]
+                [array_merge($offset, ["add"]), AddAction::class],
+                [array_merge($offset, ["edit", "12"]), EditAction::class],
+                [array_merge($offset, ["list"]), IndexAction::class]
             ];
         }
     }

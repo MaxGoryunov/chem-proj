@@ -65,25 +65,6 @@
         }
 
         /**
-         * @covers ::setNextHandler
-         * @covers ::handle
-         *
-         * @return void
-         */
-        public function testHandleContainsResultsOfNextHandler():void {
-            $nextHandler = $this->getMockBuilder(IRoutingHandler::class)
-                           ->onlyMethods(["handle", "setNextHandler"])
-                           ->getMock();
-
-            $nextHandler->expects($this->once())
-                        ->method("handle")
-                        ->will($this->returnValue(["action" => "edit"]));
-
-            $this->handler->setNextHandler($nextHandler);
-            $this->assertContains("edit", $this->handler->handle(["", "chem-proj", "addresses", "edit", "34"]));
-        }
-
-        /**
          * Returns parted uri with valid ids
          *
          * @return (string[]|int)[][]
