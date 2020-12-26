@@ -2,19 +2,19 @@
 
     namespace DataMappers;
 
+    use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
 
     /**
      * Interface specifies common Data Mapper methods
      */
     interface IDataMapper {
-        
+
         /**
-         * Based on received dataset creates a new UserEntity
+         * Creates a new Entity based on DB query results
          *
-         * @param array $data
-         * 
+         * @param SelectQueryBuilder $builder
          * @return IEntity
          */
-        public function mapDatasetToEntity(array $data = []):IEntity;
+        public function mapQueryResultToEntity(SelectQueryBuilder $builder):IEntity;
     }

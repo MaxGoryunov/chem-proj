@@ -12,21 +12,21 @@
          *
          * @var string
          */
-        private $name = "";
+        public $name = "";
 
         /**
          * Short name of the Gender
          *
          * @var string
          */
-        private $shortName = "";
+        public $shortName = "";
 
         /**
          * Stores the deletion state of the Gender
          *
          * @var string
          */
-        private $isDeleted = "";
+        public $isDeleted = "";
 
         /**
          * Simple magic setter for all properties
