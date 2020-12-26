@@ -41,6 +41,8 @@
         /**
          * @covers ::register
          * @covers ::getAutoloaders
+         * 
+         * @small
          *
          * @return void
          */
@@ -55,10 +57,12 @@
         }
 
         /**
-         * @covers ::register
+         * @covers ::registerUserAutoloader
          * @covers ::getAutoloaders
          * 
          * @dataProvider provideAutoloaderFunctions
+         * 
+         * @small
          *
          * @param Closure $func
          * @return void
@@ -78,10 +82,13 @@
         }
 
         /**
-         * @covers ::unregister
+         * @covers ::registerUserAutoloader
+         * @covers ::unregisterUserAutoloader
          * @covers ::getAutoloaders
          * 
          * @dataProvider provideAutoloaderFunctions
+         * 
+         * @small
          *
          * @param Closure $func
          * @return void
@@ -99,7 +106,9 @@
         }
 
         /**
-         * @covers ::unregister
+         * @covers ::unregisterUserAutoloader
+         * 
+         * @small
          *
          * @return void
          */
@@ -112,9 +121,11 @@
         }
 
         /**
-         * @covers ::unregister
+         * @covers ::unregisterUserAutoloader
          * @covers ::register
          * @covers ::getAutoloaders
+         * 
+         * @small
          *
          * @return void
          */
@@ -136,6 +147,7 @@
 
         /**
          * @covers ::register
+         * 
          * @small
          *
          * @return void
