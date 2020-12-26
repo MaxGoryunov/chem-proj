@@ -5,7 +5,6 @@
     /**
      * Database User Status Entity
      */
-    
     class UserStatusEntity extends AbstractEntity {
 
         /**
@@ -13,14 +12,14 @@
          *
          * @var string
          */
-        private $name = "";
+        public $name = "";
 
         /**
          * Stores the deletion state of the User Status
          *
          * @var string
          */
-        private $isDeleted = "";
+        public $isDeleted = "";
 
         /**
          * Simple magic setter for all properties
