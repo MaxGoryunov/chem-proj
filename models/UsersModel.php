@@ -21,6 +21,13 @@
 
         /**
          * {@inheritDoc}
+         */
+        protected function getDomainName():string {
+            return "user";
+        }
+
+        /**
+         * {@inheritDoc}
          * @return UserEntity[]
          */
         public function getList(int $limit, int $offset):array {
@@ -155,5 +162,17 @@
             $userIsAdmin = $result->fetch_assoc()["user_is_admin"];
 
             return (bool)$userIsAdmin;
+        }
+
+        /**
+         * Deletes user variables from $_SESSION array
+         *
+         * @param array $session
+         * @return void
+         */
+        public function deleteUserVariables(array &$session):void {
+            unset($session["user_id"]);
+            unset($session["token"]);
+            unset($session["token_time"]);
         }
     }
