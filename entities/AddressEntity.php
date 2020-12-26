@@ -12,14 +12,14 @@
          *
          * @var string
          */
-        private $name = "";
+        public $name = "";
 
         /**
          * Stores the deletion state of the Address
          *
-         * @var bool
+         * @var int
          */
-        private $isDeleted = false;
+        public $isDeleted = 0;
 
         /**
          * Simple magic setter for all properties
