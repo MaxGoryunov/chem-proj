@@ -4,7 +4,6 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
-    use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
     use Entities\UserEntity;
@@ -61,7 +60,7 @@
          * @return string[]
          */
         public function getUserInfoByRegistrationData(string $login, string $password):array {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
             $columns    = [
                 "count" => "COUNT(`user_id`)",
                 "user_id"
@@ -86,7 +85,7 @@
          * @return string
          */
         public function getSaltByUserEmail(string $email):string {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
                           ->what(["user_salt"])
@@ -109,7 +108,7 @@
          */
         public function calculateRegisteredCount(string $email):int {
             $email = preg_quote($email);
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
             $columns       = ["count" => "COUNT(`user_id`)"];
 
             $query       = (new SelectQueryBuilder($this->getTableName()))
@@ -134,7 +133,7 @@
                 return false;
             }
 
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
             $what       = ["user_is_admin"];
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
