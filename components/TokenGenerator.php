@@ -36,6 +36,11 @@
         public const LETTERS_UPPERCASE = ["AZ"];
 
         /**
+         * Key for generating only token with symbols from [0-9a-Z] range
+         */
+        public const ALL = ["09", "az", "AZ"];
+
+        /**
          * Initiated ranges which can be used for generating tokens
          *
          * @var array
@@ -57,7 +62,8 @@
                 $this->getKey(self::DIGITS)            => [],
                 $this->getKey(self::LETTERS)           => [],
                 $this->getKey(self::LETTERS_LOWERCASE) => [],
-                $this->getKey(self::LETTERS_UPPERCASE) => []
+                $this->getKey(self::LETTERS_UPPERCASE) => [],
+                $this->getKey(self::ALL)               => []
             ];
         }
 
