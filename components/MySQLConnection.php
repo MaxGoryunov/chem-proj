@@ -2,8 +2,8 @@
 
     namespace Components;
 
-    use DBQueries\Query;
-    use Exception;
+use DBQueries\IQueryBuilder;
+use DBQueries\Query;
     use mysqli;
     use mysqli_result;
     use mysqli_sql_exception;
@@ -68,18 +68,18 @@
         /**
          * Performs a MySQLi query to Database
          *
-         * @param Query $query
+         * @param IQueryBuilder $builder
          * @return mysqli_result|bool
          */
-        public function query(Query $query) {
-            return self::$connection->query($query->getQueryString());
+        public function query(IQueryBuilder $builder) {
+            return self::$connection->query($builder->build()->getQueryString());
         }
 
         /**
          * {@inheritDoc}
          */
-        public function fetchAll(Query $query, int $resultType = MYSQLI_ASSOC):array {
-            $result   = $this->query($query);
+        public function fetchAll(IQueryBuilder $builder, int $resultType = MYSQLI_ASSOC):array {
+            $result   = $this->query($builder);
             $fetchAll = $result->fetch_all($resultType);
 
             return $fetchAll;
@@ -88,8 +88,8 @@
         /**
          * {@inheritDoc}
          */
-        public function fetchAssoc(Query $query, string $alias = "") {
-            $result = $this->query($query);
+        public function fetchAssoc(IQueryBuilder $builder, string $alias = "") {
+            $result = $this->query($builder);
             /**
              * If the alias is not an empty string then it is used as a key, otherwise it is not used
              */

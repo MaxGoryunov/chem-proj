@@ -3,7 +3,8 @@
     namespace Tests\Components;
 
     use Components\MySQLConnection;
-    use DBQueries\Query;
+use DBQueries\IQueryBuilder;
+use DBQueries\Query;
     use mysqli;
     use mysqli_result;
     use mysqli_sql_exception;
@@ -127,6 +128,10 @@
             $mysqliResult = $this->getMockBuilder(mysqli_result::class)
                                     ->disableOriginalConstructor()
                                     ->getMock();
+            $builder      = $this->getMockBuilder(IQueryBuilder::class)
+                                    ->disableOriginalConstructor()
+                                    ->onlyMethods(["build"])
+                                    ->getMock();
 
             $mysqliMock->expects($this->once())
                         ->method("query")
@@ -135,9 +140,13 @@
             $queryMock->method("getQueryString")
                         ->will($this->returnValue("SELECT * FROM `addresses`;"));
 
+            $builder->expects($this->once())
+                    ->method("build")
+                    ->will($this->returnValue($queryMock));
+
             $connection->setValue($this->connection, $mysqliMock);
 
-            $this->connection->query($queryMock);
+            $this->connection->query($builder);
         }
 
         /**
@@ -161,6 +170,10 @@
             $resultMock = $this->getMockBuilder(mysqli_result::class)
                                     ->disableOriginalConstructor()
                                     ->onlyMethods(["fetch_all"])
+                                    ->getMock();
+            $builder    = $this->getMockBuilder(IQueryBuilder::class)
+                                    ->disableOriginalConstructor()
+                                    ->onlyMethods(["build"])
                                     ->getMock();
 
             $mysqliMock->expects($this->once())
@@ -189,9 +202,13 @@
             $queryMock->method("getQueryString")
                         ->will($this->returnValue("SELECT * FROM `addresses`;"));
 
+            $builder->expects($this->once())
+                    ->method("build")
+                    ->will($this->returnValue($queryMock));
+
             $connection->setValue($this->connection, $mysqliMock);
 
-            $this->assertEquals($assocArr, $this->connection->fetchAll($queryMock));
+            $this->assertEquals($assocArr, $this->connection->fetchAll($builder));
         }
 
         /**
@@ -219,6 +236,11 @@
                             ->onlyMethods(["fetch_assoc"])
                             ->getMock();
 
+            $builder    = $this->getMockBuilder(IQueryBuilder::class)
+                            ->disableOriginalConstructor()
+                            ->onlyMethods(["build"])
+                            ->getMock();
+
             $mysqliMock->expects($this->exactly(2))
                         ->method("query")
                         ->will($this->returnValue($resultMock));
@@ -237,10 +259,14 @@
                         ->method("getQueryString")
                         ->will($this->returnValue("SELECT * FROM `users` WHERE `user_id` = 12;"));
 
+            $builder->expects($this->exactly(2))
+                    ->method("build")
+                    ->will($this->returnValue($queryMock));
+
             $connection->setValue($this->connection, $mysqliMock);
 
-            $this->assertEquals($userInfo, $this->connection->fetchAssoc($queryMock));
+            $this->assertEquals($userInfo, $this->connection->fetchAssoc($builder));
 
-            $this->assertEquals($userInfo["id"], $this->connection->fetchAssoc($queryMock, "id"));
+            $this->assertEquals($userInfo["id"], $this->connection->fetchAssoc($builder, "id"));
         }
     }
