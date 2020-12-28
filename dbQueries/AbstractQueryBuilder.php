@@ -31,4 +31,11 @@
         public function getTableName():string {
             return $this->tableName;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function build():IQuery {
+            return new Query($this);
+        }
     }
