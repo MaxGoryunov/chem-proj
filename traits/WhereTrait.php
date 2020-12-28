@@ -92,18 +92,29 @@
         }
 
         /**
+         * Sets the condition and the link type
+         *
+         * @param string $condition - condition to be added
+         * @param string $linkType  - type of the condition link
+         * @return $this
+         */
+        private function addCondition(string $condition = "", string $linkType):IQueryBuilder {
+            if ($condition !== "") {
+                $this->currentCondition = $condition;
+                $this->linkType         = $linkType;
+            }
+
+            return $this;
+        }
+
+        /**
          * Specifies the WHERE statement
          *
          * @param string $condition - condition to be added
          * @return $this
          */
         public function where(string $condition = ""):IQueryBuilder {
-            if ($condition !== "") {
-                $this->currentCondition = $condition;
-                $this->linkType         = "None";
-            }
-
-            return $this;
+            return $this->addCondition($condition, "None");
         }
 
         /**
@@ -113,12 +124,7 @@
          * @return $this
          */
         public function and(string $condition = ""):IQueryBuilder {
-            if ($condition !== "") {
-                $this->currentCondition = $condition;
-                $this->linkType         = "And";
-            }
-
-            return $this;
+            return $this->addCondition($condition, "And");
         }
 
         /**
@@ -128,12 +134,7 @@
          * @return $this
          */
         public function or(string $condition = ""):IQueryBuilder {
-            if ($condition !== "") {
-                $this->currentCondition = $condition;
-                $this->linkType         = "Or";
-            }
-
-            return $this;
+            return $this->addCondition($condition, "Or");
         }
 
         /**
