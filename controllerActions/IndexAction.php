@@ -14,12 +14,6 @@
          * {@inheritDoc}
          */
         public function execute():void {
-            if (method_exists($this->factory, "getProxy")) {
-                $controller = $this->factory->getProxy();
-            } else {
-                $controller = $this->factory->getController();
-            }
-
-            $controller->index();
+            $this->getController()->index();
         }
     }

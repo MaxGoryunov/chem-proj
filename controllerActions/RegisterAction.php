@@ -13,12 +13,6 @@
          * @return void
          */
         public function execute():void {
-            if (method_exists($this->factory, "getProxy")) {
-                $controller = $this->factory->getProxy();
-            } else {
-                $controller = $this->factory->getController();
-            }
-
-            $controller->register();
+            $this->getController()->register();
         }
     }

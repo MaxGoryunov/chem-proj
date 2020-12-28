@@ -2,6 +2,6 @@
 
     namespace Factories;
 
-    abstract class AbstractFactory implements IMVCPDMFactory {
+    abstract class AbstractFactory {
         
     }
