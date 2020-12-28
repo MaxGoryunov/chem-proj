@@ -102,4 +102,24 @@
                 $this->assertCount(2 + $i, $this->timer->getAllBreakpoints());
             }
         }
+
+        /**
+         * @covers ::breakpoint
+         * @covers ::getLastInterval
+         *
+         * @return void
+         */
+        public function testGetLastIntervalReturnsLastInterval():void {
+            $this->assertEquals(0, $this->timer->getLastInterval());
+
+            $times[] = microtime(true);
+            $this->timer->breakpoint();
+
+            sleep(1);
+
+            $times[] = microtime(true);
+            $this->timer->breakpoint();
+
+            $this->assertEquals(0, bccomp($times[1] - $times[0], $this->timer->getLastInterval(), 4));
+        }
     }

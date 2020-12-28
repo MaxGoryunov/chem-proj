@@ -27,7 +27,7 @@
         public function __construct(bool $setUpBreakpoint = true) {
             if ($setUpBreakpoint) {
                 $this->breakpoints[] = microtime(true);
-                $this->length = 1;
+                $this->length = 0;
             }
         }
 
@@ -46,7 +46,16 @@
          * @return float
          */
         public function getLastBreakpoint():float {
-            return $this->breakpoints[$this->length - 1] ?? 0;
+            return $this->breakpoints[$this->length] ?? 0;
+        }
+
+        /**
+         * Returns the time interval between the last two breakpoints
+         *
+         * @return float
+         */
+        public function getLastInterval():float {
+            return $this->breakpoints[$this->length] - ($this->breakpoints[$this->length - 1] ?? $this->breakpoints[$this->length]);
         }
 
         /**
