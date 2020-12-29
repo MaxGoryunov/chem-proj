@@ -14,10 +14,5 @@
          */
         protected $id = 0;
 
-        /**
-         * {@inheritDoc}
-         */
-        public function getId():int {
-            return $this->id;
-        }
+        
     }
