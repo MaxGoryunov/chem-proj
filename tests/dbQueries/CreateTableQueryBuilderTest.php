@@ -84,6 +84,28 @@
         }
 
         /**
+         * @covers ::isPrimaryKey
+         *
+         * @return void
+         */
+        public function testIsPrimaryKeyMakesTheColumnPrimary():void {
+            $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_id")->isPrimaryKey(true));
+
+            $this->assertEquals("primary key", $this->builder->getCurrentColumn()["Primary"]);
+
+            $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_name")->isPrimaryKey(true));
+            
+            $this->assertEquals("primary key", $this->builder->getCurrentColumn()["Primary"]);
+
+            $this->builder->column("address_id");
+            $this->assertEquals("", $this->builder->getCurrentColumn()["Primary"]);
+
+            $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_name")->isPrimaryKey(false));
+
+            $this->assertEquals("", $this->builder->getCurrentColumn()["Primary"]);
+        }
+
+        /**
          * @return string[][]
          */
         public function provideColumnNames():array {
