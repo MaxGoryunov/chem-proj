@@ -8,15 +8,6 @@ use Factories\UsersFactory;
      * Proxy Controller for actions related to addresses
      */
     class AddressesProxyController extends AbstractProxyController {
-        
-        /**
-         * Controls the presentation of Addresses from DB
-         * 
-         * @return void
-         */
-        public function index():void {
-            $this->getController()->index();
-        }
 
         /**
          * Controls the editing process of an Address based on id

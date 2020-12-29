@@ -8,15 +8,6 @@
      * Proxy Controller for actions related to User Statuses
      */
     class UserStatusesProxyController extends AbstractProxyController {
-        
-        /**
-         * Controls the presentation for User Statuses
-         *
-         * @return void
-         */
-        public function index():void {
-            $this->getController()->index();
-        }
 
         /**
          * Protects the edit action

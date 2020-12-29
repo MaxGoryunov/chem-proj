@@ -46,4 +46,13 @@
 
             return $this->relatedController;
         }
+
+        /**
+         * Invokes the index action
+         * 
+         * @return void
+         */
+        public function index():void {
+            $this->getController()->index();
+        }
     }

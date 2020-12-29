@@ -8,13 +8,6 @@
      * Class which replaces GendersController on class calls
      */
     class GendersProxyController extends AbstractProxyController {
-        
-        /**
-         * {@inheritDoc}
-         */
-        public function index():void {
-            $this->getController()->index();
-        }
 
         /**
          * {@inheritDoc}
