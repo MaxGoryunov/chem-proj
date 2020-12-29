@@ -36,8 +36,23 @@
          */
         public function edit(int $id):void {
             $title          = "Редактирование адреса";
-            $addressesModel = $this->getModel();
-            $address        = $addressesModel->getById($id);
+            /**
+             * @todo Might have to move address instantiation below if statement
+             */
+            $address        = $this->getModel()->getById($id);
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+			
+			if (isset($_POST["name"])) {
+				$name = $_POST["name"];
+				$id   = $id;
+                $data = compact("name", "id");
+                
+                $this->getModel()->edit($data);
+            }
+            
+            $viewData = array_merge($fullUserStatus, compact("title", "address"));
+            
+            $this->getView()->render(__FUNCTION__, $viewData);
         }
 
         /**
@@ -46,7 +61,19 @@
          * @return void
          */
         public function add():void {
+            $title          = "Добавление адреса";
+			$fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+			
+			if (isset($_POST["name"])) {
+				$name = $_POST["name"];
+                $data = compact("name");
 
+                $this->getModel()->add($data);
+			}
+
+            $viewData = array_merge($fullUserStatus, compact("title"));
+            
+			$this->getView()->render(__FUNCTION__, $viewData);
         }
 
         /**
@@ -56,6 +83,14 @@
          * @return void
          */
         public function delete(int $id):void {
+            $title = "Удаление адреса";
+            $address = $this->getModel()->getById($id);
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
 
+            if (isset($_POST["delete"])) {
+                $this->getModel()->delete($id);
+            }
+
+			header('Location: ../list');
         }
     }

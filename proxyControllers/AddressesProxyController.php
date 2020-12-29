@@ -38,7 +38,11 @@ use Factories\UsersFactory;
          * @return void
          */
         public function add():void {
-            
+            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+
+            if ($userAdminStatus) {
+                $this->getController()->add();
+            }
         }
 
         /**
@@ -48,6 +52,10 @@ use Factories\UsersFactory;
          * @return void
          */
         public function delete(int $id):void {
-            
+            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+
+            if ($userAdminStatus) {
+                $this->getController()->delete($id);
+            }
         }
     }
