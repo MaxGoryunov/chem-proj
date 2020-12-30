@@ -43,6 +43,8 @@
         /**
          * @covers ::getConnection
          * 
+         * @uses Components\MySQLConnection
+         * 
          * @return void
          */
         public function testClassProvidesConnection():void {
@@ -51,6 +53,7 @@
 
         /**
          * @covers ::getConnection
+         * 
          * @uses Components\MySQLConnection
          *
          * @return void
