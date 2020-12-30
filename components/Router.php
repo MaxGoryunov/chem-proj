@@ -5,8 +5,11 @@
 	use Components\RoutePackage;
 	use InvalidArgumentException;
 	use LogicException;
+use Routing\ActionHandler;
+use Routing\FactoryHandler;
+use Routing\IdHandler;
 
-	/**
+/**
 	 * Class for providing routing within the site
 	 */
     class Router {
@@ -59,32 +62,17 @@
 				throw new InvalidArgumentException("User URI must not be empty");
 			}
 
-			if (!isset($this->routes)) {
-				throw new LogicException("Routes are not set");
-			}
+			// if (!isset($this->routes)) {
+			// 	throw new LogicException("Routes are not set");
+			// }
 
-			/**
-			 * @todo Implement a more efficient algorithm as this works for O(n) where n is the overall number of patterns
-			 */
-			foreach ($this->routes as $factory => $patterns) {
-				foreach ($patterns as $pattern => $action) {
-					$completePattern = ROOT . $pattern;
-                    
-					if (preg_match("~$completePattern$~", $userUri, $matches)) {
-						/**
-						 * Id of the specified item
-						 * 
-						 * If the id of some item is specified in the URL then it is contained in the first submask
-						 * 
-						 * @var string $id
-						 */
-						$id         = $matches[1] ?? "";
-						$invokeData = compact("factory", "action", "id");
+			$handler = new FactoryHandler();
 
-						$this->invokeFactory($invokeData);
-					}
-				}
-			}
+			$handler->setNextHandler(new ActionHandler())->setNextHandler(new IdHandler());
+
+			$invokeData = $handler->handle(explode("/", $userUri));
+
+			$this->invokeFactory($invokeData);
 		}
 		
 		/**
