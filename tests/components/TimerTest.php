@@ -100,6 +100,8 @@
                 $this->timer->breakpoint();
                 $this->assertEquals(0, bccomp($times[$i], $this->timer->getLastBreakpoint(), 3));
                 $this->assertCount(2 + $i, $this->timer->getAllBreakpoints());
+
+                sleep(1 + $i);
             }
         }
 
@@ -115,11 +117,33 @@
             $times[] = microtime(true);
             $this->timer->breakpoint();
 
-            sleep(1);
+            sleep(2);
 
             $times[] = microtime(true);
             $this->timer->breakpoint();
 
             $this->assertEquals(0, bccomp($times[1] - $times[0], $this->timer->getLastInterval(), 4));
+        }
+
+        /**
+         * @covers ::breakpoint
+         * @covers ::getLastInterval
+         * @covers ::getAllIntervals
+         *
+         * @return void
+         */
+        public function testGetAllIntervalsReturnsAllIntervals():void {
+            $times[] = microtime(true);
+            $this->timer->breakpoint();
+
+            for ($i = 0; $i < 3; $i++) {
+                sleep(1 + $i);
+
+                $times[] = microtime(true);
+
+                $this->timer->breakpoint();
+                $this->assertEquals(0, bccomp($times[1 + $i] - $times[$i], $this->timer->getLastInterval(), 3));
+                $this->assertCount(2 + $i, $this->timer->getAllIntervals());
+            }
         }
     }

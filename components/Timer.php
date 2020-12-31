@@ -15,11 +15,18 @@
         private $breakpoints = [];
 
         /**
+         * Contains intervals between breakpoints
+         *
+         * @var float[]
+         */
+        private $intervals = [];
+
+        /**
          * Contains the number of breakpoints
          *
          * @var int
          */
-        private $length = 0;
+        private $length = -1;
 
         /**
          * Sets the first breakpoint
@@ -50,12 +57,21 @@
         }
 
         /**
+         * Returns all intervals
+         *
+         * @return float[]
+         */
+        public function getAllIntervals():array {
+            return $this->intervals;
+        }
+
+        /**
          * Returns the time interval between the last two breakpoints
          *
          * @return float
          */
         public function getLastInterval():float {
-            return $this->breakpoints[$this->length] - ($this->breakpoints[$this->length - 1] ?? $this->breakpoints[$this->length]);
+            return $this->intervals[$this->length - 1] ?? 0;
         }
 
         /**
@@ -66,5 +82,9 @@
         public function breakpoint():void {
             $this->breakpoints[] = microtime(true);
             $this->length++;
+
+            if ($this->length > 0) {
+                $this->intervals[] = $this->breakpoints[$this->length] - $this->breakpoints[$this->length - 1];
+            }
         }
     }
