@@ -117,7 +117,7 @@
          * @param string[] $keys
          * @return string
          */
-        public function generateToken(int $length = 32, array $keys = [self::DIGITS]):string {
+        public function generateToken(int $length = 32, array $keys = [self::ALL]):string {
             $this->initSymbols($keys);
 
             /**
