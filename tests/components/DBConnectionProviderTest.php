@@ -43,9 +43,7 @@
         /**
          * @covers ::getConnection
          * 
-         * @uses Components\MySQLConnection::getInstance
-         * @uses Components\MySQLConnection::getConnection
-         * @uses Components\MySQLConnection::__construct
+         * @uses Components\MySQLConnection
          * 
          * @return void
          */
@@ -56,9 +54,7 @@
         /**
          * @covers ::getConnection
          * 
-         * @uses Components\MySQLConnection::getInstance
-         * @uses Components\MySQLConnection::getConnection
-         * @uses Components\MySQLConnection::__construct
+         * @uses Components\MySQLConnection
          *
          * @return void
          */
