@@ -6,12 +6,12 @@
     use Components\DomainRegistry;
     use OutOfRangeException;
     use PHPUnit\Framework\TestCase;
-use ReflectionClass;
+    use ReflectionClass;
 
-/**
+    /**
      * Testing DomainRegistry class
      * 
-     * @coversDefaultClass DomainRegistry
+     * @coversDefaultClass Components\DomainRegistry
      */
     class DomainRegistryTest extends TestCase {
 

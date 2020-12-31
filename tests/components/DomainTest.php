@@ -9,7 +9,7 @@
     /**
      * Testing Domain class
      * 
-     * @coversDefaultClass Domain
+     * @coversDefaultClass Components\Domain
      */
     class DomainTest extends TestCase {
 
