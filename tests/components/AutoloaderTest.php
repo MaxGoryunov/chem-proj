@@ -107,6 +107,7 @@
 
         /**
          * @covers ::unregisterUserAutoloader
+         * @covers ::getAutoloaders
          * 
          * @small
          *
