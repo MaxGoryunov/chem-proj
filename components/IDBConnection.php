@@ -2,8 +2,8 @@
 
     namespace Components;
 
-use DBQueries\IQueryBuilder;
-use DBQueries\Query;
+    use DBQueries\IQueryBuilder;
+    use Entities\IEntity;
 
     /**
      * Interface for various Database Connections such as MySQL, PostgreSQL etc.
@@ -34,4 +34,13 @@ use DBQueries\Query;
          * @return array|string
          */
         public function fetchAssoc(IQueryBuilder $builder, string $alias = "");
+
+        /**
+         * Returns a new object of the given class
+         *
+         * @param IQueryBuilder $builder - builder for retrieving a query string
+         * @param string $className      - name of the class of the resulting object
+         * @return IEntity
+         */
+        public function fetchObject(IQueryBuilder $builder, string $className):IEntity;
     }

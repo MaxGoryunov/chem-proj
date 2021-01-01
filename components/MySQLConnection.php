@@ -4,7 +4,8 @@
 
 use DBQueries\IQueryBuilder;
 use DBQueries\Query;
-    use mysqli;
+use Entities\IEntity;
+use mysqli;
     use mysqli_result;
     use mysqli_sql_exception;
 
@@ -98,4 +99,13 @@ use DBQueries\Query;
             return $fetchAssoc ?? [];
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        public function fetchObject(IQueryBuilder $builder, string $className):IEntity {
+            $result = $this->query($builder);
+            $object = $result->fetch_object($className);
+
+            return $object;
+        }
     }
