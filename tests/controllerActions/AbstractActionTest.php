@@ -7,7 +7,9 @@
     use Controllers\IController;
     use Factories\IControllerFactory;
     use Factories\IProxyFactory;
-    use ReflectionClass;
+    use InvalidArgumentException;
+use LogicException;
+use ReflectionClass;
 
     /**
      * @coversDefaultClass AbstractAction
@@ -25,6 +27,36 @@
                             ->getMock();
 
             return $controller;
+        }
+
+        /**
+         * @covers ::__construct
+         *
+         * @return void
+         */
+        public function testConstructThrowsLogicExceptionOnWrongActionNameInput():void {
+            $this->expectException(InvalidArgumentException::class);
+
+            $factory = $this->getMockBuilder(IControllerFactory::class)
+                            ->getMock();
+
+            $action = new AbstractAction($factory, "aaaa");
+        }
+
+        /**
+         * @covers ::getActionName
+         * 
+         * @dataProvider provideActionNames
+         *
+         * @return void
+         */
+        public function testGetActionNameReturnsActionName(string $actionName):void {
+            $factory = $this->getMockBuilder(IControllerFactory::class)
+                            ->getMock();
+
+            $action = new AbstractAction($factory, $actionName);
+
+            $this->assertEquals($actionName, $action->getActionName());
         }
 
         /**
@@ -56,9 +88,7 @@
                 }
             };
 
-            $action = $this->getMockBuilder(AbstractAction::class)
-                        ->setConstructorArgs([$factory])
-                        ->getMock();
+            $action = new AbstractAction($factory, "index");
 
             $reflection    = new ReflectionClass($action);
             $getController = $reflection->getMethod("getController");
@@ -82,10 +112,8 @@
                         ->onlyMethods(["getController"])
                         ->getMock();
 
-            $action = $this->getMockBuilder(AbstractAction::class)
-                            ->setConstructorArgs([$factory])
-                            ->getMock();
-
+            $action = new AbstractAction($factory, "index");
+            
             $reflection    = new ReflectionClass($action);
             $getController = $reflection->getMethod("getController");
 
@@ -96,5 +124,96 @@
             $getController->setAccessible(true);
 
             $this->assertSame($controller, $getController->invoke($action));
+        }
+
+        /**
+         * @covers ::execute
+         * 
+         * @dataProvider provideIds
+         *
+         * @param int $id
+         * @return void
+         */
+        public function testExecuteInvokesControllerMethodWithTheIdWhenTheIdIsRequired(int $id):void {
+            $factory = $this->getMockBuilder(IControllerFactory::class)
+                            ->getMock();
+
+            $controller = $this->getMockBuilder(IController::class)
+                                ->getMock();
+
+            $action = new AbstractAction($factory, "edit");
+
+            $factory->expects($this->once())
+                    ->method("getController")
+                    ->willReturn($controller);
+
+            $controller->expects($this->once())
+                        ->method("edit")
+                        ->with($id);
+
+            $this->assertNull($action->execute($id));
+        }
+
+        /**
+         * @covers ::execute
+         *
+         * @return void
+         */
+        public function testExecuteThrowsExceptionWhenIdIsNotSuppliedAsAParamForTheActionWhichRequiresId():void {
+            $this->expectException(LogicException::class);
+
+            $factory = $this->getMockBuilder(IControllerFactory::class)
+                            ->getMock();
+
+            $action  = new AbstractAction($factory, "edit");
+
+            $action->execute();
+        }
+
+        /**
+         * @covers ::execute
+         *
+         * @return void
+         */
+        public function testExecuteInvokesControllerMethodWhenIdIsNotGivenAndActionDoesNotRequireIt():void {
+            $factory = $this->getMockBuilder(IControllerFactory::class)
+                            ->getMock();
+
+            $controller = $this->getMockBuilder(IController::class)
+                                ->getMock();
+
+            $action = new AbstractAction($factory, "index");
+
+            $factory->expects($this->once())
+                    ->method("getController")
+                    ->willReturn($controller);
+
+            $controller->expects($this->once())
+                        ->method("index")
+                        ->with();
+
+            $this->assertNull($action->execute());
+        }
+
+        /**
+         * @return string[][]
+         */
+        public function provideActionNames():array {
+            return [
+                ["index"],
+                ["edit"],
+                ["add"]
+            ];
+        }
+
+        /**
+         * @return int[][]
+         */
+        public function provideIds():array {
+            return [
+                [1],
+                [13],
+                [20]
+            ];
         }
     }
