@@ -59,35 +59,19 @@
         }
 
         /**
-         * Initiates string starter for first call of 'whereAnd' method
-         *
-         * @return void
-         */
-        private function initWhereAnd():void {
-            if ($this->where === "") {
-                $this->where = "WHERE 1 ";
-            }
-        }
-
-        /**
-         * Initiates string starter for first call of 'whereAnd' method
-         *
-         * @return void
-         */
-        private function initWhereOr():void {
-            if ($this->where === "") {
-                $this->where = "WHERE 0 ";
-            }
-        }
-
-        /**
          * Initiates string starter for first call of 'where' method
          *
          * @return void
          */
         private function initWhere():void {
             if ($this->where === "") {
-                $this->where = "WHERE";
+                $ending = [
+                            "None" => "",
+                            "Or" => " 0 ",
+                            "And" => " 1 "
+                        ][$this->linkType];
+                
+                $this->where = "WHERE" . $ending;
             }
         }
 
@@ -154,25 +138,16 @@
         }
 
         /**
-         * Returns a link for the initiation methods based on the link type
-         *
-         * @return string
-         */
-        private function getInitLink():string {
-            return ([
-                "None" => "",
-                "Or" => "Or",
-                "And" => "And"
-            ])[$this->linkType];
-        }
-
-        /**
          * Returns a link for they query based on the link type
          *
          * @return string
          */
         private function getQueryLink():string {
-            return strtoupper($this->getInitLink());
+            return [
+                "None" => "",
+                "Or" => "OR",
+                "And" => "AND"
+            ][$this->linkType];
         }
 
         /**
@@ -181,7 +156,7 @@
          * @return void
          */
         private function push():void {
-            $this->{"initWhere" . $this->getInitLink()}();
+            $this->initWhere();
 
             $this->where           .= "{$this->getQueryLink()} {$this->currentCondition}"; 
             $this->linkType         = "";

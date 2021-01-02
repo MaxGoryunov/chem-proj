@@ -104,6 +104,8 @@
          * @return void
          */
         public function testsWhereAndOrBuildCorrectWhereStatement(array $statements, string $expected):void {
+            $this->markTestIncomplete();
+            
             foreach ($statements as $statement) {
                 if ($statement["type"] == "and") {
                     $this->builder->and($statement["condition"]);
