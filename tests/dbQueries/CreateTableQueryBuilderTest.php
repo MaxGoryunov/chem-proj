@@ -3,7 +3,8 @@
     namespace Tests\DBQueries;
 
     use DBQueries\CreateTableQueryBuilder;
-    use PHPUnit\Framework\TestCase;
+use DBQueries\TableColumn;
+use PHPUnit\Framework\TestCase;
 
     /**
      * @coversDefaultClass CreateTableQueryBuilder
@@ -45,7 +46,7 @@
         public function testColumnSetsUpColumnName(string $columnName):void {
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column($columnName));
             $this->assertEquals($columnName, $this->builder->getCurrentColumnName());
-            $this->assertEquals([], $this->builder->getCurrentColumn());
+            $this->assertInstanceOf(TableColumn::class, $this->builder->getCurrentColumn());
         }
 
         /**
@@ -58,11 +59,11 @@
         public function testCanBeNullSetsNullPropertyOfColumn():void {
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_name")->canBeNull(true));
 
-            $this->assertEquals("YES", $this->builder->getCurrentColumn()["Null"]);
+            $this->assertEquals("", $this->builder->getCurrentColumn()->getNull());
 
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_name")->canBeNull(false));
 
-            $this->assertEquals("NO", $this->builder->getCurrentColumn()["Null"]);
+            $this->assertEquals("NOT NULL", $this->builder->getCurrentColumn()->getNull());
         }
 
         /**
@@ -76,11 +77,11 @@
         public function testAutoIncrementSetsExtraPropertyOfColumn():void {
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_id")->autoIncrement(true));
 
-            $this->assertEquals("auto_increment", $this->builder->getCurrentColumn()["Extra"]);
+            $this->assertEquals("AUTO_INCREMENT", $this->builder->getCurrentColumn()->getAutoIncrement());
 
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_id")->autoIncrement(false));
 
-            $this->assertEquals("", $this->builder->getCurrentColumn()["Extra"]);
+            $this->assertEquals("", $this->builder->getCurrentColumn()->getAutoIncrement());
         }
 
         /**
@@ -91,18 +92,18 @@
         public function testIsPrimaryKeyMakesTheColumnPrimary():void {
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_id")->isPrimaryKey(true));
 
-            $this->assertEquals("primary key", $this->builder->getCurrentColumn()["Primary"]);
+            $this->assertEquals("PRIMARY KEY", $this->builder->getCurrentColumn()->getPrimaryKey());
 
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_name")->isPrimaryKey(true));
             
-            $this->assertEquals("primary key", $this->builder->getCurrentColumn()["Primary"]);
+            $this->assertEquals("PRIMARY KEY", $this->builder->getCurrentColumn()->getPrimaryKey());
 
             $this->builder->column("address_id");
-            $this->assertEquals("", $this->builder->getCurrentColumn()["Primary"]);
+            $this->assertEquals("", $this->builder->getCurrentColumn()->getPrimaryKey());
 
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_name")->isPrimaryKey(false));
 
-            $this->assertEquals("", $this->builder->getCurrentColumn()["Primary"]);
+            $this->assertEquals("", $this->builder->getCurrentColumn()->getPrimaryKey());
         }
 
         /**

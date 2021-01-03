@@ -10,7 +10,7 @@
         /**
          * Contains columns which are going to be used in the resulting table
          *
-         * @var string[][]
+         * @var TableColumn[]
          */
         private $columns = [];
 
@@ -33,10 +33,10 @@
         /**
          * Returns the current column
          *
-         * @return string[]
+         * @return TableColumn
          */
-        public function getCurrentColumn():array {
-            return $this->columns[$this->currentColumn];
+        public function getCurrentColumn():TableColumn {
+            return clone $this->columns[$this->currentColumn];
         }
 
         /**
@@ -58,7 +58,7 @@
             $this->currentColumn                 = $columnName;
             
             if (!isset($this->columns[$this->currentColumn])) {
-                $this->columns[$this->currentColumn] = [];
+                $this->columns[$this->currentColumn] = new TableColumn();
             }
 
             return $this;
@@ -71,7 +71,7 @@
          * @return $this
          */
         public function canBeNull(bool $status):self {
-            $this->columns[$this->currentColumn]["Null"] = ($status) ? "YES" : "NO";
+            $this->columns[$this->currentColumn]->setNull($status);
 
             return $this;
         }
@@ -83,7 +83,7 @@
          * @return $this
          */
         public function autoIncrement(bool $status):self {
-            $this->columns[$this->currentColumn]["Extra"] = ($status) ? "auto_increment" : "";
+            $this->columns[$this->currentColumn]->setAutoIncrement($status);
 
             return $this;
         }
@@ -99,16 +99,16 @@
              * If the current column is primary then it can be set immediately
              */
             if ($this->currentColumn === $this->primaryColumn) {
-                $this->columns[$this->primaryColumn]["Primary"] = ($status) ? "primary key" : "";
+                $this->columns[$this->primaryColumn]->setPrimaryKey($status);
             } else {
                 if ($status) {
-                    $this->columns[$this->currentColumn]["Primary"] = "primary key";
+                    $this->columns[$this->currentColumn]->setPrimaryKey($status);
 
                     /**
                      * If the primary column is already set then that column primary key must be removed
                      */
-                    if (isset($this->primaryColumn)) {
-                        $this->columns[$this->primaryColumn]["Primary"] = "";
+                    if ($this->primaryColumn !== "") {
+                        $this->columns[$this->primaryColumn]->setPrimaryKey(!$status);
                     }
 
                     $this->primaryColumn = $this->currentColumn;
