@@ -6,7 +6,6 @@
     use Components\IDBConnection;
     use DBQueries\SelectQueryBuilder;
     use Entities\GenderEntity;
-    use Entities\IEntity;
 
     /**
      * Data Mapper for mapping GenderEntity objects
@@ -18,7 +17,7 @@
          * 
          * @return GenderEntity
          */
-        public function mapQueryResultToEntity(SelectQueryBuilder $builder):IEntity {
+        public function mapQueryResultToEntity(SelectQueryBuilder $builder):GenderEntity {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
             $query      = $builder->build();
 
