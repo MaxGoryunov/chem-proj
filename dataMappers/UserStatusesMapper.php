@@ -5,7 +5,6 @@
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
     use DBQueries\SelectQueryBuilder;
-    use Entities\IEntity;
     use Entities\UserStatusEntity;
 
     /**
@@ -18,7 +17,7 @@
          * 
          * @return UserStatusEntity
          */
-        public function mapQueryResultToEntity(SelectQueryBuilder $builder):IEntity {
+        public function mapQueryResultToEntity(SelectQueryBuilder $builder):UserEntity {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
             $query      = $builder->build();
 
