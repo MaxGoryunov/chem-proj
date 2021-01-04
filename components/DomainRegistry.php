@@ -28,7 +28,7 @@
          * @param string $filePath
          * @return void
          */
-        public function setDomainData(string $filePath):void {
+        public function setDomainData(string $filePath = "./config/domainData.php"):void {
             if (self::$domainData !== [[]]) {
                 return;
             }
