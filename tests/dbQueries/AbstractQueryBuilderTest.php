@@ -36,7 +36,10 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::build
+         * 
+         * @uses DBQueries\Query
          *
          * @return void
          */

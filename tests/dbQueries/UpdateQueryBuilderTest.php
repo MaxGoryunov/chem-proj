@@ -2,6 +2,7 @@
 
     namespace Tests\DBQueries;
 
+    use Models\AbstractModel;
     use DBQueries\UpdateQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
@@ -25,7 +26,14 @@
          * @return void
          */
         protected function setUp():void {
-            $this->updateBuilder = new UpdateQueryBuilder("medicines");
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->getMock();
+
+            $model->expects($this->once())
+                    ->method("getTableName")
+                    ->willReturn("medicines");
+
+            $this->updateBuilder = new UpdateQueryBuilder($model);
         }
 
         /**
