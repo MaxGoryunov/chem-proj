@@ -33,6 +33,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getDomainPlural
          * 
          * @dataProvider provideDomainsPlural

@@ -83,6 +83,7 @@
         }
 
         /**
+         * @covers ::setDomainData
          * @covers ::getDomain
          * 
          * @dataProvider provideDomainNames
@@ -105,6 +106,7 @@
         }
 
         /**
+         * @covers ::setDomainData
          * @covers ::getDomain
          * 
          * @return void
