@@ -6,7 +6,6 @@
     use Components\IDBConnection;
     use DBQueries\SelectQueryBuilder;
     use Entities\AddressEntity;
-    use Entities\IEntity;
 
     /**
      * Data Mapper for mapping AddressEntity objects
@@ -18,7 +17,7 @@
          * 
          * @return AddressEntity
          */
-        public function mapQueryResultToEntity(SelectQueryBuilder $builder):IEntity {
+        public function mapQueryResultToEntity(SelectQueryBuilder $builder):AddressEntity {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
             $query      = $builder->build();
 
