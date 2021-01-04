@@ -17,7 +17,7 @@
          * 
          * @return UserStatusEntity
          */
-        public function mapQueryResultToEntity(SelectQueryBuilder $builder):UserEntity {
+        public function mapQueryResultToEntity(SelectQueryBuilder $builder):UserStatusEntity {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
             $query      = $builder->build();
 
