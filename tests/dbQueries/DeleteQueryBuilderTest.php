@@ -39,6 +39,11 @@
 
         /**
          * @covers ::build
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
+         * @uses Traits\WhereTrait
+         * @uses Traits\LimitTrait
          *
          * @return void
          */
