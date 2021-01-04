@@ -5,6 +5,7 @@
     use Controllers\AbstractController;
     use Controllers\IController;
     use Factories\IMVCPDMFactory;
+    use Factories\UsersFactory;
 
     /**
      * Base class for implementing other ProxyControllers
@@ -54,5 +55,49 @@
          */
         public function index():void {
             $this->getController()->index();
+        }
+
+        /**
+         * Protects add action
+         *
+         * @return void
+         */
+        public function add():void {
+            /**
+             * @todo Add a method to get user status
+             */
+            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+
+            if ($userAdminStatus) {
+                $this->getController()->add();
+            }
+        }
+
+        /**
+         * Protects edit action
+         *
+         * @param int $id
+         * @return void
+         */
+        public function edit(int $id):void {
+            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+
+            if ($userAdminStatus) {
+                $this->getController()->edit($id);
+            }
+        }
+
+        /**
+         * Protects delete action
+         *
+         * @param int $id
+         * @return void
+         */
+        public function delete(int $id):void {
+            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+
+            if ($userAdminStatus) {
+                $this->getController()->delete($id);
+            }
         }
     }
