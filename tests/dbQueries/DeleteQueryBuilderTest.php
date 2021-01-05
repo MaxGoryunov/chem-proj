@@ -8,7 +8,7 @@
     /**
      * Testing DeleteQueryBuilder
      * 
-     * @coversDefaultClass DeleteQueryBuilder
+     * @coversDefaultClass \DBQueries\DeleteQueryBuilder
      */
     class DeleteQueryBuilderTest extends TestCase {
 
@@ -39,6 +39,11 @@
 
         /**
          * @covers ::build
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
+         * @uses Traits\WhereTrait
+         * @uses Traits\LimitTrait
          *
          * @return void
          */

@@ -16,7 +16,7 @@
     /**
      * Testing MySQLConnection class
      * 
-     * @coversDefaultClass MySQLConnection
+     * @coversDefaultClass Components\MySQLConnection
      */
     class MySQLConnectionTest extends TestCase {
 

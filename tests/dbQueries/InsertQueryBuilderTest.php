@@ -8,7 +8,7 @@
     /**
      * Testing InsertQueryBuilder class
      * 
-     * @coversDefaultClass InsertQueryBuilder
+     * @coversDefaultClass \DBQueries\InsertQueryBuilder
      */
     class InsertQueryBuilderTest extends TestCase {
         
@@ -37,6 +37,15 @@
             $this->insertBuilder = null;
         }
 
+        /**
+         * @covers ::build
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
+         * @uses Traits\SetTrait
+         *
+         * @return void
+         */
         public function testBuildBuildsCorrectQueryObject():void {
             $query = $this->insertBuilder->set([
                                 "medicine_name"  => "Sensu Bean",

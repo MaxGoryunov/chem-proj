@@ -8,7 +8,7 @@
     /**
      * Testing SelectQueryBuilder
      * 
-     * @coversDefaultClass SelectQueryBuilder
+     * @coversDefaultClass DBQueries\SelectQueryBuilder
      */
     class SelectQueryBuilderTest extends TestCase {
         
@@ -41,6 +41,8 @@
          * @covers ::what
          * @covers ::getWhat
          * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * 
          * @dataProvider provideWhatColumns
          *
          * @param array $columns - columns passed to 'what' method
@@ -56,6 +58,8 @@
         /**
          * @covers ::groupBy
          * @covers ::getGroupBy
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          * 
          * @dataProvider provideGroupByColumnNames
          *
@@ -73,6 +77,8 @@
          * @covers ::having
          * @covers ::getHaving
          * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * 
          * @dataProvider provideHavingConditions
          *
          * @param string $condition - conditions to be included
@@ -89,6 +95,8 @@
          * @covers ::orderBy
          * @covers ::getOrderBy
          * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * 
          * @dataProvider provideOrderByColumns
          *
          * @param array|string[] $columns - columns to be ordered by
@@ -104,6 +112,8 @@
         /**
          * @covers ::limit
          * @covers ::getLimit
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          *
          * @return void
          */
@@ -116,6 +126,8 @@
         /**
          * @covers ::limit
          * @covers ::getLimit
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          *
          * @return void
          */
@@ -127,7 +139,9 @@
 
         /**
          * @covers ::join
-         * @covers ::getJoin
+         * @covers ::getJoins
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          * 
          * @dataProvider provideJoins
          *
@@ -147,6 +161,26 @@
             $this->assertEquals($expected, preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $this->selectBuilder->getJoins())));
         }
 
+        /**
+         * @covers ::what
+         * @covers ::getWhat
+         * @covers ::join
+         * @covers ::getJoins
+         * @covers ::groupBy
+         * @covers ::getGroupBy
+         * @covers ::orderBy
+         * @covers ::getOrderBy
+         * @covers ::limit
+         * @covers ::getLimit
+         * @covers ::getHaving
+         * @covers ::build
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
+         * @uses Traits\WhereTrait
+         *
+         * @return void
+         */
         public function testBuildBuildsCorrectQueryObject():void {
             $query = $this->selectBuilder->what(["medicine_id", 
                                                 "name" =>"medicine_name"])

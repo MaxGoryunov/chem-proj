@@ -8,7 +8,7 @@
     /**
      * Testing AbstractQueryBuilder
      * 
-     * @coversDefaultClass AbstractQueryBuilder
+     * @coversDefaultClass DBQueries\AbstractQueryBuilder
      */
     class AbstractQueryBuilderTest extends TestCase {
         
@@ -20,6 +20,7 @@
         protected $builder;
 
         /**
+         * @covers ::__construct
          * @covers ::getTableName
          * 
          * @dataProvider provideTableNames
