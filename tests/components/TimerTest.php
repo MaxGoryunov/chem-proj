@@ -8,7 +8,7 @@
     /**
      * Testing Timer class
      * 
-     * @coversDefaultClass Timer
+     * @coversDefaultClass Components\Timer
      */
     class TimerTest extends TestCase {
 
@@ -64,6 +64,7 @@
         /**
          * @covers ::__construct
          * @covers ::breakpoint
+         * @covers ::getLastBreakpoint
          *
          * @return void
          */
@@ -89,6 +90,8 @@
 
         /**
          * @covers ::__construct
+         * @covers ::breakpoint
+         * @covers ::getLastBreakpoint
          * @covers ::getAllBreakpoints
          *
          * @return void
@@ -106,6 +109,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::breakpoint
          * @covers ::getLastInterval
          *
@@ -126,6 +130,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::breakpoint
          * @covers ::getLastInterval
          * @covers ::getAllIntervals
