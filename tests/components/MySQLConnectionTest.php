@@ -61,6 +61,24 @@
         }
 
         /**
+         * @covers ::__construct
+         * @covers ::establishConnection
+         *
+         * @return void
+         */
+        public function testConstructInvokesEstablishConnectionIfTheConnectionIsNotSet():void {
+            $reflection = new ReflectionClass($this->connection);
+            $mysqli     = $reflection->getProperty("connection");
+
+            $mysqli->setAccessible(true);
+            $mysqli->setValue($this->connection, null);
+
+            $connection = new MySQLConnection();
+
+            $this->assertInstanceOf(mysqli::class, $mysqli->getValue($connection));
+        }
+
+        /**
          * @covers ::establishConnection
          * @covers ::validateConnection
          *
@@ -79,6 +97,8 @@
         }
 
         /**
+         * @covers ::__construct
+         * @covers ::fail
          * @covers ::establishConnection
          *
          * @return void
@@ -98,6 +118,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::fail
          *
          * @return void
@@ -109,6 +130,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::query
          *
          * @return void
@@ -151,6 +173,8 @@
         }
 
         /**
+         * @covers ::__construct
+         * @covers ::query
          * @covers ::fetchAll
          *
          * @return void
@@ -213,11 +237,14 @@
         }
 
         /**
+         * @covers ::__construct
+         * @covers ::establishConnection
+         * @covers ::query
          * @covers ::fetchAssoc
          *
          * @return void
          */
-        public function testFetchAllReturnsResultArray():void {
+        public function testFetchAssocReturnsResultArray():void {
             $reflection = new ReflectionClass($this->connection);
             $connection = $reflection->getProperty("connection");
 
@@ -272,6 +299,8 @@
         }
 
         /**
+         * @covers ::__construct
+         * @covers ::query
          * @covers ::fetchObject
          *
          * @return void

@@ -2,10 +2,9 @@
 
     namespace Components;
 
-use DBQueries\IQueryBuilder;
-use DBQueries\Query;
-use Entities\IEntity;
-use mysqli;
+    use DBQueries\IQueryBuilder;
+    use Entities\IEntity;
+    use mysqli;
     use mysqli_result;
     use mysqli_sql_exception;
 
@@ -28,7 +27,7 @@ use mysqli;
          */
         public function __construct() {
             if (!self::$connection) {
-                self::$connection = $this->establishConnection(include_once("./config/dbConfig.php"));
+                self::$connection = $this->establishConnection(include("./config/dbConfig.php"));
             }
         }
 
@@ -40,7 +39,7 @@ use mysqli;
          * @param string[] $config
          * @return mysqli
          */
-        private function establishConnection(array $config):mysqli {
+        public function establishConnection(array $config):mysqli {
             mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
             try {
