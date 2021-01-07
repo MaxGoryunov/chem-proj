@@ -44,18 +44,10 @@
         protected $factory;
 
         /**
-         * @throws InvalidArgumentException if the action name is of invalid type
-         * 
          * @param AbstractFactory $factory
          */
-        public function __construct(IControllerFactory $factory, string $actionName) {
+        public function __construct(IControllerFactory $factory) {
             $this->factory    = $factory;
-
-            if (isset(self::ACTIONS[$actionName])) {
-                $this->actionName = $actionName;
-            } else {
-                throw new InvalidArgumentException("Action must be of valid type");
-            }
         }
 
         /**
@@ -80,6 +72,22 @@
          */
         public function getActionName():string {
             return $this->actionName;
+        }
+
+        /**
+         * Sets Action name
+         *
+         * @throws InvalidArgumentException if the action name is of invalid type
+         * 
+         * @param string $actionName
+         * @return void
+         */
+        public function setActionName(string $actionName):void {
+            if (isset(self::ACTIONS[$actionName])) {
+                $this->actionName = $actionName;
+            } else {
+                throw new InvalidArgumentException("Action must be of valid type");
+            }
         }
 
         /**

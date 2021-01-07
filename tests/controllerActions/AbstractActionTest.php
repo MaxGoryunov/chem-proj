@@ -30,31 +30,36 @@ use ReflectionClass;
         }
 
         /**
-         * @covers ::__construct
+         * @covers ::setActionName
          *
          * @return void
          */
-        public function testConstructThrowsLogicExceptionOnWrongActionNameInput():void {
+        public function testSetActionNameThrowsLogicExceptionOnWrongActionNameInput():void {
             $this->expectException(InvalidArgumentException::class);
 
             $factory = $this->getMockBuilder(IControllerFactory::class)
                             ->getMock();
 
-            $action = new AbstractAction($factory, "aaaa");
+            $action = new AbstractAction($factory);
+
+            $action->setActionName("aaa");
         }
 
         /**
+         * @covers ::setActionName
          * @covers ::getActionName
          * 
          * @dataProvider provideActionNames
          *
          * @return void
          */
-        public function testGetActionNameReturnsActionName(string $actionName):void {
+        public function testSetGetActionNameReturnsActionName(string $actionName):void {
             $factory = $this->getMockBuilder(IControllerFactory::class)
                             ->getMock();
 
-            $action = new AbstractAction($factory, $actionName);
+            $action = new AbstractAction($factory);
+
+            $action->setActionName($actionName);
 
             $this->assertEquals($actionName, $action->getActionName());
         }
@@ -88,7 +93,7 @@ use ReflectionClass;
                 }
             };
 
-            $action = new AbstractAction($factory, "index");
+            $action = new AbstractAction($factory);
 
             $reflection    = new ReflectionClass($action);
             $getController = $reflection->getMethod("getController");
@@ -112,7 +117,7 @@ use ReflectionClass;
                         ->onlyMethods(["getController"])
                         ->getMock();
 
-            $action = new AbstractAction($factory, "index");
+            $action = new AbstractAction($factory);
             
             $reflection    = new ReflectionClass($action);
             $getController = $reflection->getMethod("getController");
@@ -141,7 +146,9 @@ use ReflectionClass;
             $controller = $this->getMockBuilder(IController::class)
                                 ->getMock();
 
-            $action = new AbstractAction($factory, "edit");
+            $action = new AbstractAction($factory);
+
+            $action->setActionName("edit");
 
             $factory->expects($this->once())
                     ->method("getController")
@@ -165,7 +172,9 @@ use ReflectionClass;
             $factory = $this->getMockBuilder(IControllerFactory::class)
                             ->getMock();
 
-            $action  = new AbstractAction($factory, "edit");
+            $action  = new AbstractAction($factory);
+
+            $action->setActionName("edit");
 
             $action->execute();
         }
@@ -182,7 +191,9 @@ use ReflectionClass;
             $controller = $this->getMockBuilder(IController::class)
                                 ->getMock();
 
-            $action = new AbstractAction($factory, "index");
+            $action = new AbstractAction($factory);
+
+            $action->setActionName("index");
 
             $factory->expects($this->once())
                     ->method("getController")
