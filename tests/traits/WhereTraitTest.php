@@ -142,34 +142,19 @@
          * @return void
          */
         public function testWhereEqualsBuildsCorrectStatement():void {
+            $where = "WHERE `medicine_id` = '12'";
             $this->builder->where("medicine_id")->equals("12");
-            $this->assertEquals("WHERE `medicine_id` = '12'", $this->builder->getWhere());
-        }
+            $this->assertEquals($where, $this->builder->getWhere());
 
-        /**
-         * @covers ::and
-         * @covers ::initWhereAnd
-         * @covers ::equals
-         * @covers ::getWhere
-         *
-         * @return void
-         */
-        public function testWhereAndEqualsBuildsCorrectStatement():void {
+            $where .= " AND `medicine_price` = '500'";
+
             $this->builder->and("medicine_price")->equals("500");
-            $this->assertEquals("WHERE 1 AND `medicine_price` = '500'", $this->builder->getWhere());
-        }
+            $this->assertEquals($where, $this->builder->getWhere());
 
-        /**
-         * @covers ::or
-         * @covers ::initWhereOr
-         * @covers ::equals
-         * @covers ::getWhere
-         *
-         * @return void
-         */
-        public function testWhereOrEqualsBuildsCorrectStatement():void {
+            $where .= " OR `medicine_doze` = '30'";
+
             $this->builder->or("medicine_doze")->equals("30");
-            $this->assertEquals("WHERE 0 OR `medicine_doze` = '30'", $this->builder->getWhere());
+            $this->assertEquals($where, $this->builder->getWhere());
         }
 
         /**
