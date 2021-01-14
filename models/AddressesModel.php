@@ -3,8 +3,8 @@
     namespace Models;
 
     use Components\DBConnectionProvider;
-use Components\IDBConnection;
-use DBQueries\SelectQueryBuilder;
+    use Components\IDBConnection;
+    use DBQueries\SelectQueryBuilder;
     use Entities\AddressEntity;
     use Entities\IEntity;
 

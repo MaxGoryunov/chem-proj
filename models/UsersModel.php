@@ -4,12 +4,14 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
-    use DBQueries\InsertQueryBuilder;
+use Components\TokenGenerator;
+use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
     use Entities\UserEntity;
+use mysqli;
 
-    /**
+/**
      * Class containing Users business logic 
      */
     class UsersModel extends AbstractModel {
@@ -44,6 +46,8 @@
 
         /**
          * {@inheritDoc}
+         * 
+         * @return mysqli
          */
         public function add(array $data = []):void {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
@@ -53,6 +57,8 @@
                           ->build();
 
             $connection->query($query->getQueryString());
+
+            // return $connection;
         }
 
         /**
@@ -175,4 +181,35 @@
             unset($session["token"]);
             unset($session["token_time"]);
         }
+
+        /**
+         * Returns a random user salt
+         *
+         * @return string
+         */
+        public function getSalt():string {
+            return (new TokenGenerator())->generateToken();
+        }
+
+        /**
+         * Returns a hashed salted password
+         *
+         * @param string $password - user password
+         * @param string $salt     - random user salt
+         * @return string
+         */
+        public function hashPassword(string $password, string $salt):string {
+            return md5($password . $salt);
+        }
+
+        /**
+         * Returns a unique user token
+         *
+         * @return string
+         */
+        public function generateUserToken():string {
+            return (new TokenGenerator())->generateToken();
+        }
+
+        public function getTokenTime():string {}
     }
