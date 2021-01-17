@@ -41,10 +41,6 @@
   margin: 30px auto 0;
 }
 
-.container__form > .form-group:last-of-type {
-  margin-bottom: 0;
-}
-
 .container__form .container__formlabel {
   font-size: 1.25rem;
   padding-left: 10px;
