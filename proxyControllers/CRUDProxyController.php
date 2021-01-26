@@ -3,28 +3,45 @@
     namespace ProxyControllers;
 
     use Controllers\AbstractController;
-    use Controllers\IController;
     use Factories\IMVCPDMFactory;
     use Factories\UsersFactory;
+    use InvalidArgumentException;
 
     /**
      * Base class for implementing other ProxyControllers
+     * 
+     * @method void add()           Protects add action
+     * @method void edit(int $id)   Protects edit action
+     * @method void delete(int $id) Protects delete action
      */
-    abstract class AbstractProxyController implements IController {
+    class CRUDProxyController {
+
+        /**
+         * Protected controller methods
+         * 
+         * True means that id is required to call this method, false means that id is not required
+         * 
+         * @var bool[]
+         */
+        private const PROTECTED_METHODS = [
+            "add"    => false,
+            "edit"   => true,
+            "delete" => true
+        ];
         
         /**
          * Related Factory used to get Controller from the same domain
          *
          * @var AbstractMVCPDMFactory
          */
-        protected $relatedFactory;
+        private $relatedFactory;
 
         /**
          * Related Controller which is invoked(or not) after the Proxy Controller finishes its business
          *
          * @var AbstractController
          */
-        protected $relatedController;
+        private $relatedController;
 
         /**
          * Accepts the Factory to delegate it the creation Related Controller
@@ -40,7 +57,7 @@
          *
          * @return AbstractController
          */
-        protected function getController():AbstractController {
+        private function getController():AbstractController {
             if (!isset($this->relatedController)) {
                 $this->relatedController = $this->relatedFactory->getController();
             }
@@ -58,46 +75,31 @@
         }
 
         /**
-         * Protects add action
+         * Magic method for invoking protected methods
+         * 
+         * @throws InvalidArgumentException if id is not supplied
          *
+         * @param string $name     - name of protected method
+         * @param int[] $arguments - method arguments
          * @return void
          */
-        public function add():void {
+        public function __call(string $name, array $arguments):void {
+            if (empty(self::PROTECTED_METHODS[$name])) return;
+
+            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+
             /**
-             * @todo Add a method to get user status
+             * @todo Implement error routing
              */
-            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+            if (!$userAdminStatus) return;
 
-            if ($userAdminStatus) {
-                $this->getController()->add();
-            }
-        }
+            $idRequired = self::PROTECTED_METHODS[$name];
+            [$id]       = $arguments;
 
-        /**
-         * Protects edit action
-         *
-         * @param int $id
-         * @return void
-         */
-        public function edit(int $id):void {
-            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
-
-            if ($userAdminStatus) {
-                $this->getController()->edit($id);
-            }
-        }
-
-        /**
-         * Protects delete action
-         *
-         * @param int $id
-         * @return void
-         */
-        public function delete(int $id):void {
-            $userAdminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
-
-            if ($userAdminStatus) {
-                $this->getController()->delete($id);
+            if ($id) {
+                $this->getController()->$name($id);
+            } elseif ($idRequired) {
+                throw new InvalidArgumentException("Id must be supplied");
             }
         }
     }
