@@ -44,6 +44,8 @@
          * @covers ::getKey
          * 
          * @dataProvider provideKeys
+         * 
+         * @small
          *
          * @param string[] $range  - range of string keys
          * @param string $expected - expected result
@@ -64,6 +66,8 @@
          * @covers ::getKey
          * 
          * @dataProvider provideInitSymbolsKeys
+         * 
+         * @small
          *
          * @param string[] $keys
          * @param (string|int)[] $expected
@@ -80,6 +84,8 @@
          * @covers ::generateToken
          * 
          * @dataProvider provideTokenLengths
+         * 
+         * @small
          *
          * @param int $length   - length of the Token
          * @param int $expected - expected Token length
@@ -96,6 +102,8 @@
          * @covers ::generateToken
          * 
          * @dataProvider provideSymbolTypes
+         * 
+         * @small
          *
          * @param string[][] $keys - keys for generating tokens
          * @param string $expected - expected values of token symbols
