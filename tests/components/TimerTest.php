@@ -40,6 +40,8 @@
         /**
          * @covers ::__construct
          * @covers ::getLastBreakpoint
+         * 
+         * @small
          *
          * @return void
          */
@@ -52,6 +54,8 @@
         /**
          * @covers ::__construct
          * @covers ::getLastBreakpoint
+         * 
+         * @small
          *
          * @return void
          */
@@ -65,6 +69,8 @@
          * @covers ::__construct
          * @covers ::breakpoint
          * @covers ::getLastBreakpoint
+         * 
+         * @medium
          *
          * @return void
          */
@@ -93,6 +99,8 @@
          * @covers ::breakpoint
          * @covers ::getLastBreakpoint
          * @covers ::getAllBreakpoints
+         * 
+         * @medium
          *
          * @return void
          */
@@ -112,6 +120,8 @@
          * @covers ::__construct
          * @covers ::breakpoint
          * @covers ::getLastInterval
+         * 
+         * @medium
          *
          * @return void
          */
@@ -134,6 +144,8 @@
          * @covers ::breakpoint
          * @covers ::getLastInterval
          * @covers ::getAllIntervals
+         * 
+         * @medium
          *
          * @return void
          */
