@@ -3,18 +3,43 @@
     namespace Tests\ControllerActions;
 
     use PHPUnit\Framework\TestCase;
-    use controllerActions\AbstractAction;
+    use controllerActions\ControllerAction;
     use Controllers\IController;
     use Factories\IControllerFactory;
     use Factories\IProxyFactory;
     use InvalidArgumentException;
-use LogicException;
-use ReflectionClass;
+    use LogicException;
+    use ReflectionClass;
 
     /**
-     * @coversDefaultClass AbstractAction
+     * @coversDefaultClass ControllerAction
      */
-    class AbstractActionTest extends TestCase {
+    class ControllerActionTest extends TestCase {
+
+        /**
+         * Contains testes class object
+         *
+         * @var ControllerAction
+         */
+        protected $action;
+
+        /**
+         * Creates Tested class object
+         *
+         * @return void
+         */
+        protected function setUp():void {
+            $this->action = new ControllerAction();
+        }
+
+        /**
+         * Removes tested class object
+         *
+         * @return void
+         */
+        protected function tearDown():void {
+            $this->action = null;
+        }
 
         /**
          * Returns all the variables needed for testing
@@ -30,6 +55,21 @@ use ReflectionClass;
         }
 
         /**
+         * @covers ::setFactory
+         * @covers ::getFactory
+         *
+         * @return void
+         */
+        public function testSetFactorySetsFactory():void {
+            $factory = $this->getMockBuilder(IControllerFactory::class)
+                            ->getMock();
+
+            $this->action->setFactory($factory);
+
+            $this->assertSame($factory, $this->action->getFactory());
+        }
+
+        /**
          * @covers ::setActionName
          *
          * @return void
@@ -40,9 +80,7 @@ use ReflectionClass;
             $factory = $this->getMockBuilder(IControllerFactory::class)
                             ->getMock();
 
-            $action = new AbstractAction($factory);
-
-            $action->setActionName("aaa");
+            $this->action->setActionName("aaa");
         }
 
         /**
@@ -57,11 +95,23 @@ use ReflectionClass;
             $factory = $this->getMockBuilder(IControllerFactory::class)
                             ->getMock();
 
-            $action = new AbstractAction($factory);
+            $this->action->setActionName($actionName);
 
-            $action->setActionName($actionName);
+            $this->assertEquals($actionName, $this->action->getActionName());
+        }
 
-            $this->assertEquals($actionName, $action->getActionName());
+        /**
+         * @covers ::setData
+         * @covers ::getData
+         * 
+         * @dataProvider provideControllerData
+         *
+         * @return void
+         */
+        public function testSetDataSetsControllerData(array $data):void {
+            $this->action->setData($data);
+
+            $this->assertEquals($data, $this->action->getData());
         }
 
         /**
@@ -93,14 +143,14 @@ use ReflectionClass;
                 }
             };
 
-            $action = new AbstractAction($factory);
+            $this->action->setFactory($factory);
 
-            $reflection    = new ReflectionClass($action);
+            $reflection    = new ReflectionClass($this->action);
             $getController = $reflection->getMethod("getController");
 
             $getController->setAccessible(true);
 
-            $this->assertSame($controller, $getController->invoke($action));
+            $this->assertSame($controller, $getController->invoke($this->action));
             $this->assertEquals(1, $factory->counter);
         }
 
@@ -117,9 +167,9 @@ use ReflectionClass;
                         ->onlyMethods(["getController"])
                         ->getMock();
 
-            $action = new AbstractAction($factory);
+            $this->action->setFactory($factory);
             
-            $reflection    = new ReflectionClass($action);
+            $reflection    = new ReflectionClass($this->action);
             $getController = $reflection->getMethod("getController");
 
             $factory->expects($this->once())
@@ -128,7 +178,7 @@ use ReflectionClass;
 
             $getController->setAccessible(true);
 
-            $this->assertSame($controller, $getController->invoke($action));
+            $this->assertSame($controller, $getController->invoke($this->action));
         }
 
         /**
@@ -145,10 +195,9 @@ use ReflectionClass;
 
             $controller = $this->getMockBuilder(IController::class)
                                 ->getMock();
-
-            $action = new AbstractAction($factory);
-
-            $action->setActionName("edit");
+            
+            $this->action->setFactory($factory);
+            $this->action->setActionName("edit");
 
             $factory->expects($this->once())
                     ->method("getController")
@@ -158,7 +207,7 @@ use ReflectionClass;
                         ->method("edit")
                         ->with($id);
 
-            $this->assertNull($action->execute($id));
+            $this->assertNull($this->action->execute($id));
         }
 
         /**
@@ -172,11 +221,12 @@ use ReflectionClass;
             $factory = $this->getMockBuilder(IControllerFactory::class)
                             ->getMock();
 
-            $action  = new AbstractAction($factory);
+            $this->action  = new ControllerAction();
 
-            $action->setActionName("edit");
+            $this->action->setFactory($factory);
+            $this->action->setActionName("edit");
 
-            $action->execute();
+            $this->action->execute();
         }
 
         /**
@@ -191,9 +241,8 @@ use ReflectionClass;
             $controller = $this->getMockBuilder(IController::class)
                                 ->getMock();
 
-            $action = new AbstractAction($factory);
-
-            $action->setActionName("index");
+            $this->action->setFactory($factory);
+            $this->action->setActionName("index");
 
             $factory->expects($this->once())
                     ->method("getController")
@@ -203,7 +252,7 @@ use ReflectionClass;
                         ->method("index")
                         ->with();
 
-            $this->assertNull($action->execute());
+            $this->assertNull($this->action->execute());
         }
 
         /**
@@ -214,6 +263,17 @@ use ReflectionClass;
                 ["index"],
                 ["edit"],
                 ["add"]
+            ];
+        }
+
+        /**
+         * @return int[][][]
+         */
+        public function provideControllerData():array {
+            return [
+                [[1]],
+                [[13]],
+                [[25]]
             ];
         }
 

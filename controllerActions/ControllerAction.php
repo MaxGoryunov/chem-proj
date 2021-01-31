@@ -3,7 +3,6 @@
     namespace ControllerActions;
 
     use Controllers\IController;
-    use Factories\AbstractFactory;
     use Factories\IControllerFactory;
     use Factories\IProxyFactory;
     use InvalidArgumentException;
@@ -12,7 +11,7 @@
     /**
      * Base class for implementing other controller actions
      */
-    class AbstractAction {
+    class ControllerAction {
 
         /**
          * Contains allowed actions in relation to the need of id to perform the action
@@ -30,25 +29,25 @@
         ];
 
         /**
-         * name of the action which is executed
-         *
-         * @var string
-         */
-        protected $actionName;
-        
-        /**
          * Contains the factory object from which the Controller will be retrieved
          *
          * @var IControllerFactory
          */
-        protected $factory;
+        private $factory;
 
         /**
-         * @param AbstractFactory $factory
+         * name of the action which is executed
+         *
+         * @var string
          */
-        public function __construct(IControllerFactory $factory) {
-            $this->factory    = $factory;
-        }
+        private $actionName;
+
+        /**
+         * Data for controller action
+         *
+         * @var array
+         */
+        private $data;
 
         /**
          * Returns a controller
@@ -66,12 +65,13 @@
         }
 
         /**
-         * Returns action name
+         * Sets factory used to get the controller
          *
-         * @return string
+         * @param IControllerFactory $factory
+         * @return void
          */
-        public function getActionName():string {
-            return $this->actionName;
+        public function setFactory(IControllerFactory $factory) {
+            $this->factory = $factory;
         }
 
         /**
@@ -88,6 +88,43 @@
             } else {
                 throw new InvalidArgumentException("Action must be of valid type");
             }
+        }
+
+        /**
+         * Sets controller data
+         *
+         * @param array $data
+         * @return void
+         */
+        public function setData(array $data):void {
+            $this->data = $data;
+        }
+
+        /**
+         * Returns controller factory
+         *
+         * @return IControllerFactory
+         */
+        public function getFactory():IControllerFactory {
+            return $this->factory;
+        }
+
+        /**
+         * Returns action name
+         *
+         * @return string
+         */
+        public function getActionName():string {
+            return $this->actionName;
+        }
+
+        /**
+         * Returns controller data
+         *
+         * @return array
+         */
+        public function getData():array {
+            return $this->data;
         }
 
         /**
