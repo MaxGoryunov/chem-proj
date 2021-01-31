@@ -85,6 +85,7 @@
         /**
          * @covers ::setDomainData
          * @covers ::getDomain
+         * @uses Components\Domain
          * 
          * @dataProvider provideDomainNames
          *
