@@ -3,6 +3,7 @@
     namespace Tests\DBQueries;
     
     use DBQueries\InsertQueryBuilder;
+    use Models\AbstractModel;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -25,7 +26,14 @@
          * @return void
          */
         protected function setUp():void {
-            $this->insertBuilder = new InsertQueryBuilder("medicines");
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->getMock();
+
+            $model->expects($this->once())
+                    ->method("getTableName")
+                    ->willReturn("medicines");
+
+            $this->insertBuilder = new InsertQueryBuilder($model);
         }
 
         /**
@@ -38,6 +46,7 @@
         }
 
         /**
+         * @covers ::getQueryString
          * @covers ::build
          * 
          * @uses DBQueries\AbstractQueryBuilder
