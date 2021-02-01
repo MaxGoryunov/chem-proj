@@ -12,10 +12,7 @@
      * 2. Now the code is dependent on the IDBConnection interface and not on the specific class
      * 3. I planned this project as PostgreSQL based, but since I have no experience with PostgreSQL I had to work with MySQL instead. This code structure simplifies the migration from one DBMS to another
      */
-    class DBConnectionProvider {
-        private static $connections = [
-            IDBConnection::class => MySQLConnection::class
-        ];
+    class DBServiceProvider {
 
         /**
          * Function shortcuts the accessing of Database Connection with the help of the specified class
@@ -24,15 +21,8 @@
          * 
          * @return MySQLConnection
          */
-        public static function getConnection(string $connectionType) {
-            /**
-             * If the connection type is present in the predefined connections then it can be accessed
-             */
-            if (array_key_exists($connectionType, self::$connections)) {
-                return new self::$connections[$connectionType];
-            }
-
-            throw new InvalidArgumentException("Supplied argument of unknown type");
+        public function getConnection():IDBConnection {
+            return new MySQLConnection();
         }
 
     }
