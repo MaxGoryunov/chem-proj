@@ -53,10 +53,12 @@
          * @return void
          */
         public function testWhereBuildsCorrectWhereStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where(""));
-
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where("", ">", "10"));
             $this->assertEquals("", $this->builder->getWhere());
-            $this->assertEquals("", $this->builder->getCurrentCondition());
+
+            
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where("name", ">", ""));
+            $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
@@ -67,10 +69,11 @@
          * @return void
          */
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and(""));
-
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and("", ">", "10"));
             $this->assertEquals("", $this->builder->getWhere());
-            $this->assertEquals("", $this->builder->getCurrentCondition());
+
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and("name", ">", ""));
+            $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
@@ -82,10 +85,11 @@
          * @return void
          */
         public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or(""));
-
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or("", ">", "10"));
             $this->assertEquals("", $this->builder->getWhere());
-            $this->assertEquals("", $this->builder->getCurrentCondition());
+
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or("name", ">", ""));
+            $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
@@ -117,91 +121,6 @@
             }
 
             $this->assertEquals($expected, $this->builder->getWhere());
-        }
-
-        /**
-         * @covers ::equals
-         * @covers ::getWhere
-         * @covers ::getCurrentCondition
-         *
-         * @return void
-         */
-        public function testEqualsBuildsCorrectStatementOnEmptyInput():void {
-            $this->builder->equals("");
-
-            $this->assertEquals("", $this->builder->getWhere());
-            $this->assertEquals("", $this->builder->getCurrentCondition());
-        }
-
-        /**
-         * @covers ::where
-         * @covers ::initWhere
-         * @covers ::equals
-         * @covers ::getWhere
-         *
-         * @return void
-         */
-        public function testWhereEqualsBuildsCorrectStatement():void {
-            $where = "WHERE `medicine_id` = '12'";
-            $this->builder->where("medicine_id")->equals("12");
-            $this->assertEquals($where, $this->builder->getWhere());
-
-            $where .= " AND `medicine_price` = '500'";
-
-            $this->builder->and("medicine_price")->equals("500");
-            $this->assertEquals($where, $this->builder->getWhere());
-
-            $where .= " OR `medicine_doze` = '30'";
-
-            $this->builder->or("medicine_doze")->equals("30");
-            $this->assertEquals($where, $this->builder->getWhere());
-        }
-
-        /**
-         * @covers ::or
-         * @covers ::initWhereOr
-         * @covers ::and
-         * @covers ::initWhereAnd
-         * @covers ::getWhere
-         *
-         * @return void
-         */
-        public function testBadUsageOfWhereMethods():void {
-            $this->builder->where("");
-            $this->builder->and("");
-            $this->builder->or("");
-
-            $this->assertEquals("", $this->builder->getLinkType());
-            $this->assertEquals("", $this->builder->getWhere());
-
-            $this->builder->where("");
-            $this->builder->and("");
-            $this->builder->where("");
-
-            $this->assertEquals("", $this->builder->getLinkType());
-            $this->assertEquals("", $this->builder->getWhere());
-
-            $this->builder->where("");
-            $this->builder->or("");
-            $this->builder->and("");
-
-            $this->assertEquals("", $this->builder->getLinkType());
-            $this->assertEquals("", $this->builder->getWhere());
-
-            $this->builder->and("medicine_id");
-            $this->builder->or("");
-
-            $this->assertEquals("And", $this->builder->getLinkType());
-            $this->assertEquals("", $this->builder->getWhere());
-            $this->assertEquals("medicine_id", $this->builder->getCurrentCondition());
-
-            $this->builder->or("medicine_price");
-            $this->builder->and("");
-
-            $this->assertEquals("Or", $this->builder->getLinkType());
-            $this->assertEquals("", $this->builder->getWhere());
-            $this->assertEquals("medicine_price", $this->builder->getCurrentCondition());
-
         }
 
         /**
