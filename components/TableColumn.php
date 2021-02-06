@@ -1,10 +1,13 @@
 <?php
 
-    namespace DBQueries;
+    namespace Components;
 
-use InvalidArgumentException;
+    use InvalidArgumentException;
 
-class TableColumn {
+    /**
+     * Class contains data for creating a new table column
+     */
+    class TableColumn {
 
         /**
          * Allowed column types

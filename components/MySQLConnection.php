@@ -101,7 +101,7 @@
         /**
          * {@inheritDoc}
          */
-        public function fetchObject(IQueryBuilder $builder, string $className):IEntity {
+        public function fetchObject(IQueryBuilder $builder, string $className):object {
             $result = $this->query($builder);
             $object = $result->fetch_object($className);
 

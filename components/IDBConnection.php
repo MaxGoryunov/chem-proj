@@ -42,5 +42,5 @@
          * @param string $className      - name of the class of the resulting object
          * @return IEntity
          */
-        public function fetchObject(IQueryBuilder $builder, string $className):IEntity;
+        public function fetchObject(IQueryBuilder $builder, string $className):object;
     }

@@ -24,12 +24,9 @@
          * @return string[][]
          */
         public function getTableDescription(string $tableName):array {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = new MySQLConnection(); 
 
-            $query      = (new DescribeQueryBuilder($tableName))
-                            ->build();
-
-            $result  = $connection->query($query->getQueryString());
+            $result  = $connection->query(new DescribeQueryBuilder($tableName));
             $columns = $result->fetch_all(MYSQLI_ASSOC);
             
             foreach ($columns as $column) {

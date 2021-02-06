@@ -2,9 +2,9 @@
 
     namespace Tests\DBQueries;
 
-    use DBQueries\TableColumn;
-use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
+    use Components\TableColumn;
+    use InvalidArgumentException;
+    use PHPUnit\Framework\TestCase;
 
     /**
      * @coversDefaultClass TableColumn
