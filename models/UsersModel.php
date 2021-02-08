@@ -78,11 +78,11 @@ use mysqli;
         /**
          * Returns id of the user based on the login and password input
          *
-         * @param string $login    - user's login
+         * @param string $email    - user's email
          * @param string $password - user's password
          * @return string[]
          */
-        public function getUserInfoByRegistrationData(string $login, string $password):array {
+        public function getUserInfoByRegistrationData(string $email, string $password):array {
             $connection = DBConnectionProvider::getConnection(IDBConnection::class);
             $columns    = [
                 "count" => "COUNT(`user_id`)",
@@ -91,7 +91,7 @@ use mysqli;
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
                           ->what($columns)
-                          ->whereAnd("`user_login` = '$login'")
+                          ->whereAnd("`user_email` = '$email'")
                           ->whereAnd("`user_password` = '$password'")
                           ->build();
 

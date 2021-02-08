@@ -2,8 +2,6 @@
 
     namespace Controllers;
 
-    use Components\TokenGenerator;
-    use Models\AbstractModel;
     use Models\ConnectsModel;
     use Models\UsersModel;
     use mysqli;
@@ -101,6 +99,50 @@
         }
 
         /**
+         * AUthorise user
+         *
+         * @return void
+         */
+        public function authorise():void {
+            $title          = "Авторизация";
+			$fullUserStatus = $this->getModel()->getUserAdminStatus();
+
+			if ((isset($_POST["email"])) && (isset($_POST["password"]))) {
+				$email          = $_POST["email"];
+				$password       = $_POST["password"];
+				$userSalt       = $this->getModel()->getSaltByUserEmail($email);
+				$hashedPassword = $this->getModel()->hashPassword($password, $userSalt);
+
+				$userInfo = $this->getModel()->getUserInfoByRegistrationData($email, $hashedPassword);
+				
+				if ($userInfo["count"] == 1) {  
+					$userId = $userInfo["user_id"];
+					
+					session_start();
+
+					$sessionId = session_id();
+                    $token     = $this->getModel()->generateUserToken();
+					$tokenTime = time() + 15 * 60;
+
+                    $_SESSION["id"]    = $userId;
+                    $_SESSION["token"] = $token;
+
+					$unixTime = "FROM_UNIXTIME(" . $tokenTime . ")";
+
+					$connectionData = compact("token", "userId", "sessionId", "tokenTime");
+
+                    (new ConnectsModel())->add($connectionData);
+
+					header("Location: ../medicines/list");
+				} else {
+					echo ("Неправильно введен логин или пароль. Проверьте данные.");
+				}
+			}
+
+			$this->getView()->render(__FUNCTION__, []);
+        }
+
+        /**
          * Logs the user out of the system
          *
          * @return void
@@ -112,6 +154,6 @@
 
             (new ConnectsModel())->delete($userId);
 
-            header('Location: ../medicines/list');
+            header("Location: ../medicines/list");
         }
     }
