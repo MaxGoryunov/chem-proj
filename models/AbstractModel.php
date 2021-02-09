@@ -8,7 +8,8 @@
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use DBQueries\UpdateQueryBuilder;
-    use Factories\AbstractMVCPDMFactory;
+use Entities\IEntity;
+use Factories\AbstractMVCPDMFactory;
     use mysqli;
     use Traits\TableNameTrait;
 
@@ -63,6 +64,15 @@
         }
 
         /**
+         * Returns the Database connection
+         *
+         * @return mysqli
+         */
+        protected function connectToDB():mysqli {
+            return DBConnectionProvider::getConnection(IDBConnection::class);
+        }
+
+        /**
          * {@inheritDoc}
          */
         public function getList(int $limit, int $offset):array {
@@ -77,6 +87,19 @@
             $itemsList = $result->fetch_all(MYSQLI_ASSOC);
 
             return $itemsList;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function getById(int $id):IEntity {
+            $builder = (new SelectQueryBuilder($this->getTableName()))
+                        ->whereAnd("`" . $this->getDomainName() . "_is_deleted` = 0")
+                        ->whereAnd("`" . $this->getDomainName() . "_id` = " . $id);
+
+            $entity = $this->getDataMapper()->mapQueryResultToEntity($builder);
+
+            return $entity;
         }
 
         /**
@@ -119,15 +142,6 @@
                           ->build();
 
             $connection->query($query->getQueryString());
-        }
-
-        /**
-         * Returns the Database connection
-         *
-         * @return mysqli
-         */
-        protected function connectToDB():mysqli {
-            return DBConnectionProvider::getConnection(IDBConnection::class);
         }
 
         /**
