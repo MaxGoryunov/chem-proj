@@ -74,7 +74,7 @@
          * @return void
          */
         public function testInitSymbolsReturnsInitiatedSymbols(array $keys, array $expected):void {
-            $this->assertEquals($expected, $this->tokenGenerator->initSymbols($keys));
+            $this->assertEquals($expected, $this->tokenGenerator->getSymbols($keys));
         }
         
         /**
@@ -142,11 +142,11 @@
          */
         public function provideInitSymbolsKeys():array {
             return [
-                "digits"            => [[TokenGenerator::DIGITS], range(0, 9)],
-                "letters"           => [[TokenGenerator::LETTERS], array_merge(range("a", "z"), range("A", "Z"))],
-                "letters_lowercase" => [[TokenGenerator::LETTERS_LOWERCASE], range("a", "z")],
-                "letters_uppercase" => [[TokenGenerator::LETTERS_UPPERCASE], range("A", "Z")],
-                "all"               => [[TokenGenerator::ALL], array_merge(range(0, 9), range("a", "z"), range("A", "Z"))]
+                "digits"            => [[TokenGenerator::DIGITS], array_flip(range(0, 9))],
+                "letters"           => [[TokenGenerator::LETTERS], array_flip(array_merge(range("a", "z"), range("A", "Z")))],
+                "letters_lowercase" => [[TokenGenerator::LETTERS_LOWERCASE], array_flip(range("a", "z"))],
+                "letters_uppercase" => [[TokenGenerator::LETTERS_UPPERCASE], array_flip(range("A", "Z"))],
+                "all"               => [[TokenGenerator::ALL], array_flip(array_merge(range(0, 9), range("a", "z"), range("A", "Z")))]
             ];
         }
 

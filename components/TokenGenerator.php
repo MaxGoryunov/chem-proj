@@ -37,6 +37,8 @@
 
         /**
          * Key for generating only token with symbols from [0-9a-Z] range
+         * 
+         * @var string[]
          */
         public const ALL = ["09", "az", "AZ"];
 
@@ -46,26 +48,6 @@
          * @var array
          */
         private $ranges = [];
-
-        /**
-         * Symbols used to create a token
-         *
-         * @var string[]
-         */
-        private $symbols = [];
-
-        /**
-         * Sets the predefined ranges state to false
-         */
-        public function __construct() {
-            $this->ranges = [
-                $this->getKey(self::DIGITS)            => [],
-                $this->getKey(self::LETTERS)           => [],
-                $this->getKey(self::LETTERS_LOWERCASE) => [],
-                $this->getKey(self::LETTERS_UPPERCASE) => [],
-                $this->getKey(self::ALL)               => []
-            ];
-        }
 
         /**
          * Returns a generated key based on the given array
@@ -87,27 +69,29 @@
          * @param string[][] $keys
          * @return (int|string)[]
          */
-        public function initSymbols(array $keys):array {
+        public function getSymbols(array $keys):array {
+            $requiredRanges = [];
+
             foreach ($keys as $ranges) {
                 $rangeKey = $this->getKey($ranges);
 
                 /**
                  * If the range is empty then the is is created from smaller ranges
                  */
-                if ($this->ranges[$rangeKey] === []) {
+                if (!isset($this->ranges[$rangeKey])) {
                     $generatedRanges = [];
 
                     foreach ($ranges as $range) {
                         $generatedRanges[] = range(...str_split($range));
                     }
 
-                    $this->ranges[$rangeKey] = array_merge(...$generatedRanges);
+                    $this->ranges[$rangeKey] = array_flip(array_merge(...$generatedRanges));
                 }
+
+                $requiredRanges[] = $this->ranges[$rangeKey];
             }
 
-            $this->symbols = array_merge(...array_values($this->ranges));
-
-            return $this->symbols;
+            return array_merge(...$requiredRanges);
         }
 
         /**
@@ -118,21 +102,14 @@
          * @return string
          */
         public function generateToken(int $length = 32, array $keys = [self::ALL]):string {
-            $this->initSymbols($keys);
-
-            /**
-             * Flipping the array solves two problems: 
-             * 1. All repeating values are deleted because same keys overwrite each other
-             * 2. array_rand can return the index and there is no need to build a statement like arr[array_rand(arr)]
-             */
-            $this->symbols = array_flip($this->symbols);
-            $token         = "";
+            $symbols = $this->getSymbols($keys);
+            $token   = "";
 
             for ($i = 0; $i < $length; $i++) {
                 /**
                  * As the array is flipped, array_rand returns the symbol instead of its index
                  */
-                $token .= array_rand($this->symbols);
+                $token .= array_rand($symbols);
             }
 
             return $token;
