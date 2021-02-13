@@ -14,9 +14,11 @@
          * 
          * @throws InvalidArgumentException if the value is not found
          *
+         * @param string $key
+         * @param array $set
          * @return mixed
          */
-        public function GetFromSetOrException(string $key, array $set) {
+        public function GetFromSetOrThrowException(string $key, array $set) {
             if (array_key_exists($key, $set)) {
                 return $set[$key];
             }

@@ -3,11 +3,11 @@
     namespace Tests\Components;
 
     use Components\DataValidator;
-use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
+    use InvalidArgumentException;
+    use PHPUnit\Framework\TestCase;
 
     /**
-     * @coversDefaultClass DataValidator
+     * @coversDefaultClass Components\DataValidator
      */
     class DataValidatorTest extends TestCase {
 
@@ -31,31 +31,31 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
-         * @covers ::getFromSetOrException
+         * @covers ::getFromSetOrThrowException
          * 
          * @dataProvider provideSets
          *
          * @param bool[] $set
          * @return void
          */
-        public function testGetFromSetOrExceptionReturnsFoundValue(array $set):void {
+        public function testGetFromSetOrThrowExceptionReturnsFoundValue(array $set):void {
             foreach ($set as $key => $value) {
-                $this->assertEquals($value, $this->dataValidator->GetFromSetOrException($key, $set));
+                $this->assertEquals($value, $this->dataValidator->GetFromSetOrThrowException($key, $set));
             }
         }
 
         /**
-         * @covers ::getFromSetOrException
+         * @covers ::getFromSetOrThrowException
          * 
          * @dataProvider provideSets
          *
          * @param bool[] $set
          * @return void
          */
-        public function testGetFromSetOrExceptionThrowsExceptionIfKeyIsNotAllowed(array $set):void {
+        public function testGetFromSetOrThrowExceptionThrowsExceptionIfKeyIsNotAllowed(array $set):void {
             $this->expectException(InvalidArgumentException::class);
 
-            $this->dataValidator->GetFromSetOrException("aaa", $set);
+            $this->dataValidator->GetFromSetOrThrowException("aaa", $set);
         }
 
         /**
