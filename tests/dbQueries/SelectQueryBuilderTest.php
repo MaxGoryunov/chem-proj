@@ -2,6 +2,7 @@
 
     namespace Tests\DBQueries;
 
+    use Models\AbstractModel;
     use DBQueries\SelectQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
@@ -25,7 +26,14 @@
          * @return void
          */
         protected function setUp():void {
-            $this->selectBuilder = new SelectQueryBuilder("medicines");
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->getMock();
+
+            $model->expects($this->once())
+                    ->method("getTableName")
+                    ->willReturn("medicines");
+
+            $this->selectBuilder = new SelectQueryBuilder($model);
         }
 
         /**
@@ -40,6 +48,8 @@
         /**
          * @covers ::what
          * @covers ::getWhat
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          * 
          * @dataProvider provideWhatColumns
          *
@@ -57,6 +67,8 @@
          * @covers ::groupBy
          * @covers ::getGroupBy
          * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * 
          * @dataProvider provideGroupByColumnNames
          *
          * @param string $columnName - column name to be grouped by
@@ -72,6 +84,8 @@
         /**
          * @covers ::having
          * @covers ::getHaving
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          * 
          * @dataProvider provideHavingConditions
          *
@@ -89,6 +103,8 @@
          * @covers ::orderBy
          * @covers ::getOrderBy
          * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * 
          * @dataProvider provideOrderByColumns
          *
          * @param array|string[] $columns - columns to be ordered by
@@ -104,6 +120,8 @@
         /**
          * @covers ::limit
          * @covers ::getLimit
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          *
          * @return void
          */
@@ -116,6 +134,8 @@
         /**
          * @covers ::limit
          * @covers ::getLimit
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          *
          * @return void
          */
@@ -128,6 +148,8 @@
         /**
          * @covers ::join
          * @covers ::getJoins
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
          * 
          * @dataProvider provideJoins
          *
@@ -147,6 +169,27 @@
             $this->assertEquals($expected, preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $this->selectBuilder->getJoins())));
         }
 
+        /**
+         * @covers ::what
+         * @covers ::getWhat
+         * @covers ::join
+         * @covers ::getJoins
+         * @covers ::groupBy
+         * @covers ::getGroupBy
+         * @covers ::orderBy
+         * @covers ::getOrderBy
+         * @covers ::limit
+         * @covers ::getLimit
+         * @covers ::getHaving
+         * @covers ::getQueryString
+         * @covers ::build
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
+         * @uses Traits\WhereTrait
+         *
+         * @return void
+         */
         public function testBuildBuildsCorrectQueryObject():void {
             $query = $this->selectBuilder->what(["medicine_id", 
                                                 "name" =>"medicine_name"])

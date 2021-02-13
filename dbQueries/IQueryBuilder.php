@@ -8,7 +8,14 @@
     interface IQueryBuilder {
 
         /**
-         * Returns a IQuery Object which can be used for retrieving a query string
+         * Returns the created string
+         *
+         * @return string
+         */
+        public function getQueryString():string;
+
+        /**
+         * Returns an IQuery Object which can be used for retrieving a query string
          *
          * @return IQuery
          */

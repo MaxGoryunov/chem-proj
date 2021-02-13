@@ -3,7 +3,9 @@
     namespace Tests\DBQueries;
     
     use DBQueries\AbstractQueryBuilder;
-    use PHPUnit\Framework\TestCase;
+use DBQueries\IQuery;
+use Models\AbstractModel;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing AbstractQueryBuilder
@@ -11,15 +13,9 @@
      * @coversDefaultClass DBQueries\AbstractQueryBuilder
      */
     class AbstractQueryBuilderTest extends TestCase {
-        
-        /**
-         * Contains tested class mock
-         *
-         * @var \PHPUnit\Framework\MockObject\MockObject|AbstractQueryBuilder
-         */
-        protected $builder;
 
         /**
+         * @covers ::__construct
          * @covers ::getTableName
          * 
          * @dataProvider provideTableNames
@@ -28,9 +24,35 @@
          * @return void
          */
         public function testGetTableNameReturnsCorrectTable(string $tableName):void {
-            $this->builder = $this->getMockForAbstractClass(AbstractQueryBuilder::class, [$tableName]);
+            $model = $this->getMockForAbstractClass(AbstractModel::class);
 
-            $this->assertEquals($tableName, $this->builder->getTableName());
+            $model->expects($this->once())
+                    ->method("getTableName")
+                    ->willReturn($tableName);
+
+            $builder = $this->getMockForAbstractClass(AbstractQueryBuilder::class, [$model]);
+
+            $this->assertEquals($tableName, $builder->getTableName());
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::build
+         * 
+         * @uses DBQueries\Query
+         *
+         * @return void
+         */
+        public function testBuildReturnsIQueryObject():void {
+            $model = $this->getMockForAbstractClass(AbstractModel::class);
+
+            $model->expects($this->once())
+                    ->method("getTableName")
+                    ->willReturn("addresses");
+            
+            $builder = $this->getMockForAbstractClass(AbstractQueryBuilder::class, [$model]);
+
+            $this->assertInstanceOf(IQuery::class, $builder->build());
         }
 
         /**

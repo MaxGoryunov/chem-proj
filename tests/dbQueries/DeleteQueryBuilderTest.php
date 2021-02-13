@@ -3,7 +3,8 @@
     namespace Tests\DBQueries;
 
     use DBQueries\DeleteQueryBuilder;
-    use PHPUnit\Framework\TestCase;
+use Models\AbstractModel;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing DeleteQueryBuilder
@@ -25,7 +26,14 @@
          * @return void
          */
         protected function setUp():void {
-            $this->deleteBuilder = new DeleteQueryBuilder("medicines");
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->getMock();
+
+            $model->expects($this->once())
+                    ->method("getTableName")
+                    ->willReturn("medicines");
+
+            $this->deleteBuilder = new DeleteQueryBuilder($model);
         }
 
         /**
@@ -38,7 +46,13 @@
         }
 
         /**
+         * @covers ::getQueryString
          * @covers ::build
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
+         * @uses Traits\WhereTrait
+         * @uses Traits\LimitTrait
          *
          * @return void
          */

@@ -14,6 +14,7 @@
     class QueryTest extends TestCase {
 
         /**
+         * @covers ::__construct
          * @covers ::getQueryString
          * 
          * @dataProvider provideQueryStrings
@@ -28,13 +29,17 @@
              * @var \PHPUnit\Framework\MockObject\MockObject|AbstractQueryBuilder
              */
             $queryBuilder = $this->getMockBuilder(AbstractQueryBuilder::class)
-                            ->onlyMethods(["build"])
+                            ->onlyMethods(["build", "getQueryString"])
                             ->disableOriginalConstructor()
                             ->getMock();
 
             $queryBuilder->expects($this->once())
+                            ->method("getQueryString")
+                            ->will($this->returnValue($queryString));
+
+            $queryBuilder->expects($this->once())
                         ->method("build")
-                        ->will($this->returnValue(new Query($queryString)));
+                        ->will($this->returnValue(new Query($queryBuilder)));
 
             $query = $queryBuilder->build();
 

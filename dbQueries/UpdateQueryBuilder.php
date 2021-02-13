@@ -18,12 +18,12 @@
         /**
          * {@inheritDoc}
          */
-        public function build():IQuery {
-            return new Query("
+        public function getQueryString():string {
+            return "
                 UPDATE `{$this->getTableName()}`
                 SET {$this->getValues()}
                 {$this->getWhere()}
                 {$this->getLimit()};
-            ");
+            ";
         }
     }
