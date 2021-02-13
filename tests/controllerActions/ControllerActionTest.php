@@ -3,7 +3,7 @@
     namespace Tests\ControllerActions;
 
     use PHPUnit\Framework\TestCase;
-    use controllerActions\ControllerAction;
+    use ControllerActions\ControllerAction;
     use Controllers\IController;
     use Factories\IControllerFactory;
     use Factories\IProxyFactory;
@@ -12,7 +12,7 @@
     use ReflectionClass;
 
     /**
-     * @coversDefaultClass ControllerAction
+     * @coversDefaultClass ControllerActions\ControllerAction
      */
     class ControllerActionTest extends TestCase {
 
@@ -115,7 +115,7 @@
         }
 
         /**
-         * @covers ::__construct
+         * @covers ::setFactory
          * @covers ::getController
          *
          * @return void
@@ -155,7 +155,7 @@
         }
 
         /**
-         * @covers ::__construct
+         * @covers ::setFactory
          * @covers ::getController
          *
          * @return void
@@ -182,6 +182,10 @@
         }
 
         /**
+         * @covers ::getActionName
+         * @covers ::getController
+         * @covers ::setActionName
+         * @covers ::setFactory
          * @covers ::execute
          * 
          * @dataProvider provideIds
@@ -211,6 +215,10 @@
         }
 
         /**
+         * @covers ::getActionName
+         * @covers ::getController
+         * @covers ::setActionName
+         * @covers ::setFactory
          * @covers ::execute
          *
          * @return void
@@ -230,6 +238,10 @@
         }
 
         /**
+         * @covers ::getActionName
+         * @covers ::getController
+         * @covers ::setActionName
+         * @covers ::setFactory
          * @covers ::execute
          *
          * @return void
