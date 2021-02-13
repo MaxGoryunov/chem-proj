@@ -2,7 +2,8 @@
 
     namespace Tests\Routing;
 
-    use PHPUnit\Framework\TestCase;
+use DBQueries\IQueryBuilder;
+use PHPUnit\Framework\TestCase;
     use ReflectionClass;
     use ReflectionMethod;
     use Routing\AbstractHandler;
@@ -41,21 +42,6 @@
         }
 
         /**
-         * Returns protected or private class method
-         *
-         * @param string $methodName
-         * @return ReflectionMethod
-         */
-        protected function getInnerMethod(string $methodName):ReflectionMethod {
-            $reflection = new ReflectionClass(AbstractHandler::class);
-            $method     = $reflection->getMethod($methodName);
-
-            $method->setAccessible(true);
-
-            return $method;
-        }
-
-        /**
          * @covers ::setNextHandler
          *
          * @return void
@@ -63,54 +49,52 @@
         public function testSetNextHandlerReturnsSuppliedHandler():void {
             $nextHandler = $this->getMockBuilder(IRoutingHandler::class)
                             ->onlyMethods([])
-                           ->getMock();
+                            ->getMock();
 
             $this->assertSame($nextHandler, $this->handler->setNextHandler($nextHandler));
         }
 
         /**
-         * @covers ::passToNext
-         * 
-         * @dataProvider provideIds
+         * @covers ::handle
          *
          * @return void
          */
-        public function testPassToNextContainsNextHandlerResults(int $id):void {
-            $nextHandler = $this->getMockBuilder(IRoutingHandler::class)
-                            ->onlyMethods(["handle", "setNextHandler"])
-                            ->getMock();
+        public function testHandleReturnsInvokeDataIfNextHandlerDoesNotExist():void {
+            $this->handler->expects($this->once())
+                    ->method("fillData")
+                    ->will($this->returnArgument(1));
 
-            $nextHandler->expects($this->once())
-                        ->method("handle")
-                        ->will($this->returnValue(["id" => $id]));
-
-            $this->handler->setNextHandler($nextHandler);
-
-            $passToNext = $this->getInnerMethod("passToNext");
-
-            $this->assertEquals(["id" => $id], $passToNext->invokeArgs($this->handler, [[], []]));
+            $uri = ["root", "domain", "action"];
+            $data = ["factory", "action"];
+            $this->assertEquals($data, $this->handler->handle($uri, $data));
         }
 
         /**
-         * @covers ::passToNext
+         * @covers ::handle
          *
          * @return void
          */
-        public function testPassToNextReturnsGivenArrayIfNextHandlerIsNotSet():void {
-            $passToNext = $this->getInnerMethod("passToNext");
-            $invokeData = ["action" => "action", "id" => 123];
+        public function testHandleReturnsNextHandlerResults():void {
+            $this->handler->expects($this->once())
+                    ->method("fillData")
+                    ->will($this->returnArgument(1));
 
-            $this->assertEquals($invokeData, $passToNext->invokeArgs($this->handler, [[], $invokeData]));
-        }
+            $handler = $this->createMock(AbstractHandler::class);
 
-        /**
-         * @return int[][]
-         */
-        public function provideIds():array {
-            return [
-                [1],
-                [23],
-                [113]
-            ];
+            $handler->expects($this->once())
+                    ->method("handle")
+                    ->will($this->returnCallback(function ($uri, $data) {
+                        $data["id"] = 3;
+
+                        return $data;
+                    }));
+
+            $data         = ["factory" => "factory", "action" => "action"];
+            $result       = $data;
+            $result["id"] = 3;
+
+            $this->handler->setNextHandler($handler);
+
+            $this->assertEquals($result, $this->handler->handle([], $data));
         }
     }
