@@ -8,7 +8,7 @@
     /**
      * Testing MySQLConnection class
      * 
-     * @coversDefaultClass MySQLConnection
+     * @coversDefaultClass Components\MySQLConnection
      */
     class MySQLConnectionTest extends TestCase {
 
@@ -38,7 +38,7 @@
         }
 
         /**
-         * @coversNothing
+         * @covers ::getInstance
          *
          * @return void
          */
@@ -62,6 +62,7 @@
 
         /**
          * @covers ::getConnection
+         * @covers ::getInstance
          *
          * @return void
          */

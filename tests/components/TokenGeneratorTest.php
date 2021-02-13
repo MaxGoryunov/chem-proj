@@ -9,7 +9,7 @@
     /**
      * Testing TokenGenerator class
      * 
-     * @coversDefaultClass TokenGenerator
+     * @coversDefaultClass Components\TokenGenerator
      */
     class TokenGeneratorTest extends TestCase {
 
@@ -39,7 +39,7 @@
         }
 
         /**
-         * @covers :initSymbols
+         * @covers ::initSymbols
          * 
          * @return void
          */
@@ -53,7 +53,7 @@
          * 
          * @dataProvider provideTokenLengths
          *
-         * @param int $length - length of the Token
+         * @param int $length   - length of the Token
          * @param int $expected - expected Token length
          * @return void
          */

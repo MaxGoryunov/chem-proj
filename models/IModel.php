@@ -8,6 +8,13 @@
      * Interface specifies common Model methods
      */
     interface IModel {
+
+        /**
+         * Returns related table name
+         *
+         * @return string
+         */
+        public function getTableName():string;
         
         /**
          * Gets a list of Database Table Entities

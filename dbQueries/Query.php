@@ -15,12 +15,12 @@
         private $queryString = "";
 
         /**
-         * Accepts the string through a constructor so that it cannot be changed later
+         * Accepts the query builder as a parameter to encapsulate the string acquisition
          *
-         * @param string $queryString
+         * @param IQueryBuilder $queryBuilder
          */
-        public function __construct(string $queryString) {
-            $this->queryString = $queryString;
+        public function __construct(IQueryBuilder $queryBuilder) {
+            $this->queryString = $queryBuilder->getQueryString();
         }
 
         /**

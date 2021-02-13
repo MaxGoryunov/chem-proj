@@ -2,13 +2,14 @@
 
     namespace Tests\DBQueries;
 
+    use Models\AbstractModel;
     use DBQueries\UpdateQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
     /**
      * Testing UpdateQueryBuilder
      * 
-     * @coversDefaultClass UpdateQueryBuilder
+     * @coversDefaultClass \DBQueries\UpdateQueryBuilder
      */
     class UpdateQueryBuilderTest extends TestCase {
 
@@ -25,7 +26,14 @@
          * @return void
          */
         protected function setUp():void {
-            $this->updateBuilder = new UpdateQueryBuilder("medicines");
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->getMock();
+
+            $model->expects($this->once())
+                    ->method("getTableName")
+                    ->willReturn("medicines");
+
+            $this->updateBuilder = new UpdateQueryBuilder($model);
         }
 
         /**
@@ -38,20 +46,27 @@
         }
 
         /**
+         * @covers ::getQueryString
          * @covers ::build
-         *
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
+         * @uses Traits\LimitTrait
+         * @uses Traits\SetTrait
+         * @uses Traits\WhereTrait
+         * 
          * @return void
          */
         public function testBuildBuildsCorrectStatement():void {
             $query = $this->updateBuilder->set([
-                "medicine_name"  => "Sensu Bean",
-                "medicine_price" => 760,
-                "medicine_doze"  => 50
-            ])
-                                         ->whereAnd("`medicine_id` = 1")
-                                         ->whereOr("`medicine_id` = 3")
-                                         ->limit(4)
-                                         ->build();
+                        "medicine_name"  => "Sensu Bean",
+                        "medicine_price" => 760,
+                        "medicine_doze"  => 50
+                    ])
+                     ->whereAnd("`medicine_id` = 1")
+                     ->whereOr("`medicine_id` = 3")
+                     ->limit(4)
+                     ->build();
 
             $this->assertEquals(" UPDATE `medicines` SET `medicine_name` = 'Sensu Bean', `medicine_price` = '760', `medicine_doze` = '50' WHERE 1 AND `medicine_id` = 1 OR `medicine_id` = 3 LIMIT 4; ", preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
 
