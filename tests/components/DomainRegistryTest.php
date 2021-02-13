@@ -42,6 +42,8 @@
         
         /**
          * @covers ::getDomain
+         * 
+         * @small
          *
          * @return void
          */
@@ -54,6 +56,8 @@
         /**
          * @covers ::setDomainData
          * @covers ::getDomainData
+         * 
+         * @small
          *
          * @return void
          */
@@ -68,6 +72,8 @@
         /**
          * @covers ::setDomainData
          * @covers ::getDomainData
+         * 
+         * @small
          *
          * @return void
          */
@@ -88,6 +94,8 @@
          * @uses Components\Domain
          * 
          * @dataProvider provideDomainNames
+         * 
+         * @small
          *
          * @param string $domainPlural      - domain name in plural
          * @param string $domainSingular    - domain name in singular
@@ -109,6 +117,8 @@
         /**
          * @covers ::setDomainData
          * @covers ::getDomain
+         * 
+         * @small
          * 
          * @return void
          */
@@ -136,6 +146,8 @@
         /**
          * @covers ::setDomainData
          * @covers ::getDomainData
+         * 
+         * @small
          *
          * @return void
          */
