@@ -30,6 +30,35 @@
         private $where = "";
 
         /**
+         * Base method which is extended by public methods
+         *
+         * @param string $constraint  - field which is being specified
+         * @param string $relation    - relation between field and value
+         * @param string $value       - field value
+         * @param string $whereOption - alternative for $where when it is not empty
+         * @param string $whereBase   - parameter which must be added to construct a new where statement
+         * @return $this
+         */
+        private function statement(string $constraint, string $relation, string $value, string $whereOption, string $whereBase):IQueryBuilder {
+            if (($constraint !== "") && ($value !== "")) {
+                $relationsExists = $this->relations[$relation] ?? null;
+
+                if (isset($relationsExists)) {
+                    if ($this->where === "") {
+                        $where = "WHERE ";
+                    } else {
+                        $where = $whereOption;
+                    }
+
+                    $where       .= "$constraint $relation $value";
+                    $this->where = $whereBase . $where;
+                }
+            }
+
+            return $this;
+        }
+
+        /**
          * Returns WHERE statement
          *
          * @return string
@@ -47,15 +76,7 @@
          * @return $this
          */
         public function where(string $constraint, string $relation, string $value):IQueryBuilder {
-            if (($constraint !== "") && ($value !== "")) {
-                $relationsExists = $this->relations[$relation] ?? null;
-
-                if (isset($relationsExists)) {
-                    $this->where = "WHERE $constraint $relation $value";
-                }
-            }
-
-            return $this;
+            return $this->statement($constraint, $relation, $value, "WHERE ", "");
         }
 
         /**
@@ -67,23 +88,7 @@
          * @return $this
          */
         public function and(string $constraint, string $relation, string $value):IQueryBuilder {
-            if (($constraint !== "") && ($value !== "")) {
-                $relationsExists = $this->relations[$relation] ?? null;
-
-                if (isset($relationsExists)) {
-                    if ($this->where === "") {
-                        $where = "WHERE ";
-                    } else {
-                        $where = " AND ";
-                    }
-
-                    $where .= "$constraint $relation $value";
-
-                    $this->where .= $where;
-                }
-            }
-
-            return $this;
+            return $this->statement($constraint, $relation, $value, " AND ", $this->where);
         }
 
         /**
@@ -95,22 +100,6 @@
          * @return $this
          */
         public function or(string $constraint, string $relation, string $value):IQueryBuilder {
-            if (($constraint !== "") && ($value !== "")) {
-                $relationsExists = $this->relations[$relation] ?? null;
-
-                if (isset($relationsExists)) {
-                    if ($this->where === "") {
-                        $where = "WHERE ";
-                    } else {
-                        $where = " OR ";
-                    }
-
-                    $where .= "$constraint $relation $value";
-
-                    $this->where .= $where;
-                }
-            }
-
-            return $this;
+            return $this->statement($constraint, $relation, $value, " OR ", $this->where);
         }
     }
