@@ -107,4 +107,18 @@
 
             return $object;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function fetchObjects(IQueryBuilder $builder, string $className):array {
+            $result  = $this->query($builder);
+            $objects = [];
+
+            while ($object = $result->fetch_object($className)) {
+                $objects[] = $object;
+            }
+
+            return $objects;
+        }
     }

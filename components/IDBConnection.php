@@ -43,4 +43,13 @@
          * @return IEntity
          */
         public function fetchObject(IQueryBuilder $builder, string $className):IEntity;
+
+        /**
+         * Returns an array of objects of the given class
+         *
+         * @param IQueryBuilder $builder - builder for retrieving a query string
+         * @param string $className      - class name of the result object array
+         * @return IEntity[]
+         */
+        public function fetchObjects(IQueryBuilder $builder, string $className):array;
     }
