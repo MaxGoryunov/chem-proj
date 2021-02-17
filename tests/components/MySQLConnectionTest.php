@@ -354,4 +354,63 @@
             $this->assertInstanceOf(IEntity::class, $this->connection->fetchObject($builder, IEntity::class));
 
         }
+
+        /**
+         * @covers ::__construct
+         * @covers ::query
+         * @covers ::fetchObjects
+         *
+         * @return void
+         */
+        public function testFetchObjectsReturnsResultObjects():void {
+            $reflection = new ReflectionClass($this->connection);
+            $connection = $reflection->getProperty("connection");
+
+            $connection->setAccessible(true);
+
+            $mysqliMock = $this->getMockBuilder(mysqli::class)
+                                ->onlyMethods(["query"])
+                                ->getMock();
+
+            $queryMock  = $this->getMockBuilder(Query::class)
+                                ->disableOriginalConstructor()
+                                ->onlyMethods(["getQueryString"])
+                                ->getMock();
+
+            $resultMock = $this->getMockBuilder(mysqli_result::class)
+                                ->disableOriginalConstructor()
+                                ->onlyMethods(["fetch_object"])
+                                ->getMock();
+
+            $builder    = $this->getMockBuilder(IQueryBuilder::class)
+                                ->disableOriginalConstructor()
+                                ->onlyMethods(["build"])
+                                ->getMock();
+
+            $entity     = $this->getMockBuilder(IEntity::class)
+                                ->getMock();
+
+            $mysqliMock->expects($this->once())
+                        ->method("query")
+                        ->willReturn($resultMock);
+
+            $resultMock->expects($this->exactly(4))
+                        ->method("fetch_object")
+                        ->will($this->onConsecutiveCalls($entity, $entity, $entity, null));
+
+            $queryMock->expects($this->once())
+                        ->method("getQueryString")
+                        ->willReturn("SELECT * FROM `addresses`;");
+
+            $builder->expects($this->once())
+                    ->method("build")
+                    ->willReturn($queryMock);
+
+            $connection->setValue($this->connection, $mysqliMock);
+
+            $entities = $this->connection->fetchObjects($builder, IEntity::class);
+
+            $this->assertInstanceOf(IEntity::class, $entities[0]);
+            $this->assertEquals([$entity, $entity, $entity], $entities);
+        }
     }

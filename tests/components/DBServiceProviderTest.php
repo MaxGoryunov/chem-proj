@@ -9,9 +9,7 @@
     include_once("./config/constants.php");
 
     /**
-     * Testing TDBConnectionProvider class
-     * 
-     * @@coversDefaultClass Components\DBConnectionProvider
+     * @@coversDefaultClass Components\DBServiceProvider
      */
     class DBServiceProviderTest extends TestCase {
         

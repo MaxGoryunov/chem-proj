@@ -52,6 +52,15 @@
         }
 
         /**
+         * @covers ::mockTable
+         *
+         * @return void
+         */
+        public function testMockTableCreatesCorrectTable():void {
+
+        }
+
+        /**
          * @return ((string|null)[]|string)[][]
          */
         public function provideTableNamesAndPrimaryKeys():array {

@@ -2,6 +2,8 @@
 
     namespace DBQueries;
 
+    use Components\TableColumn;
+
     /**
      * Class for building a Create table query
      */
