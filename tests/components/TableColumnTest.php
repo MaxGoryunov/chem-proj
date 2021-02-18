@@ -37,6 +37,21 @@
         }
 
         /**
+         * @covers ::__construct
+         * @covers ::getName
+         * 
+         * @dataProvider provideNames
+         *
+         * @param string $name
+         * @return void
+         */
+        public function testConstructSetsColumnName(string $name):void {
+            $column = new TableColumn($name);
+
+            $this->assertEquals($name, $column->getName());
+        }
+
+        /**
          * @covers ::getNull
          * @covers ::setNull
          *
@@ -122,5 +137,54 @@
             $this->column->setType("aaaa");
 
             $this->assertEquals("", $this->column->getType());
+        }
+
+        /**
+         * @covers ::getStatement
+         *
+         * @param string $name        - column name
+         * @param bool $null          - can column be null or not
+         * @param bool $autoIncrement - auto incremented column
+         * @param bool $primaryKey    - is column a primary key
+         * @param array $type         - column type
+         * @param string $expected    - expected result
+         * 
+         * @dataProvider provideColumnData
+         * 
+         * @return void
+         */
+        public function testGetStatementReturnsCorrectStatement(string $name, bool $null, bool $autoIncrement, bool $primaryKey, array $type, string $expected):void {
+            $column = new TableColumn($name);
+
+            $column->setNull($null);
+            $column->setAutoIncrement($autoIncrement);
+            $column->setPrimaryKey($primaryKey);
+            $column->setType(...$type);
+
+            $this->assertEquals($expected, $column->getStatement());
+        }
+
+        /**
+         * @return string[][]
+         */
+        public function provideNames():array {
+            return [
+                ["id"],
+                ["name"],
+                ["description"]
+            ];
+        }
+
+        /**
+         * Format: name, null, auto increment, primary key, type(size), expected result
+         * 
+         * @return ((string|int)[]|bool|string)[][]
+         */
+        public function provideColumnData():array {
+            return [
+                ["id", false, true, true, ["int", 10], "`id` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY"],
+                ["name", true, false, false, ["varchar", 30], "`name` VARCHAR(30)"],
+                ["description", true, false, false, ["text"], "`description` TEXT"]
+            ];
         }
     }

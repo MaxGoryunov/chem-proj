@@ -24,6 +24,13 @@
         ];
 
         /**
+         * Name of the column
+         *
+         * @var string
+         */
+        private $name;
+
+        /**
          * Defines if column can be null or not
          *
          * @var string
@@ -50,6 +57,22 @@
          * @var string
          */
         private $type = "";
+
+        /**
+         * @param string $name
+         */
+        public function __construct(string $name) {
+            $this->name = $name;
+        }
+
+        /**
+         * Returns column name
+         *
+         * @return string
+         */
+        public function getName():string {
+            return $this->name;
+        }
 
         /**
          * Returns null value
@@ -138,5 +161,16 @@
             } else {
                 throw new InvalidArgumentException("Type must be a valid SQL type");
             }
+        }
+
+        /**
+         * Returns a constructed statement with all information about the column
+         *
+         * @return string
+         */
+        public function getStatement():string {
+            $statement = "`{$this->getName()}` {$this->getType()} {$this->getNull()} {$this->getAutoIncrement()} {$this->getPrimaryKey()}";
+
+            return rtrim($statement, " ");
         }
     }

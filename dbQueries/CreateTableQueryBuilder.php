@@ -57,7 +57,7 @@
          * @return $this
          */
         public function column(string $columnName):self {
-            $this->currentColumn                 = $columnName;
+            $this->currentColumn = $columnName;
             
             if (!isset($this->columns[$this->currentColumn])) {
                 $this->columns[$this->currentColumn] = new TableColumn();
@@ -124,6 +124,8 @@
          * {@inheritDoc}
          */
         public function getQueryString():string {
+            $base = "CREATE TABLE `{$this->getTableName()}` ";
+            
             return "";
         }
 
