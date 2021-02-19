@@ -4,14 +4,14 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
-use Components\TokenGenerator;
-use DBQueries\InsertQueryBuilder;
+    use Components\TokenGenerator;
+    use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
     use Entities\UserEntity;
-use mysqli;
+    use mysqli;
 
-/**
+    /**
      * Class containing Users business logic 
      */
     class UsersModel extends AbstractModel {
@@ -50,7 +50,9 @@ use mysqli;
          * @return mysqli
          */
         public function add(array $data = []):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection       = DBConnectionProvider::getConnection(IDBConnection::class);
+            $data["salt"]     = (new TokenGenerator())->generateToken();
+            $data["password"] = md5($data["salt"] . $data["password"]);
 
             $query      = (new InsertQueryBuilder($this->getTableName()))
                           ->set($data)
@@ -89,10 +91,13 @@ use mysqli;
                 "user_id"
             ];
 
+            $salt           = $this->getSaltByUserEmail($email);
+            $hashedPassword = md5($salt . $password);
+
             $query      = (new SelectQueryBuilder($this->getTableName()))
                           ->what($columns)
                           ->whereAnd("`user_email` = '$email'")
-                          ->whereAnd("`user_password` = '$password'")
+                          ->whereAnd("`user_password` = '$hashedPassword'")
                           ->build();
 
             $result   = $connection->query($query->getQueryString());

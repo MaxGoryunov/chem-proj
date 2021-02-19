@@ -58,10 +58,7 @@
                         $email   = $_POST["email"];
                         $phone   = $_POST["phone"];
 
-                        $salt           = $this->getModel()->getSalt();
-                        $hashedPassword = $this->getModel()->hashPassword($password, $salt);
-
-                        $data = compact("name", "surname", "login", "email", "phone", "hashedPassword", "salt");
+                        $data = compact("name", "surname", "login", "email", "phone", "password");
 
                         /**
                          * @todo Add 'add' method return type
@@ -74,12 +71,11 @@
                         
 						$sessionId = session_id();
 						$token     = $this->getModel()->generateUserToken();
-                        $tokenTime = time() + 15 * 60;
                         
                         $_SESSION["id"]    = $id;
                         $_SESSION["token"] = $token;
 
-                        $unixTime = "FROM_UNIXTIME(" . $tokenTime . ")";
+                        $unixTime = "FROM_UNIXTIME(" . (time() + 15 * 60) . ")";
                         
                         $connectionData = compact("token", "id", "sessionId", "unixTime");
 
@@ -110,10 +106,8 @@
 			if ((isset($_POST["email"])) && (isset($_POST["password"]))) {
 				$email          = $_POST["email"];
 				$password       = $_POST["password"];
-				$userSalt       = $this->getModel()->getSaltByUserEmail($email);
-				$hashedPassword = $this->getModel()->hashPassword($password, $userSalt);
 
-				$userInfo = $this->getModel()->getUserInfoByRegistrationData($email, $hashedPassword);
+				$userInfo = $this->getModel()->getUserInfoByRegistrationData($email, $password);
 				
 				if ($userInfo["count"] == 1) {  
 					$userId = $userInfo["user_id"];
@@ -122,14 +116,13 @@
 
 					$sessionId = session_id();
                     $token     = $this->getModel()->generateUserToken();
-					$tokenTime = time() + 15 * 60;
 
                     $_SESSION["id"]    = $userId;
                     $_SESSION["token"] = $token;
 
-					$unixTime = "FROM_UNIXTIME(" . $tokenTime . ")";
+					$unixTime = "FROM_UNIXTIME(" . (time() + 15 * 60) . ")";
 
-					$connectionData = compact("token", "userId", "sessionId", "tokenTime");
+					$connectionData = compact("token", "userId", "sessionId", "unixTime");
 
                     (new ConnectsModel())->add($connectionData);
 
