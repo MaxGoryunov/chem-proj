@@ -8,8 +8,8 @@
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use DBQueries\UpdateQueryBuilder;
-use Entities\IEntity;
-use Factories\AbstractMVCPDMFactory;
+    use Entities\IEntity;
+    use Factories\AbstractMVCPDMFactory;
     use mysqli;
     use Traits\TableNameTrait;
 
@@ -19,6 +19,26 @@ use Factories\AbstractMVCPDMFactory;
     abstract class AbstractModel implements IModel {
 
         use TableNameTrait;
+
+        /**
+         * Pairings between table and domain names
+         * 
+         * @todo This is a temporary solution; should be replaced later
+         * 
+         * @var string[]
+         */
+        private const TABLES = [
+            "addresses"     => "address",
+            "genders"       => "gender",
+            "user_statuses" => "user status"
+        ];
+
+        /**
+         * Table which the model represents
+         *
+         * @var string
+         */
+        private $tableName;
         
         /**
          * Related Factory used to get related Data Mapper
@@ -39,7 +59,8 @@ use Factories\AbstractMVCPDMFactory;
          *
          * @param AbstractMVCPDMFactory $relatedFactory
          */
-        public function __construct(AbstractMVCPDMFactory $relatedFactory = null) {
+        public function __construct(string $tableName, AbstractMVCPDMFactory $relatedFactory = null) {
+            $this->tableName      = $tableName;
             $this->relatedFactory = $relatedFactory;
         }
 
@@ -48,7 +69,9 @@ use Factories\AbstractMVCPDMFactory;
          *
          * @return string
          */
-        protected abstract function getDomainName():string;
+        protected function getDomainName():string {
+            return self::TABLES[$this->tableName];
+        }
 
         /**
          * Returns a related Data Mapper

@@ -17,44 +17,14 @@
         /**
          * {@inheritDoc}
          */
+        protected $tableName = "connects";
+
+        /**
+         * {@inheritDoc}
+         */
         protected function getDomainName():string {
-            return "connects";
+            return "connect";
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function getList(int $limit, int $offset):array {
-            return [];
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function getById(int $id):IEntity {
-            return new class implements IEntity {};
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function add(array $data = []):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
-
-            $query      = (new InsertQueryBuilder($this->getTableName()))
-                            ->set($data)
-                            ->build();
-                
-			$connection->query($query->getQueryString());
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function edit(array $data = []):void {
-            
-        }
-
         /**
          * {@inheritDoc}
          */
@@ -77,7 +47,7 @@
          * @return bool
          */
         public function getUserAuthStatus(int $userId, string $token, string $sessionId):bool {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection = $this->connectToDB();
 
             $query      = (new SelectQueryBuilder($this->getTableName()))
                           ->whereAnd("`connect_user_id` = " . $userId)

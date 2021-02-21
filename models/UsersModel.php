@@ -18,45 +18,11 @@
          */
         protected $tableName = "users";
 
-        protected function getDomainName():string {
-            return "user";
-        }
-
         /**
          * {@inheritDoc}
          */
         protected function getDomainName():string {
             return "user";
-        }
-
-        /**
-         * {@inheritDoc}
-         * @return UserEntity[]
-         */
-        public function getList(int $limit, int $offset):array {
-            return [];
-        }
-
-        /**
-         * {@inheritDoc}
-         * @return UserEntity
-         */
-        public function getById(int $id):IEntity {
-            return new UserEntity();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function edit(array $data = []):void {
-            
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function delete(int $id):void {
-            
         }
 
         /**
