@@ -114,4 +114,13 @@
 
             return $token;
         }
+
+        /**
+         * Returns a unique token
+         *
+         * @return string
+         */
+        public function generateUniqueToken():string {
+            return md5("" . microtime(true));
+        }
     }

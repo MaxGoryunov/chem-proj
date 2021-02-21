@@ -114,6 +114,26 @@
         }
 
         /**
+         * @covers ::generateUniqueToken
+         *
+         * @return void
+         */
+        public function testGenerateUniqueTokenGeneratesUniqueToken():void {
+            $tokens = [];
+
+            for ($i = 0; $i < 3; $i++) {
+                usleep(1);
+                $tokens[] = $this->tokenGenerator->generateUniqueToken();
+            }
+
+            for ($i = 0; $i < 2; $i++) {
+                for ($j = $i + 1; $j < 3; $j++) {
+                    $this->assertNotEquals($tokens[$i], $tokens[$j]);
+                }
+            }
+        }
+
+        /**
          * @return (string|string[])[][]
          */
         public function provideKeys():array {
