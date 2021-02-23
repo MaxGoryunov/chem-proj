@@ -40,7 +40,7 @@
          */
         public function testGetFromSetOrThrowExceptionReturnsFoundValue(array $set):void {
             foreach ($set as $key => $value) {
-                $this->assertEquals($value, $this->dataValidator->GetFromSetOrThrowException($key, $set));
+                $this->assertEquals($value, $this->dataValidator->getFromSetOrThrowException($key, $set));
             }
         }
 
@@ -55,7 +55,45 @@
         public function testGetFromSetOrThrowExceptionThrowsExceptionIfKeyIsNotAllowed(array $set):void {
             $this->expectException(InvalidArgumentException::class);
 
-            $this->dataValidator->GetFromSetOrThrowException("aaa", $set);
+            $this->dataValidator->getFromSetOrThrowException("aaa", $set);
+        }
+
+        /**
+         * @covers ::getFromSetOrCallClosure
+         * 
+         * @dataProvider provideSets
+         *
+         * @param bool $set
+         * @return void
+         */
+        public function testGetFromSetOrCallClosureReturnsFoundValue(array $set):void {
+            foreach ($set as $key => $value) {
+                $this->assertEquals($value, $this->dataValidator->GetFromSetOrCallClosure($key, $set, function() {
+                    echo "Value not found";
+                }));
+            }
+        }
+
+        /**
+         * @covers ::getFromSetOrCallClosure
+         * 
+         * @dataProvider provideSets
+         *
+         * @param array $set
+         * @return void
+         */
+        public function testGetFromSetOrCallClosureCallsClosureIfKeyIsNotFound(array $set):void {
+            $this->expectOutputString("1234");
+
+            $closure = function() {
+                static $count = 0;
+                $count++;
+                echo $count;
+            };
+            
+            for ($i = 0; $i < 4; $i++) { 
+                $this->dataValidator->GetFromSetOrCallClosure("aaa", $set, $closure);
+            }
         }
 
         /**
