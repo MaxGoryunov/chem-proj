@@ -2,13 +2,11 @@
 
     namespace Tests\Routing;
 
-use ControllerActions\AddAction;
-use ControllerActions\EditAction;
-use ControllerActions\IndexAction;
-use PHPUnit\Framework\TestCase;
-use Routing\ActionHandler;
+    use ControllerActions\ControllerAction;
+    use PHPUnit\Framework\TestCase;
+    use Routing\ActionHandler;
 
-/**
+    /**
      * @coversDefaultClass ActionHandler
      */
     class ActionHandlerTest extends TestCase {
@@ -21,12 +19,20 @@ use Routing\ActionHandler;
         protected $handler;
 
         /**
+         * Contains helper object for testing
+         *
+         * @var ControllerAction
+         */
+        protected $action;
+
+        /**
          * Creates tested class object
          *
          * @return void
          */
         protected function setUp():void {
             $this->handler = new ActionHandler();
+            $this->action  = new ControllerAction();
         }
 
         /**
@@ -46,7 +52,7 @@ use Routing\ActionHandler;
          * @return void
          */
         public function testHandleReturnsActionName(array $partedUri, string $expected):void {
-            $this->assertContains($expected, $this->handler->handle($partedUri));
+            $this->assertEquals($expected, $this->handler->handle($partedUri, $this->action)->getActionName());
         }
 
         /**
@@ -59,7 +65,7 @@ use Routing\ActionHandler;
         public function testHandleRedirectsToErrorPageOnFailedInput():void {
             $partedUri = ["", "chem-proj", "addresses", "aaa"];
 
-            $this->handler->handle($partedUri);
+            $this->handler->handle($partedUri, $this->action);
             $this->assertContains("Location: ./errors/not_found", xdebug_get_headers());
         }
 
@@ -69,9 +75,9 @@ use Routing\ActionHandler;
         public function providePartedUriWithActionNames():array {
             $offset = ["", "chem-proj", "addresses"];
             return [
-                [array_merge($offset, ["add"]), AddAction::class],
-                [array_merge($offset, ["edit", "12"]), EditAction::class],
-                [array_merge($offset, ["list"]), IndexAction::class]
+                [array_merge($offset, ["add"]), "add"],
+                [array_merge($offset, ["edit", "12"]), "edit"],
+                [array_merge($offset, ["list"]), "index"]
             ];
         }
     }

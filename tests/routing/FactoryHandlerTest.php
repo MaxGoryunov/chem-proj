@@ -2,7 +2,8 @@
 
     namespace Tests\Routing;
 
-    use Factories\AddressesFactory;
+use ControllerActions\ControllerAction;
+use Factories\AddressesFactory;
     use Factories\GendersFactory;
     use Factories\UserStatusesFactory;
     use PHPUnit\Framework\TestCase;
@@ -23,12 +24,20 @@
         protected $handler;
 
         /**
+         * Contains support class for Testing
+         *
+         * @var ControllerAction
+         */
+        protected $action;
+
+        /**
          * Creates tested class object
          *
          * @return void
          */
         protected function setUp():void {
             $this->handler = new FactoryHandler();
+            $this->action  = new ControllerAction();
         }
 
         /**
@@ -38,6 +47,7 @@
          */
         protected function tearDown():void {
             $this->handler = null;
+            $this->action  = null;
         }
 
         /**
@@ -49,8 +59,8 @@
          * @param string $expected    - expected result
          * @return void
          */
-        public function testHandleReturnsFactoryName(array $partedUri, string $expected):void {
-            $this->assertContains($expected, $this->handler->handle($partedUri));
+        public function testHandleReturnsFactory(array $partedUri, string $expected):void {            
+            $this->assertInstanceOf($expected, $this->handler->handle($partedUri, $this->action)->getFactory());
         }
 
         /**
@@ -63,7 +73,7 @@
         public function testHandleRedirectsToErrorPageOnFailedInput():void {
             $partedUri = ["", "chem-proj", "aaa"];
 
-            $this->handler->handle($partedUri);
+            $this->handler->handle($partedUri, $this->action);
             $this->assertContains("Location: ./errors/not_found", xdebug_get_headers());
         }
 

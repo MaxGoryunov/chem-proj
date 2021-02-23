@@ -2,12 +2,13 @@
 
     namespace Routing;
 
-use Components\Router;
+    use Components\Router;
+use ControllerActions\ControllerAction;
 use Factories\AddressesFactory;
-use Factories\GendersFactory;
-use Factories\UserStatusesFactory;
+    use Factories\GendersFactory;
+    use Factories\UserStatusesFactory;
 
-/**
+    /**
      * Class for handling factory names in user URI
      */
     class FactoryHandler extends AbstractHandler {
@@ -26,15 +27,15 @@ use Factories\UserStatusesFactory;
         /**
          * {@inheritDoc}
          */
-        protected function fillData(array $partedUri, array $invokeData = []):array {
-            if (isset(self::FACTORIES[$partedUri[2]])) {
-                $invokeData["factory"] = self::FACTORIES[$partedUri[2]];
+        protected function fillData(array $partedUri, ControllerAction $action):ControllerAction {
+            $factory = self::FACTORIES[$partedUri[2]] ?? null;
 
-                return $invokeData;
+            if (isset($factory)) {
+                $action->setFactory(new $factory());
+            } else {
+                Router::headerTo("./errors/not_found");
             }
 
-            Router::headerTo("./errors/not_found");
-
-            return [];
+            return $action;
         }
     }

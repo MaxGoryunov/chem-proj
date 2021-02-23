@@ -2,6 +2,19 @@
 
     namespace Factories;
 
-    abstract class AbstractFactory {
+use Controllers\IController;
+
+    abstract class AbstractFactory implements IControllerFactory {
         
+        /**
+         * Temporary solution
+         *
+         * @return IController
+         */
+        public function getController():IController {
+            return new class implements IController {
+
+                
+            };
+        }
     }

@@ -2,6 +2,8 @@
 
     namespace Routing;
 
+    use ControllerActions\ControllerAction;
+
     /**
      * Interface for routing handlers which extract different parts of user URI
      */
@@ -18,11 +20,11 @@
         public function setNextHandler(IRoutingHandler $nextHandler):IRoutingHandler;
 
         /**
-         * Handles the extraction of a part of user URI and sends the request down the CoR
+         * Handles the extraction of a part of user URI and sends the action down the CoR
          *
-         * @param string[] $partedUri  - URI string as an array
-         * @param string[] $invokeData - data for Router method
-         * @return string[]
+         * @param string[] $partedUri      - URI string as an array
+         * @param ControllerAction $action - action to be configured
+         * @return ControllerAction
          */
-        public function handle(array $partedUri, array $invokeData = []):array;
+        public function handle(array $partedUri, ControllerAction $action):ControllerAction;
     }

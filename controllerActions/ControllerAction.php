@@ -40,14 +40,14 @@
          *
          * @var string
          */
-        private $actionName;
+        private $actionName = "";
 
         /**
          * Data for controller action
          *
          * @var array
          */
-        private $data;
+        private $data = [];
 
         /**
          * Returns a controller

@@ -2,13 +2,8 @@
 
     namespace Routing;
 
-use Components\Router;
-use ControllerActions\AddAction;
-    use ControllerActions\DeleteAction;
-    use ControllerActions\EditAction;
-    use ControllerActions\IndexAction;
-    use ControllerActions\RegisterAction;
-
+    use Components\Router;
+    use ControllerActions\ControllerAction;
     /**
      * Class for handling Actions in user URI
      */
@@ -20,25 +15,25 @@ use ControllerActions\AddAction;
          * @var string[]
          */
         private const ACTIONS = [
-            "list"     => IndexAction::class,
-            "add"      => AddAction::class,
-            "edit"     => EditAction::class,
-            "delete"   => DeleteAction::class,
-            "register" => RegisterAction::class
+            "list"     => "index",
+            "add"      => "add",
+            "edit"     => "edit",
+            "delete"   => "delete",
+            "register" => "register"
         ];
 
         /**
          * {@inheritDoc}
          */
-        protected function fillData(array $partedUri, array $invokeData = []):array {
-            if (isset(self::ACTIONS[$partedUri[3]])) {
-                $invokeData["action"] = self::ACTIONS[$partedUri[3]];
+        protected function fillData(array $partedUri, ControllerAction $action):ControllerAction {
+            $actionName = self::ACTIONS[$partedUri[3]] ?? null;
 
-                return $invokeData;
+            if (isset($actionName)) {
+                $action->setActionName($actionName);
+            } else {
+                Router::headerTo("./errors/not_found");
             }
 
-            Router::headerTo("./errors/not_found");
-
-            return [];
+            return $action;
         }
     }

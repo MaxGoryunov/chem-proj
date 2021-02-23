@@ -2,7 +2,8 @@
 
     namespace Tests\Routing;
 
-    use PHPUnit\Framework\TestCase;
+use ControllerActions\ControllerAction;
+use PHPUnit\Framework\TestCase;
     use Routing\IdHandler;
     use Routing\IRoutingHandler;
 
@@ -21,12 +22,20 @@
         protected $handler;
 
         /**
+         * Contains object helping for testing
+         *
+         * @var ControllerAction
+         */
+        protected $action;
+
+        /**
          * Creates tested class object
          *
          * @return void
          */
         protected function setUp():void {
             $this->handler = new IdHandler();
+            $this->action  = new ControllerAction();
         }
 
         /**
@@ -48,7 +57,7 @@
          * @return void
          */
         public function testHandleReturnsIdWithValidId(array $partedUri, int $expected):void {
-            $this->assertContains($expected, $this->handler->handle($partedUri));
+            $this->assertContains($expected, $this->handler->handle($partedUri, $this->action)->getData());
         }
 
         /**
@@ -61,7 +70,7 @@
          * @return void
          */
         public function testHandleDoesNotReturnInvalidId(array $partedUri, int $expected):void {
-            $this->assertNotContains($expected, $this->handler->handle($partedUri));
+            $this->assertNotContains($expected, $this->handler->handle($partedUri, $this->action)->getData());
         }
 
         /**

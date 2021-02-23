@@ -2,6 +2,7 @@
 
     namespace Tests\Routing;
 
+use ControllerActions\ControllerAction;
 use DBQueries\IQueryBuilder;
 use PHPUnit\Framework\TestCase;
     use ReflectionClass;
@@ -59,14 +60,16 @@ use PHPUnit\Framework\TestCase;
          *
          * @return void
          */
-        public function testHandleReturnsInvokeDataIfNextHandlerDoesNotExist():void {
+        public function testHandleReturnsActionIfNextHandlerDoesNotExist():void {
             $this->handler->expects($this->once())
                     ->method("fillData")
                     ->will($this->returnArgument(1));
 
-            $uri = ["root", "domain", "action"];
-            $data = ["factory", "action"];
-            $this->assertEquals($data, $this->handler->handle($uri, $data));
+            $uri    = ["root", "domain", "action"];
+            $action = $this->getMockBuilder(ControllerAction::class)
+                            ->getMock();
+
+            $this->assertEquals($action, $this->handler->handle($uri, $action));
         }
 
         /**
@@ -83,18 +86,17 @@ use PHPUnit\Framework\TestCase;
 
             $handler->expects($this->once())
                     ->method("handle")
-                    ->will($this->returnCallback(function ($uri, $data) {
-                        $data["id"] = 3;
+                    ->will($this->returnCallback(function ($uri, ControllerAction $action) {
+                        $action->setData(["id"]);
 
-                        return $data;
+                        return $action;
                     }));
 
-            $data         = ["factory" => "factory", "action" => "action"];
-            $result       = $data;
-            $result["id"] = 3;
+            $action = $this->getMockBuilder(ControllerAction::class)
+                            ->getMock();
 
             $this->handler->setNextHandler($handler);
 
-            $this->assertEquals($result, $this->handler->handle([], $data));
+            $this->assertSame($action, $this->handler->handle([], $action));
         }
     }

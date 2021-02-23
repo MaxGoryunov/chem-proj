@@ -2,7 +2,9 @@
 
     namespace Routing;
 
-    abstract class AbstractHandler implements IRoutingHandler {
+use ControllerActions\ControllerAction;
+
+abstract class AbstractHandler implements IRoutingHandler {
         
         /**
          * Contains next handler in the CoR
@@ -23,8 +25,8 @@
         /**
          * {@inheritDoc}
          */
-        public function handle(array $partedUri, array $invokeData = []):array {
-            $invokeData = $this->fillData($partedUri, $invokeData);
+        public function handle(array $partedUri, ControllerAction $action):ControllerAction {
+            $invokeData = $this->fillData($partedUri, $action);
 
             if (isset($this->nextHandler)) {
                 return $this->nextHandler->handle($partedUri, $invokeData);
@@ -34,11 +36,11 @@
         }
 
         /**
-         * Works with give data and URI string array
+         * Configures the given $action object
          *
-         * @param string[] $partedUri
-         * @param string[] $invokeData
-         * @return string[]
+         * @param string[] $partedUri      - URI string as array
+         * @param ControllerAction $action - action to be configured
+         * @return ControllerAction
          */
-        protected abstract function fillData(array $partedUri, array $invokeData = []):array;
+        protected abstract function fillData(array $partedUri, ControllerAction $action):ControllerAction;
     }
