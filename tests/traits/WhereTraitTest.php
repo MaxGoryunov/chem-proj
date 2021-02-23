@@ -53,11 +53,11 @@
          * @return void
          */
         public function testWhereBuildsCorrectWhereStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where("", ">", "10"));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where(" > 10"));
             $this->assertEquals("", $this->builder->getWhere());
 
             
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where("name", ">", ""));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where("name > "));
             $this->assertEquals("", $this->builder->getWhere());
         }
 
@@ -69,10 +69,10 @@
          * @return void
          */
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and("", ">", "10"));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and(" > 10"));
             $this->assertEquals("", $this->builder->getWhere());
 
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and("name", ">", ""));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and("name > "));
             $this->assertEquals("", $this->builder->getWhere());
         }
 
@@ -85,10 +85,10 @@
          * @return void
          */
         public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or("", ">", "10"));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or(" > 10"));
             $this->assertEquals("", $this->builder->getWhere());
 
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or("name", ">", ""));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or("name > "));
             $this->assertEquals("", $this->builder->getWhere());
         }
 
