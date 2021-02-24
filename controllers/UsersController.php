@@ -141,7 +141,7 @@
          * @return void
          */
         public function logout():void {
-            $userId = $_SESSION["user_id"];
+            $userId = $_SESSION["id"];
 
             $this->getModel()->deleteUserVariables($_SESSION);
 

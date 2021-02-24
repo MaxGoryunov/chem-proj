@@ -9,7 +9,7 @@
     /**
      * Base class for implementing other ProxyControllers
      */
-    abstract class AbstractProxyController implements IController {
+    abstract class AbstractProxyController {
         
         /**
          * Related Factory used to get Controller from the same domain
