@@ -3,8 +3,8 @@
     namespace Tests\DBQueries;
 
     use DBQueries\CreateTableQueryBuilder;
-use DBQueries\TableColumn;
-use PHPUnit\Framework\TestCase;
+    use Components\TableColumn;
+    use PHPUnit\Framework\TestCase;
 
     /**
      * @coversDefaultClass CreateTableQueryBuilder
@@ -104,6 +104,46 @@ use PHPUnit\Framework\TestCase;
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("address_name")->isPrimaryKey(false));
 
             $this->assertEquals("", $this->builder->getCurrentColumn()->getPrimaryKey());
+        }
+
+        /**
+         * @covers ::int
+         *
+         * @return void
+         */
+        public function testIntSetsColumnTypeToInt():void {
+            $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("id")->int(10));
+            $this->assertEquals("INT(10)", $this->builder->getCurrentColumn()->getType());
+        }
+
+        /**
+         * @covers ::varchar
+         *
+         * @return void
+         */
+        public function testVarcharSetsColumnTypeToVarchar():void {
+            $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("name")->varchar(20));
+            $this->assertEquals("VARCHAR(20)", $this->builder->getCurrentColumn()->getType());
+        }
+
+        /**
+         * @covers ::text
+         *
+         * @return void
+         */
+        public function testTextSetsColumnTypeToText():void {
+            $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("description")->text());
+            $this->assertEquals("TEXT", $this->builder->getCurrentColumn()->getType());
+        }
+
+        /**
+         * @covers ::timestamp
+         *
+         * @return void
+         */
+        public function testTimestampSetsColumnTypeToTimestamp():void {
+            $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("created_at")->timestamp());
+            $this->assertEquals("TIMESTAMP", $this->builder->getCurrentColumn()->getType());
         }
 
         /**

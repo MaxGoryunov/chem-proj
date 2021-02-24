@@ -60,7 +60,7 @@
             $this->currentColumn = $columnName;
             
             if (!isset($this->columns[$this->currentColumn])) {
-                $this->columns[$this->currentColumn] = new TableColumn();
+                $this->columns[$this->currentColumn] = new TableColumn($columnName);
             }
 
             return $this;
@@ -116,6 +116,52 @@
                     $this->primaryColumn = $this->currentColumn;
                 }
             }
+
+            return $this;
+        }
+
+        /**
+         * Sets column type to int
+         *
+         * @param int $size
+         * @return $this
+         */
+        public function int(int $size):self {
+            $this->columns[$this->currentColumn]->setType("int", $size);
+
+            return $this;
+        }
+
+        /**
+         * Sets column type to varchar
+         *
+         * @param int $size
+         * @return $this
+         */
+        public function varchar(int $size):self {
+            $this->columns[$this->currentColumn]->setType("varchar", $size);
+
+            return $this;
+        }
+
+        /**
+         * Sets column type to text
+         *
+         * @return $this
+         */
+        public function text():self {
+            $this->columns[$this->currentColumn]->setType("text");
+
+            return $this;
+        }
+
+        /**
+         * Sets column type to timestamp
+         *
+         * @return $this
+         */
+        public function timestamp():self {
+            $this->columns[$this->currentColumn]->setType("timestamp");
 
             return $this;
         }
