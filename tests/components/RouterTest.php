@@ -89,9 +89,7 @@
             $currTime     = microtime(true);
             $domainLength = count($domains) - 1;
             $actionLength = count($actions) - 1;
-            $router       = $this->getMockBuilder(Router::class)
-                            ->onlyMethods(["invokeFactory"])
-                            ->getMock();
+            $router       = new Router();
 
             for ($i = 0; $i < 100000; $i++) { 
                 $router->run("/chem-proj/" . $domains[mt_rand(0, $domainLength)] . "/" . $actions[mt_rand(0, $actionLength)]);

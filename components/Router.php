@@ -3,57 +3,22 @@
 	namespace Components;
 
 	use Components\RoutePackage;
+	use ControllerActions\ControllerAction;
 	use InvalidArgumentException;
 	use LogicException;
-use Routing\ActionHandler;
-use Routing\FactoryHandler;
-use Routing\IdHandler;
+	use Routing\ActionHandler;
+	use Routing\FactoryHandler;
+	use Routing\IdHandler;
 
-/**
+	/**
 	 * Class for providing routing within the site
 	 */
     class Router {
-		/**
-		 * Routes for controller actions
-		 *
-		 * @var string[][]
-		 */
-		private $routes;
-		
-		/**
-		 * Contains route packages for controller actions
-		 *
-		 * @var RoutePackage[]
-		 */
-		private $routePackages;
-		
-		/**
-		 * Assigns the routes for routing
-		 *
-		 * @param string[][] $routes
-		 * @return void
-		 */
-		public function setRoutes(array $routes = []):void {
-			$this->routes = $routes;
-		}
-
-		/**
-		 * Assigns route packages for routing
-		 *
-		 * @param RoutePackage[] $routePackages
-		 * @return void
-		 */
-		public function setRoutePackages(array $routePackages):void {
-			foreach ($routePackages as $routePackage) {
-				$this->routePackages[$routePackage->getDomain()] = $routePackage;
-			}
-		}
 
 		/**
 		 * This function looks finds the controller using the routes and executes the associated action
 		 * 
-		 * @throws InvalidArgumentException
-		 * @throws LogicException
+		 * @throws InvalidArgumentException if the URI  is empty
 		 *
 		 * @return void
 		 */
@@ -62,42 +27,16 @@ use Routing\IdHandler;
 				throw new InvalidArgumentException("User URI must not be empty");
 			}
 
-			// if (!isset($this->routes)) {
-			// 	throw new LogicException("Routes are not set");
-			// }
-
 			$handler = new FactoryHandler();
 
 			$handler->setNextHandler(new ActionHandler())->setNextHandler(new IdHandler());
 
-			$invokeData = $handler->handle(explode("/", $userUri));
-
-			$this->invokeFactory($invokeData);
-		}
-		
-		/**
-		 * Creates factory and invokes its Proxy Controller method
-		 *
-		 * @param string[] $invokeData
-		 * @return void
-		 */
-		protected function invokeFactory(array $invokeData = []):void {
-			extract($invokeData);
-
+			$action       = $handler->handle(explode("/", $userUri), new ControllerAction());
+			["id" => $id] = $action->getData();
 			/**
-			 * Factory used for creating MVCPDM components
-			 * 
-			 * @var IMVCPDMFactory
+			 * @todo Add correct action execution so that id is not extracted from it
 			 */
-			$factoryObj = new $factory();
-
-			$proxyController = $factoryObj->getProxy();
-
-			if ($id) {
-				$proxyController->$action($id);
-			} else {
-				$proxyController->$action();
-			}
+			$action->execute($id);
 		}
 
 		/**
