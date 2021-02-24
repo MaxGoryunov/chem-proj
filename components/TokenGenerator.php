@@ -50,6 +50,13 @@
         private $ranges = [];
 
         /**
+         * Contains vowel ad consonant sets
+         *
+         * @var int[][]
+         */
+        private $letterSets;
+
+        /**
          * Returns a generated key based on the given array
          *
          * @param string[] $range
@@ -95,6 +102,23 @@
         }
 
         /**
+         * Returns letter Sets
+         * 
+         * 'Vowels' key contains vowels, 'consonants' contains consonants
+         *
+         * @return int[][]
+         */
+        public function getLetterSets():array {
+            $sets[] = array_flip(["a", "e", "i", "o", "u"]);
+            $sets[]= array_flip(array_diff(range("a", "z"), ["a", "e", "i", "o", "u"]));
+
+            /**
+             * @todo Add classes for letter sets
+             */
+            return $sets;
+        }
+
+        /**
          * Function returns a token, user can specify the token length if needed
          *
          * @param int $length - length of the token
@@ -122,5 +146,23 @@
          */
         public function generateUniqueToken():string {
             return md5("" . microtime(true));
+        }
+
+        /**
+         * Returns pseudo word
+         * 
+         * Pseudo word contains alternating vowel and consonant letters
+         *
+         * @return string
+         */
+        public function generatePseudoWord():string {
+            $this->letterSets = $this->letterSets ?? $this->getLetterSets();
+            $pseudoWord       = "";
+
+            for ($i = 0; $i < 10; $i++) {
+                $pseudoWord .= array_rand($this->letterSets[$i % 2]);
+            }
+
+            return $pseudoWord;
         }
     }

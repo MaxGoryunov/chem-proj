@@ -134,6 +134,32 @@
         }
 
         /**
+         * @covers ::getLetterSets
+         *
+         * @return void
+         */
+        public function testGetLetterSetsReturnsCorrectLetterSets():void {
+            $sets = [
+                array_flip(["a", "e", "i", "o", "u"]),
+                array_flip(array_diff(range("a", "z"), ["a", "e", "i", "o", "u"]))
+            ];
+
+            $this->assertEquals($sets, $this->tokenGenerator->getLetterSets());
+        }
+
+        /**
+         * @covers ::generatePseudoWord
+         *
+         * @return void
+         */
+        public function testGeneratePseudoWordsReturnsPseudoWord():void {
+            $vowels     = "aeiou";
+            $consonants = "b-df-hj-np-tv-z";
+
+            $this->assertMatchesRegularExpression("/([{$vowels}][{$consonants}])+/", $this->tokenGenerator->generatePseudoWord());
+        }
+
+        /**
          * @return (string|string[])[][]
          */
         public function provideKeys():array {
