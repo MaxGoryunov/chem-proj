@@ -34,6 +34,8 @@
          * @covers ::getFromSetOrThrowException
          * 
          * @dataProvider provideSets
+         * 
+         * @small
          *
          * @param bool[] $set
          * @return void
@@ -48,6 +50,8 @@
          * @covers ::getFromSetOrThrowException
          * 
          * @dataProvider provideSets
+         * 
+         * @small
          *
          * @param bool[] $set
          * @return void
@@ -62,8 +66,10 @@
          * @covers ::getFromSetOrCallClosure
          * 
          * @dataProvider provideSets
+         * 
+         * @small
          *
-         * @param bool $set
+         * @param bool[] $set
          * @return void
          */
         public function testGetFromSetOrCallClosureReturnsFoundValue(array $set):void {
@@ -78,8 +84,10 @@
          * @covers ::getFromSetOrCallClosure
          * 
          * @dataProvider provideSets
+         * 
+         * @small
          *
-         * @param array $set
+         * @param bool[] $set
          * @return void
          */
         public function testGetFromSetOrCallClosureCallsClosureIfKeyIsNotFound(array $set):void {
