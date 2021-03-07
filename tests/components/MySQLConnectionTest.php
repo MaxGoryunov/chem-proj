@@ -118,6 +118,8 @@
         /**
          * @covers ::__construct
          * @covers ::establishConnection
+         * 
+         * @small
          *
          * @return void
          */
@@ -155,6 +157,8 @@
          * @covers ::__construct
          * @covers ::fail
          * @covers ::establishConnection
+         * 
+         * @small
          *
          * @return void
          */
@@ -175,7 +179,9 @@
         /**
          * @covers ::__construct
          * @covers ::fail
+         * 
          *
+         * @small
          * @return void
          */
         public function testFailThrowsException():void {
@@ -187,6 +193,8 @@
         /**
          * @covers ::__construct
          * @covers ::query
+         * 
+         * @small
          *
          * @return void
          */
@@ -205,6 +213,8 @@
          * @covers ::__construct
          * @covers ::query
          * @covers ::fetchAll
+         * 
+         * @small
          *
          * @return void
          */
@@ -243,6 +253,8 @@
          * @covers ::establishConnection
          * @covers ::query
          * @covers ::fetchAssoc
+         * 
+         * @small
          *
          * @return void
          */
@@ -273,6 +285,8 @@
          * @covers ::__construct
          * @covers ::query
          * @covers ::fetchObject
+         * 
+         * @small
          *
          * @return void
          */
@@ -299,6 +313,8 @@
          * @covers ::__construct
          * @covers ::query
          * @covers ::fetchObjects
+         * 
+         * @small
          *
          * @return void
          */
