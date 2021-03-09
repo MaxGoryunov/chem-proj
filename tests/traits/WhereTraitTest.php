@@ -93,98 +93,73 @@
         }
 
         /**
-         * @covers ::or
-         * @covers ::initWhereOr
-         * @covers ::and
-         * @covers ::initWhereAnd
          * @covers ::where
-         * @covers ::initWhere
-         * @covers ::getWhere
          * 
-         * @dataProvider provideMixedWhereConditions
+         * @dataProvider provideStatements
          *
-         * @param string[][] $statements - statements to be built
-         * @param string $expected - expected result
+         * @param string[][] $statements
          * @return void
          */
-        public function testsWhereAndOrBuildCorrectWhereStatement(array $statements, string $expected):void {
-            $this->markTestIncomplete();
-            
+        public function testWhereBuildsCorrectStatement(array $statements):void {
             foreach ($statements as $statement) {
-                if ($statement["type"] == "and") {
-                    $this->builder->and($statement["condition"]);
-                } elseif ($statement["type"] == "") {
-                    $this->builder->where($statement["condition"]);
-                } else {
-                    $this->builder->or($statement["condition"]);
-                }
-            }
+                $this->builder->where($statement[0]);
 
-            $this->assertEquals($expected, $this->builder->getWhere());
+                $this->assertEquals("WHERE " . $statement[1], $this->builder->getWhere());
+            }
         }
 
         /**
-         * Provides different condition combinations for testing that both 'whereOr' and 'whereAnd' are built correctly
+         * @covers ::and
+         * 
+         * @dataProvider provideStatements
          *
-         * @return (string[][]|string)[][]
+         * @param string[][] $statements
+         * @return void
          */
-        public function provideMixedWhereConditions():array {
+        public function testAndBuildsCorrectStatement(array $statements):void {
+            $expected = "WHERE";
+
+            foreach ($statements as $statement) {
+                $this->builder->and($statement[0]);
+
+                $expected .= ($expected === "WHERE") ? " " : " AND ";
+                $expected .= $statement[1];
+
+                $this->assertEquals($expected, $this->builder->getWhere());
+            }
+        }
+
+        /**
+         * @covers ::or
+         * 
+         * @dataProvider provideStatements
+         *
+         * @param string[][] $statements
+         * @return void
+         */
+        public function testOrBuildsCorrectStatement(array $statements):void {
+            $expected = "WHERE";
+
+            foreach ($statements as $statement) {
+                $this->builder->or($statement[0]);
+
+                $expected .= ($expected === "WHERE") ? " " : " OR ";
+                $expected .= $statement[1];
+
+                $this->assertEquals($expected, $this->builder->getWhere());
+            }
+        }
+
+        /**
+         * @return string[][][][]
+         */
+        public function provideStatements():array {
             return [
-                "multipleAnds" => [
-                    [
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE 1 AND `medicine_id` = 1 AND `medicine_price` < 750 AND `medicine_doze` > 30"
-                ],
-                "multipleOrs"  => [
-                    [
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE 0 OR `medicine_id` = 1 OR `medicine_price` < 750 OR `medicine_doze` > 30"
-                ],
-                "mixed"        => [
-                    [
-                        [
-                            "type"      => "",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_id` = 3"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE `medicine_id` = 1 OR `medicine_id` = 3 AND `medicine_price` < 750 OR `medicine_doze` > 30"
-                ]
+                [[
+                    ["`name` = 'John'", "`name` = 'John'"],
+                    ["`price` = 300", "`price` = 300"],
+                    ["`desc` = 'This is a description'", "`desc` = 'This is a description'"]
+                ]]
             ];
         }
     }

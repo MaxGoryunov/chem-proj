@@ -24,6 +24,8 @@
 
         /**
          * Contains the WHERE string
+         * 
+         * @todo Rename $where to $expression
          *
          * @var string
          */
@@ -38,7 +40,7 @@
          * @return $this
          */
         private function statement(string $statement, string $whereOption, string $whereBase):IQueryBuilder {
-            [$constraint, $relation, $value] = ["", "", ""] + preg_split("/[\s]/", $statement, null, PREG_SPLIT_NO_EMPTY);
+            [$constraint, $relation, $value] = preg_split("/[\s]/", $statement, 3, PREG_SPLIT_NO_EMPTY) + ["", "", ""];
 
             if (($constraint !== "") && ($value !== "")) {
                 $relationsExists = $this->relations[$relation] ?? null;
