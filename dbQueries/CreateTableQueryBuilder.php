@@ -170,9 +170,12 @@
          * {@inheritDoc}
          */
         public function getQueryString():string {
-            $base = "CREATE TABLE `{$this->getTableName()}` ";
-            
-            return "";
+            $columnStatements = array_map(function (TableColumn $column):string {
+                return $column->getStatement();
+            }, $this->columns);
+            $statementString  = implode(", ", $columnStatements);
+
+            return "CREATE TABLE `{$this->getTableName()}` ($statementString);";
         }
 
         /**

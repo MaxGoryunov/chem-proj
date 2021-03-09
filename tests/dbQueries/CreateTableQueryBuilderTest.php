@@ -4,7 +4,8 @@
 
     use DBQueries\CreateTableQueryBuilder;
     use Components\TableColumn;
-    use PHPUnit\Framework\TestCase;
+use DBQueries\IQuery;
+use PHPUnit\Framework\TestCase;
 
     /**
      * @coversDefaultClass CreateTableQueryBuilder
@@ -144,6 +145,22 @@
         public function testTimestampSetsColumnTypeToTimestamp():void {
             $this->assertInstanceOf(CreateTableQueryBuilder::class, $this->builder->column("created_at")->timestamp());
             $this->assertEquals("TIMESTAMP", $this->builder->getCurrentColumn()->getType());
+        }
+
+        /**
+         * @covers ::build
+         *
+         * @return void
+         */
+        public function testBuildReturnsCorrectStatement():void {
+            $this->builder->column("id")->int(10)->canBeNull(false)->autoIncrement(true)->isPrimaryKey(true)
+                            ->column("name")->varchar("30")
+                            ->column("description")->text();
+
+            $query = $this->builder->build();
+
+            $this->assertInstanceOf(IQuery::class, $query);
+            $this->assertEquals("CREATE TABLE `medicines` (`id` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY, `name` VARCHAR(30), `description` TEXT);", $query->getQueryString());
         }
 
         /**
