@@ -4,7 +4,7 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
-    use DataMappers\AbstractDataMapper;
+    use DataMappers\DataMapper;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use DBQueries\UpdateQueryBuilder;
@@ -78,7 +78,7 @@
          *
          * @return AbstractDataMapper
          */
-        protected function getDataMapper():AbstractDataMapper {
+        protected function getDataMapper():DataMapper {
             if (!isset($this->relatedMapper)) {
                 $this->relatedMapper = $this->relatedFactory->getDataMapper();
             }
