@@ -153,13 +153,14 @@
          * 
          * Pseudo word contains alternating vowel and consonant letters
          *
+         * @param int $length
          * @return string
          */
-        public function generatePseudoWord():string {
+        public function generatePseudoWord(int $length = 10):string {
             $this->letterSets = $this->letterSets ?? $this->getLetterSets();
             $pseudoWord       = "";
 
-            for ($i = 0; $i < 10; $i++) {
+            for ($i = 0; $i < $length; $i++) {
                 $pseudoWord .= array_rand($this->letterSets[$i % 2]);
             }
 

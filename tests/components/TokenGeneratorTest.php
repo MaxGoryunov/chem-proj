@@ -160,6 +160,19 @@
         }
 
         /**
+         * @covers ::generatePseudoWord
+         * 
+         * @dataProvider provideTokenLengths
+         *
+         * @param int $length   - token length
+         * @param int $expected - expected length
+         * @return void
+         */
+        public function testGeneratePseudoWordReturnsStringOfCorrectLength(int $length, int $expected):void {
+            $this->assertEquals($expected, strlen($this->tokenGenerator->generatePseudoWord($length)));
+        }
+
+        /**
          * @return (string|string[])[][]
          */
         public function provideKeys():array {
