@@ -101,16 +101,20 @@
         }
 
         /**
-         * @covers ::setData
+         * @covers ::addData
          * @covers ::getData
-         * 
-         * @dataProvider provideControllerData
          *
          * @return void
          */
-        public function testSetDataSetsControllerData(array $data):void {
-            $this->action->setData($data);
+        public function testAddDataSetsControllerData():void {
+            $this->action->addData("id", 33);
 
+            $data["id"] = 33;
+            $this->assertEquals($data, $this->action->getData());
+
+            $this->action->addData("name", "John");
+
+            $data["name"] = "John";
             $this->assertEquals($data, $this->action->getData());
         }
 

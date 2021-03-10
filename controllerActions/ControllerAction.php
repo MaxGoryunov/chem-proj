@@ -45,7 +45,7 @@
         /**
          * Data for controller action
          *
-         * @var array
+         * @var array<string, mixed>
          */
         private $data = [];
 
@@ -91,13 +91,14 @@
         }
 
         /**
-         * Sets controller data
+         * Adds controller data
          *
-         * @param array $data
+         * @param string $name - new data value name
+         * @param mixed $value - value itself
          * @return void
          */
-        public function setData(array $data):void {
-            $this->data = $data;
+        public function addData(string $name, mixed $value):void {
+            $this->data[$name] = $value;
         }
 
         /**
