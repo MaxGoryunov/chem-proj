@@ -16,7 +16,7 @@ use InvalidArgumentException;
          * @throws InvalidArgumentException if the value is not found
          *
          * @param string $key - key to be looked for
-         * @param array $set  - dataset in which the key might be found
+         * @param array  $set - dataset in which the key might be found
          * @return mixed
          */
         public function getFromSetOrThrowException(string $key, array $set) {
@@ -30,8 +30,8 @@ use InvalidArgumentException;
         /**
          * Returns value if it exists in the given array or calls supplied function if the value is not found
          *
-         * @param string $key      - key to be looked for
-         * @param array $set       - dataset in which the key might be found
+         * @param string  $key     - key to be looked for
+         * @param array   $set     - dataset in which the key might be found
          * @param Closure $closure - actions to perform if the key was not found
          * @return void
          */
