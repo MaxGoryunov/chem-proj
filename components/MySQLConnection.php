@@ -3,7 +3,6 @@
     namespace Components;
 
     use DBQueries\IQueryBuilder;
-    use Entities\IEntity;
     use mysqli;
     use mysqli_result;
     use mysqli_sql_exception;
@@ -79,10 +78,7 @@
          * {@inheritDoc}
          */
         public function fetchAll(IQueryBuilder $builder, int $resultType = MYSQLI_ASSOC):array {
-            $result   = $this->query($builder);
-            $fetchAll = $result->fetch_all($resultType);
-
-            return $fetchAll;
+            return $this->query($builder)->fetch_all($resultType);
         }
 
         /**
@@ -92,6 +88,8 @@
             $result = $this->query($builder);
             /**
              * If the alias is not an empty string then it is used as a key, otherwise it is not used
+             * 
+             * @todo Divide method into method without alias and method with alias
              */
             $fetchAssoc = ($alias === "") ? $result->fetch_assoc() : $result->fetch_assoc()[$alias];
 
@@ -102,10 +100,7 @@
          * {@inheritDoc}
          */
         public function fetchObject(IQueryBuilder $builder, string $className):object {
-            $result = $this->query($builder);
-            $object = $result->fetch_object($className);
-
-            return $object;
+            return $this->query($builder)->fetch_object($className);
         }
 
         /**
