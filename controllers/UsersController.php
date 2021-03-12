@@ -46,9 +46,7 @@
                 $repeatPassword = $_POST["repeat_password"];
 
                 if ($password !== $repeatPassword) {
-                    /**
-                     * @todo Implement error handling
-                     */
+                    $this->getModel()->addInputError("repeat_password", "Password and repeated password must be the same");
                 } else {
                     $registeredCount = $this->getModel()->calculateRegisteredCount($login);
 					
@@ -60,32 +58,23 @@
 
                         $data = compact("name", "surname", "login", "email", "phone", "password");
 
-                        /**
-                         * @todo Add 'add' method return type
-                         * @var mysqli
-                         */
-                        $connection = $this->getModel()->add($data);
-						$id         = $connection->insert_id;
-						
                         session_start();
                         
 						$sessionId = session_id();
-						$token     = $this->getModel()->generateUserToken();
                         
-                        $_SESSION["id"]    = $id;
-                        $_SESSION["token"] = $token;
+                        $_SESSION["id"]    = $this->getModel()->add($data)->insert_id;
+                        $_SESSION["token"] = $this->getModel()->generateUserToken();
 
-                        $unixTime = "FROM_UNIXTIME(" . (time() + 15 * 60) . ")";
+                        $time = time() + 15 * 60;
                         
-                        $connectionData = compact("token", "id", "sessionId", "unixTime");
+                        $connectionData          = compact("id", "sessionId", "time");
+                        $connectionData["token"] = $_SESSION["token"];
 
                         (new ConnectsModel())->add($connectionData);
 
 						header("Location: ../medicines/list");
 					} else { 
-						/**
-                         * @todo Implement error handling
-                         */
+						$this->getModel()->addInputError("form", "This user already exists");
 					}
 				
 				}

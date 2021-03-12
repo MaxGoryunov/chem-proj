@@ -39,7 +39,8 @@
          * {@inheritDoc}
          */
         public function add(array $data = []):void {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
+            $connection   = DBConnectionProvider::getConnection(IDBConnection::class);
+            $data["time"] = "FROM_UNIXTIME(" . $data["time"] . ")";
 
             $query      = (new InsertQueryBuilder($this->getTableName()))
                             ->set($data)

@@ -22,10 +22,36 @@
         protected $tableName = "users";
 
         /**
+         * Errors from view forms
+         *
+         * @var array<string, string>
+         */
+        private $errors = [];
+
+        /**
          * {@inheritDoc}
          */
         protected function getDomainName():string {
             return "user";
+        }
+
+        /**
+         * Returns an error related to a specified field
+         *
+         * @param string $field
+         * @return string
+         */
+        public function getError(string $field):string {
+            return $this->errors[$field];
+        }
+
+        /**
+         * Returns all stored errors
+         *
+         * @return array<string. string>
+         */
+        public function getErrors():array {
+            return $this->errors;
         }
 
         /**
@@ -216,5 +242,16 @@
             return (new TokenGenerator())->generateToken();
         }
 
-        public function getTokenTime():string {}
+        /**
+         * Adds a new error message
+         * 
+         * Error messages are later displayed in the view forms
+         *
+         * @param string $field   - input field in which the error occurred
+         * @param string $message - error message for the user to read
+         * @return void
+         */
+        public function addInputError(string $field, string $message):void {
+            $this->errors[$field] = $message;
+        }
     }
