@@ -40,7 +40,8 @@
          * @return $this
          */
         private function statement(string $statement, string $whereOption, string $whereBase):IQueryBuilder {
-            [$constraint, $relation, $value] = preg_split("/[\s]/", $statement, 3, PREG_SPLIT_NO_EMPTY) + ["", "", ""];
+            $replacedStatement               = preg_replace("/['`]/", "", $statement);
+            [$constraint, $relation, $value] = preg_split("/[\s]/", $replacedStatement, 3, PREG_SPLIT_NO_EMPTY) + ["", "", ""];
 
             if (($constraint !== "") && ($value !== "")) {
                 $relationsExists = $this->relations[$relation] ?? null;
@@ -52,7 +53,7 @@
                         $where = $whereOption;
                     }
 
-                    $where       .= "$constraint $relation $value";
+                    $where       .= "`$constraint` $relation '$value'";
                     $this->where = $whereBase . $where;
                 }
             }

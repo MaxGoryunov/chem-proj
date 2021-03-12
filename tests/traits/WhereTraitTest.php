@@ -151,15 +151,42 @@
         }
 
         /**
+         * @covers ::where
+         * 
+         * @dataProvider provideQuoteVariations
+         *
+         * @param string $statement - applied statement
+         * @param string $expected  - expected result
+         * @return void
+         */
+        public function testWhereBuildsCorrectStatementWithDifferentQuoteVariations(string $statement, string $expected):void {
+            $this->builder->where($statement);
+
+            $this->assertEquals("WHERE " . $expected, $this->builder->getWhere());
+        }
+
+        /**
          * @return string[][][][]
          */
         public function provideStatements():array {
             return [
                 [[
                     ["`name` = 'John'", "`name` = 'John'"],
-                    ["`price` = 300", "`price` = 300"],
+                    ["`price` = '300'", "`price` = '300'"],
                     ["`desc` = 'This is a description'", "`desc` = 'This is a description'"]
                 ]]
+            ];
+        }
+
+        /**
+         * @return string[][]
+         */
+        public function provideQuoteVariations():array {
+            return [
+                ["`name` = 'John'", "`name` = 'John'"],
+                ["`name` = John", "`name` = 'John'"],
+                ["name = 'John'", "`name` = 'John'"],
+                ["name = John", "`name` = 'John'"]
             ];
         }
     }
