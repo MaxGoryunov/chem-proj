@@ -11,7 +11,7 @@
     /**
      * Class containing Users business logic 
      */
-    class UsersModel extends AbstractModel {
+    class UsersModel extends DomainModel {
 
         /**
          * {@inheritDoc}

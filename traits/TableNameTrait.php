@@ -19,7 +19,7 @@
          *
          * @return string
          */
-        protected function getTableName():string {
+        public function getTableName():string {
             return $this->tableName;
         }
     }

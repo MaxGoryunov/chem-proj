@@ -2,8 +2,11 @@
 
     namespace Controllers;
 
+    use Components\DomainRegistry;
     use Factories\AbstractMVCPDMFactory;
+    use Factories\UsersFactory;
     use Models\AbstractModel;
+    use Models\DomainModel;
     use Views\AbstractView;
 
     /**
@@ -48,7 +51,7 @@
          *
          * @return AbstractModel
          */
-        protected function getModel():AbstractModel {
+        protected function getModel():DomainModel {
             if (!isset($this->relatedModel)) {
                 $this->relatedModel = $this->relatedFactory->getModel();
             }
@@ -69,5 +72,24 @@
             }
 
             return $this->relatedView;
+        }
+
+        /**
+         * Controls the presentation process of the Addresses from the DB
+         *
+         * @return void
+         */
+        public function index():void {
+            $title        = $this->relatedFactory->getDomain()->getDomainPlural();
+            $adminStatus  = (new UsersFactory())->getModel()->getUserAdminStatus();
+            $count        = $this->getModel()->calculateRecordCount();
+            $pageNumber   = $this->getModel()->getCurrentPageNumber($_SERVER["REQUEST_URI"]);
+            $limit        = 5;
+            $offset       = ($pageNumber - 1) * $limit;
+            $entitiesList = $this->getModel()->getList($limit, $offset);
+
+            $viewData = compact("title", "adminStatus", "entitiesList");
+
+            $this->getView()->render(__METHOD__, $viewData);
         }
     }

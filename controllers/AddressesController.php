@@ -8,25 +8,6 @@
      * Class contains Address Controller logic
      */
     class AddressesController extends AbstractController {
-        
-        /**
-         * Controls the presentation process of the Addresses from the DB
-         *
-         * @return void
-         */
-        public function index():void {
-            $title             = "Адреса";
-            $fullUserStatus    = (new UsersFactory())->getModel()->getUserFullStatus();
-            $addressesCount    = $this->getModel()->calculateRecordCount();
-            $currentPageNumber = $this->getModel()->getCurrentPageNumber();
-            $limit             = 5;
-            $offset            = ($currentPageNumber - 1) * $limit;
-            $addressesList     = $this->getModel()->getList($limit, $offset);
-
-            $viewData = array_merge($fullUserStatus, compact("title", "addressesList"));
-
-            $this->getView()->render(__METHOD__, $viewData);
-        }
 
         /**
          * Controls the editing process of an Address based on id
@@ -40,7 +21,7 @@
              * @todo Might have to move address instantiation below if statement
              */
             $address        = $this->getModel()->getById($id);
-            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
 			
 			if (isset($_POST["name"])) {
 				$name = $_POST["name"];
@@ -62,7 +43,7 @@
          */
         public function add():void {
             $title          = "Добавление адреса";
-			$fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+			$fullUserStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
 			
 			if (isset($_POST["name"])) {
 				$name = $_POST["name"];
@@ -85,7 +66,7 @@
         public function delete(int $id):void {
             $title = "Удаление адреса";
             $address = $this->getModel()->getById($id);
-            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
 
             if (isset($_POST["delete"])) {
                 $this->getModel()->delete($id);

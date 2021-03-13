@@ -8,25 +8,6 @@ use Factories\UsersFactory;
      * Class contains Gender Controller logic
      */
     class GendersController extends AbstractController {
-        
-        /**
-         * Controls the presentation process of the Genders from the DB
-         *
-         * @return void
-         */
-        public function index():void {
-            $title             = "Гендеры";
-            $fullUserStatus    = (new UsersFactory())->getModel()->getUserFullStatus();
-            $gendersCount      = $this->getModel()->calculateRecordCount();
-            $currentPageNumber = $this->getModel()->getCurrentPageNumber();
-            $limit             = 5;
-            $offset            = ($currentPageNumber - 1) * $limit;
-            $gendersList       = $this->getModel()->getList($limit, $offset);
-
-            $viewData = array_merge($fullUserStatus, compact("title", "gendersList"));
-
-            $this->getView()->render(__FUNCTION__, $viewData);
-        }
 
         /**
          * {@inheritDoc}
@@ -34,7 +15,7 @@ use Factories\UsersFactory;
         public function edit(int $id):void {
             $title          = "Редактирование гендера";
 			$gender         = $this->getModel()->getById($id);
-            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
 
 			if ((isset($_POST["name"])) && (isset($_POST["short_name"]))) {
                 $name       = $_POST["name"];
@@ -54,7 +35,7 @@ use Factories\UsersFactory;
          */
         public function add():void {
             $title          = "Добавление гендера";
-			$fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+			$fullUserStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
 			
 			if (isset($_POST["name"]) && (isset($_POST["short_name"]))) {
                 $name       = $_POST["name"];
@@ -75,7 +56,7 @@ use Factories\UsersFactory;
         public function delete(int $id):void {
             $title          = "Удаление гендера";
             $gender         = $this->getModel()->getById($id);
-            $fullUserStatus = (new UsersFactory())->getModel()->getUserFullStatus();
+            $fullUserStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
 
             if (isset($_POST["delete"])) {
                 $this->getModel()->delete($id);
