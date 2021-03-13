@@ -2,6 +2,7 @@
 
     namespace Tests\DBQueries;
 
+    use Models\AbstractModel;
     use DBQueries\SelectQueryBuilder;
     use PHPUnit\Framework\TestCase;
 
@@ -25,7 +26,14 @@
          * @return void
          */
         protected function setUp():void {
-            $this->selectBuilder = new SelectQueryBuilder("medicines");
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->getMock();
+
+            $model->expects($this->once())
+                    ->method("getTableName")
+                    ->willReturn("medicines");
+
+            $this->selectBuilder = new SelectQueryBuilder($model);
         }
 
         /**
@@ -173,6 +181,7 @@
          * @covers ::limit
          * @covers ::getLimit
          * @covers ::getHaving
+         * @covers ::getQueryString
          * @covers ::build
          * 
          * @uses DBQueries\AbstractQueryBuilder

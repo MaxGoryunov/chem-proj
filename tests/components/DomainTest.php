@@ -9,7 +9,7 @@
     /**
      * Testing Domain class
      * 
-     * @coversDefaultClass Domain
+     * @coversDefaultClass Components\Domain
      */
     class DomainTest extends TestCase {
 
@@ -33,6 +33,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getDomainPlural
          * 
          * @dataProvider provideDomainsPlural
