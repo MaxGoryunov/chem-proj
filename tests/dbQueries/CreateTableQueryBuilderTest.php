@@ -38,6 +38,26 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::setColumns
+         *
+         * @return void
+         */
+        public function testSetColumnsCorrectlySetsColumns():void {
+            $columns[] = (new TableColumn("id"))
+                            ->setType("int", 10)
+                            ->setNull(false)
+                            ->setAutoIncrement(true)
+                            ->setPrimaryKey(true);
+            $columns[] = (new TableColumn("name"))
+                            ->setType("varchar", 20);
+            $columns[] = (new TableColumn("description"))
+                            ->setType("text");
+
+            $this->assertSame($this->builder, $this->builder->setColumns($columns));
+            $this->assertEquals("CREATE TABLE `medicines` (`id` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY, `name` VARCHAR(20), `description` TEXT);", $this->builder->getQueryString());
+        }
+
+        /**
          * @covers ::column
          * 
          * @dataProvider provideColumnNames

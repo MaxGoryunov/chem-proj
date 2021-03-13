@@ -58,10 +58,10 @@
          * @return void
          */
         public function testSetNullSetsNullValue():void {
-            $this->column->setNull(true);
+            $this->assertSame($this->column, $this->column->setNull(true));
             $this->assertEquals("", $this->column->getNull());
 
-            $this->column->setNull(false);
+            $this->assertSame($this->column, $this->column->setNull(false));
             $this->assertEquals("NOT NULL", $this->column->getNull());
         }
 
@@ -72,10 +72,10 @@
          * @return void
          */
         public function testSetAutoIncrementSetsAutoIncrementValue():void {
-            $this->column->setAutoIncrement(true);
+            $this->assertSame($this->column, $this->column->setAutoIncrement(true));
             $this->assertEquals("AUTO_INCREMENT", $this->column->getAutoIncrement());
 
-            $this->column->setAutoIncrement(false);
+            $this->assertSame($this->column, $this->column->setAutoIncrement(false));
             $this->assertEquals("", $this->column->getAutoIncrement());
         }
 
@@ -86,10 +86,10 @@
          * @return void
          */
         public function testSetPrimaryKeySetsPrimaryKeyValue():void {
-            $this->column->setPrimaryKey(true);
+            $this->assertSame($this->column, $this->column->setPrimaryKey(true));
             $this->assertEquals("PRIMARY KEY", $this->column->getPrimaryKey());
 
-            $this->column->setPrimaryKey(false);
+            $this->assertSame($this->column, $this->column->setPrimaryKey(false));
             $this->assertEquals("", $this->column->getPrimaryKey());
         }
 
@@ -100,11 +100,11 @@
          * @return void
          */
         public function testSetTypeSetsTypeWithSize():void {
-            $this->column->setType("int", 10);
+            $this->assertSame($this->column, $this->column->setType("int", 10));
 
             $this->assertEquals("INT(10)", $this->column->getType());
 
-            $this->column->setType("varchar", 30);
+            $this->assertSame($this->column, $this->column->setType("varchar", 30));
 
             $this->assertEquals("VARCHAR(30)", $this->column->getType());
         }
@@ -116,11 +116,11 @@
          * @return void
          */
         public function testSetTypeSetsTypeWithoutSize():void {
-            $this->column->setType("text");
+            $this->assertSame($this->column, $this->column->setType("text"));
 
             $this->assertEquals("TEXT", $this->column->getType());
 
-            $this->column->setType("timestamp");
+            $this->assertSame($this->column, $this->column->setType("timestamp"));
 
             $this->assertEquals("TIMESTAMP", $this->column->getType());
         }
@@ -134,7 +134,7 @@
         public function testSetTypeThrowsExceptionIfTheTypeIsNotAValidSQLType():void {
             $this->expectException(InvalidArgumentException::class);
 
-            $this->column->setType("aaaa");
+            $this->assertSame($this->column, $this->column->setType("aaaa"));
 
             $this->assertEquals("", $this->column->getType());
         }
@@ -156,10 +156,10 @@
         public function testGetStatementReturnsCorrectStatement(string $name, bool $null, bool $autoIncrement, bool $primaryKey, array $type, string $expected):void {
             $column = new TableColumn($name);
 
-            $column->setNull($null);
-            $column->setAutoIncrement($autoIncrement);
-            $column->setPrimaryKey($primaryKey);
-            $column->setType(...$type);
+            $column->setNull($null)
+                    ->setAutoIncrement($autoIncrement)
+                    ->setPrimaryKey($primaryKey)
+                    ->setType(...$type);
 
             $this->assertEquals($expected, $column->getStatement());
         }

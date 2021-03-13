@@ -114,30 +114,36 @@
          * Sets null value
          *
          * @param bool $null
-         * @return void
+         * @return $this
          */
-        public function setNull(bool $null):void {
+        public function setNull(bool $null):self {
             $this->null = strtoupper(($null) ? "" : "not null");
+
+            return $this;
         }
 
         /**
          * Sets auto increment value
          *
          * @param bool $autoIncrement
-         * @return void
+         * @return $this
          */
-        public function setAutoIncrement(bool $autoIncrement):void {
+        public function setAutoIncrement(bool $autoIncrement):self {
             $this->autoIncrement = strtoupper(($autoIncrement) ? "auto_increment" : "");
+
+            return $this;
         }
 
         /**
          * Sets primary key value
          *
          * @param bool $primaryKey
-         * @return void
+         * @return $this
          */
-        public function setPrimaryKey(bool $primaryKey):void {
+        public function setPrimaryKey(bool $primaryKey):self {
             $this->primaryKey = strtoupper(($primaryKey) ? "primary key" : "");
+
+            return $this;
         }
 
         /**
@@ -147,9 +153,9 @@
          *
          * @param string $type - column type
          * @param int $size    - column size for integer and varchar columns
-         * @return void
+         * @return $this
          */
-        public function setType(string $type, int $size = null):void {
+        public function setType(string $type, int $size = null):self {
             $sizeRequired = self::ALLOWED_TYPES[$type] ?? null;
 
             if (isset($sizeRequired)) {
@@ -161,6 +167,8 @@
             } else {
                 throw new InvalidArgumentException("Type must be a valid SQL type");
             }
+
+            return $this;
         }
 
         /**

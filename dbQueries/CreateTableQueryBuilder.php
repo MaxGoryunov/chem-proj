@@ -51,6 +51,18 @@
         }
 
         /**
+         * Allows to set columns defined beforehand
+         *
+         * @param TableColumn[] $columns
+         * @return $this
+         */
+        public function setColumns(array $columns = []):self {
+            $this->columns = $columns;
+
+            return $this;
+        }
+
+        /**
          * Sets the column which is being modified
          *
          * @param string $columnName
