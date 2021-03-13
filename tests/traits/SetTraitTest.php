@@ -8,7 +8,7 @@
     /**
      * Testing SetTrait trait
      * 
-     * @coversDefaultClass SetTrait
+     * @coversDefaultClass Traits\SetTrait
      */
     class SetTraitTest extends TestCase {
 
@@ -28,6 +28,10 @@
             $this->builder = new class() implements IQueryBuilder {
                 use SetTrait;
 
+                public function getQueryString():string {
+                    return "";
+                }
+
                 public function build():IQuery {
                     return new class() implements IQuery {};
                 }
@@ -42,12 +46,13 @@
         protected function tearDown():void {
             $this->builder = null;
         }
-
         /**
          * @covers ::set
          * @covers ::getValues
          * 
          * @dataProvider provideValues
+         * 
+         * @small
          *
          * @param array $values - values passed to 'set' method
          * @param string $expected - expected result
@@ -66,14 +71,22 @@
          */
         public function provideValues():array {
             return [
-                "empty"        => [[], ""],
-                "actualValues" => [
+                "empty"            => [[], ""],
+                "actualValues"     => [
                     [
                         "medicine_name"  => "BeHealthy",
                         "medicine_price" => 500,
                         "medicine_doze"  => 30
                     ],
                     "`medicine_name` = 'BeHealthy', `medicine_price` = '500', `medicine_doze` = '30'"
+                ],
+                "nonStringIndexes" => [
+                    [
+                        "medicine_name"  => "Sensu Bean",
+                        "medicine_price" => 300,
+                        1                => 34
+                    ],
+                    ""
                 ]
             ];
         }

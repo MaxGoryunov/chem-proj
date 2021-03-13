@@ -3,6 +3,7 @@
     namespace DBQueries;
 
     use Traits\TableNameTrait;
+    use Models\DomainModel;
 
     /**
      * Abstract class for different specific queries: Select, Update, Insert and Delete
@@ -16,8 +17,8 @@
          * 
          * @return void
          */
-        public function __construct(string $tableName) {
-            $this->tableName = $tableName;
+        public function __construct(DomainModel $model) {
+            $this->tableName = $model->getTableName();
         }
 
         /**
@@ -25,5 +26,14 @@
          *
          * @return IQuery
          */
-        public abstract function build():IQuery;
+        public function getTableName():string {
+            return $this->tableName;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function build():IQuery {
+            return new Query($this);
+        }
     }
