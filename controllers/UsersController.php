@@ -117,7 +117,7 @@
 
 					header("Location: ../medicines/list");
 				} else {
-					echo ("Неправильно введен логин или пароль. Проверьте данные.");
+					$this->getModel()->addInputError("form", "Incorrect login or password");
 				}
 			}
 
