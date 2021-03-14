@@ -133,15 +133,19 @@
          * 
          * @throws LogicException if the id is not present when needed
          *
-         * @param int $id - id for the action, might not be needed
          * @return void
          */
-        public function execute(int $id = null):void {
+        public function execute():void {
             $controller = $this->getController();
 
+            /**
+             * @todo Add support for more arguments
+             * 
+             * @todo Replace if with DataValidator method
+             */
             if (self::ACTIONS[$this->getActionName()]) {
-                if ($id) {
-                    $controller->{$this->getActionName()}($id);
+                if (isset($this->data["id"])) {
+                    $controller->{$this->getActionName()}($this->data["id"]);
                 } else {
                     throw new LogicException("id is needed to perform this action");
                 }

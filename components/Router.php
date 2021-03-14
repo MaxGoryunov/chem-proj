@@ -31,16 +31,15 @@
 
 			$handler->setNextHandler(new ActionHandler())->setNextHandler(new IdHandler());
 
-			$action       = $handler->handle(explode("/", $userUri), new ControllerAction());
-			["id" => $id] = $action->getData();
-			/**
-			 * @todo Add correct action execution so that id is not extracted from it
-			 */
-			$action->execute($id);
+			$action = $handler->handle(explode("/", $userUri), new ControllerAction());
+			
+			$action->execute();
 		}
 
 		/**
 		 * Routing mechanism used for redirection of faulty routes
+		 * 
+		 * @todo Put this method into a different class or make it non-static
 		 *
 		 * @param string $location - URI where the user is redirected
 		 * @return void

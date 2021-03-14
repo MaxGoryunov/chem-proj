@@ -77,9 +77,6 @@
         public function testSetActionNameThrowsLogicExceptionOnWrongActionNameInput():void {
             $this->expectException(InvalidArgumentException::class);
 
-            $factory = $this->getMockBuilder(IControllerFactory::class)
-                            ->getMock();
-
             $this->action->setActionName("aaa");
         }
 
@@ -92,9 +89,6 @@
          * @return void
          */
         public function testSetGetActionNameReturnsActionName(string $actionName):void {
-            $factory = $this->getMockBuilder(IControllerFactory::class)
-                            ->getMock();
-
             $this->action->setActionName($actionName);
 
             $this->assertEquals($actionName, $this->action->getActionName());
@@ -106,7 +100,7 @@
          *
          * @return void
          */
-        public function testAddDataSetsControllerData():void {
+        public function testAddDataAddsControllerData():void {
             $this->action->addData("id", 33);
 
             $data["id"] = 33;
@@ -206,6 +200,7 @@
             
             $this->action->setFactory($factory);
             $this->action->setActionName("edit");
+            $this->action->addData("id", $id);
 
             $factory->expects($this->once())
                     ->method("getController")
@@ -215,7 +210,7 @@
                         ->method("edit")
                         ->with($id);
 
-            $this->assertNull($this->action->execute($id));
+            $this->assertNull($this->action->execute());
         }
 
         /**
