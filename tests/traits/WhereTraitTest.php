@@ -166,6 +166,36 @@
         }
 
         /**
+         * @covers ::and
+         * 
+         * @dataProvider provideQuoteVariations
+         *
+         * @param string $statement - applied statement
+         * @param string $expected  - expected result
+         * @return void
+         */
+        public function testAndBuildsCorrectStatementWithDifferentQuoteVariations(string $statement, string $expected):void {
+            $this->builder->and($statement);
+
+            $this->assertEquals("WHERE " . $expected, $this->builder->getWhere());
+        }
+
+        /**
+         * @covers ::or
+         * 
+         * @dataProvider provideQuoteVariations
+         *
+         * @param string $statement - applied statement
+         * @param string $expected  - expected result
+         * @return void
+         */
+        public function testOrBuildsCorrectStatementWithDifferentQuoteVariations(string $statement, string $expected):void {
+            $this->builder->or($statement);
+
+            $this->assertEquals("WHERE " . $expected, $this->builder->getWhere());
+        }
+
+        /**
          * @return string[][][][]
          */
         public function provideStatements():array {
