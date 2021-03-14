@@ -19,7 +19,7 @@ use InvalidArgumentException;
          * @param array  $set - dataset in which the key might be found
          * @return mixed
          */
-        public function getFromSetOrThrowException(string $key, array $set) {
+        public function getFromSetOrThrowException(string $key, array $set):mixed {
             if (isset($set[$key])) {
                 return $set[$key];
             }
@@ -33,9 +33,9 @@ use InvalidArgumentException;
          * @param string  $key     - key to be looked for
          * @param array   $set     - dataset in which the key might be found
          * @param Closure $closure - actions to perform if the key was not found
-         * @return void
+         * @return mixed
          */
-        public function getFromSetOrCallClosure(string $key, array $set, Closure $closure) {
+        public function getFromSetOrCallClosure(string $key, array $set, Closure $closure):mixed {
             if (isset($set[$key])) {
                 return $set[$key];
             }
