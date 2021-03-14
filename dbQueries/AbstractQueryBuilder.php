@@ -2,6 +2,8 @@
 
     namespace DBQueries;
 
+    use Models\AbstractModel;
+
     /**
      * Abstract class for different specific queries: Select, Update, Insert and Delete
      */
@@ -19,8 +21,8 @@
          * 
          * @return void
          */
-        public function __construct(string $tableName) {
-            $this->tableName = $tableName;
+        public function __construct(AbstractModel $model) {
+            $this->tableName = $model->getTableName();
         }
 
         /**
@@ -30,5 +32,12 @@
          */
         public function getTableName():string {
             return $this->tableName;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function build():IQuery {
+            return new Query($this);
         }
     }

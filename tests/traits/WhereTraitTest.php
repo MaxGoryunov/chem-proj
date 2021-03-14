@@ -9,7 +9,7 @@
     /**
      * Testing WhereTrait trait
      * 
-     * @coversDefaultClass WhereTrait
+     * @coversDefaultClass Traits\WhereTrait
      */
     class WhereTraitTest extends TestCase {
         
@@ -28,6 +28,10 @@
         protected function setUp():void {
             $this->builder = new class() implements IQueryBuilder {
                 use WhereTrait;
+
+                public function getQueryString():string {
+                    return "";
+                }
         
                 public function build():IQuery {
                     return new class() implements IQuery {};

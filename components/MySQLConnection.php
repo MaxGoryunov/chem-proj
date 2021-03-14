@@ -1,94 +1,119 @@
 <?php
 
     namespace Components;
-    
+
+    use DBQueries\IQueryBuilder;
+    use mysqli;
+    use mysqli_result;
+    use mysqli_sql_exception;
+
     /**
      * Class which represents connection with MySQL Database
      * 
      * This class implements Singleton Pattern
      */
     class MySQLConnection implements IDBConnection {
-        /**
-         * Singleton instance
-         *
-         * @static
-         * 
-         * @var self|null
-         */
-        private static $instance = null;
 
         /**
          * Connection to MySQL Database
          *
-         * @var \mysqli
+         * @var mysqli
          */
-        private $connection = null;
+        private static $connection = null;
 
         /**
-         * Function returns the instance of the class which uses this trait
-         *
-         * @static
-         * 
-         * @return self
+         * Sets up a common MySQL connection if it has not been set up yet
          */
-        public static function getInstance():self {
-            if (!self::$instance) {
-                self::$instance = new self();
+        public function __construct() {
+            if (!self::$connection) {
+                self::$connection = $this->establishConnection(include("./config/dbConfig.php"));
             }
-            return self::$instance;
         }
 
         /**
-         * Restricting the creation of class instance outside of class
+         * Connects to MySQL Database
          * 
-         * @throws Exception if the connection to MySQL failed
+         * @todo Make method public and change its test
+         *
+         * @param string[] $config
+         * @return mysqli
          */
-        private function __construct() {
-            include_once("./config/dbConfig.php");
+        public function establishConnection(array $config):mysqli {
+            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+            try {
+                $connection = new mysqli($config["host"], $config["user"], $config["password"], $config["database"]);
+
+                $connection->set_charset($config["charset"]);
+            } catch (mysqli_sql_exception $e) {
+                $this->fail($e);
+            }
+
+            return $connection;
+        }
+
+        /**
+         * Throws a new sql exception
+         * 
+         * @throws mysqli_sql_exception
+         *
+         * @param mysqli_sql_exception $e
+         * @return void
+         */
+        public function fail(mysqli_sql_exception $e):void {
+            throw new mysqli_sql_exception($e->getMessage(), $e->getCode());
+        }
+
+        /**
+         * Performs a MySQLi query to Database
+         *
+         * @param IQueryBuilder $builder
+         * @return mysqli_result|bool
+         */
+        public function query(IQueryBuilder $builder) {
+            return self::$connection->query($builder->build()->getQueryString());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function fetchAll(IQueryBuilder $builder, int $resultType = MYSQLI_ASSOC):array {
+            return $this->query($builder)->fetch_all($resultType);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function fetchAssoc(IQueryBuilder $builder, string $alias = "") {
+            $result = $this->query($builder);
             /**
-             * Establishing the connection with MySQL Database
+             * If the alias is not an empty string then it is used as a key, otherwise it is not used
+             * 
+             * @todo Divide method into method without alias and method with alias
              */
-            $connection = new \mysqli($dbConfig["host"], $dbConfig["user"], $dbConfig["password"], $dbConfig["database"]);
+            $fetchAssoc = ($alias === "") ? $result->fetch_assoc() : $result->fetch_assoc()[$alias];
 
-            if ($connection->connect_error) {
-                throw new \Exception("Failed to connect to MySQL database: " . $connection->connect_errno);
+            return $fetchAssoc ?? [];
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function fetchObject(IQueryBuilder $builder, string $className):object {
+            return $this->query($builder)->fetch_object($className);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function fetchObjects(IQueryBuilder $builder, string $className):array {
+            $result  = $this->query($builder);
+            $objects = [];
+
+            while ($object = $result->fetch_object($className)) {
+                $objects[] = $object;
             }
 
-            $connection->set_charset($dbConfig["charset"]);
-
-            $this->connection = $connection;
-
-            return;
-        }
-
-        /**
-         * Returns the MySQL Database connection
-         *
-         * @return \mysqli
-         */
-        public function getConnection():\mysqli {
-            return $this->connection;
-        }
-
-        /**
-         * Restricting cloning
-         */
-        private function __clone() {
-
-        }
-
-        /**
-         * Restricting serialization
-         */
-        private function __wakeup() {
-
-        }
-
-        /**
-         * Restricting deserialization
-         */
-        private function __sleep() {
-
+            return $objects;
         }
     }
