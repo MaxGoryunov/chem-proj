@@ -200,4 +200,21 @@
             
 			return $pageNumber;
         }
+
+        /**
+         * Determines if the supplied params exist or not
+         *
+         * @param array<string, mixed>  $params - params to check
+         * @param array<string, string> $list   - list of required params
+         * @return bool
+         */
+        public function paramsExist(array $params, array $list):bool {
+            foreach ($list as $name => $type) {
+                if (!isset($params[$name])) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }

@@ -45,6 +45,13 @@
         }
 
         /**
+         * Returns a list of parameters needed for the model
+         *
+         * @return array<string, string>
+         */
+        protected abstract function paramsList():array;
+
+        /**
          * Returns a related Model
          * 
          * Access to the Model is done in lazy load manner so that it is not created each time a query is made
@@ -91,5 +98,29 @@
             $viewData = compact("title", "adminStatus", "entitiesList");
 
             $this->getView()->render(__METHOD__, $viewData);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function edit(int $id):void {
+            $title       = "Редактирование " . $this->relatedFactory->getDomain()->getTranslationClause();
+            $entity      = $this->getModel()->getById($id);
+            $adminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+			$paramsList  = $this->paramsList();
+
+			if ($this->getModel()->paramsExist($_POST, $paramsList)) {
+                $data["id"] = $id;
+
+                foreach ($paramsList as $name => $type) {
+                    $data[$name] = $_POST[$name];
+                }
+
+                $this->getModel()->edit($data);
+            }
+            
+            $viewData =  compact("title", "entity", "adminStatus");
+            
+            $this->getView()->render(__FUNCTION__, $viewData);
         }
     }
