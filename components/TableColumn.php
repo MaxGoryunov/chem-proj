@@ -18,6 +18,9 @@
          */
         private const ALLOWED_TYPES = [
             "int"       => true,
+            "smallint"  => true,
+            "tinyint"   => true,
+            "float"     => true,
             "varchar"   => true,
             "text"      => false,
             "timestamp" => false
@@ -151,21 +154,34 @@
          * 
          * @throws InvalidArgumentException if the $type is not valid
          *
-         * @param string $type - column type
-         * @param int $size    - column size for integer and varchar columns
+         * @param string          $type - column type
+         * @param int|string|null $size - column size for sized columns(have to accept string because of float format)
          * @return $this
          */
-        public function setType(string $type, int $size = null):self {
+        public function setType(string $type, int|string|null $size):self {
             $sizeRequired = self::ALLOWED_TYPES[$type] ?? null;
 
             if (isset($sizeRequired)) {
                 if ($sizeRequired) {
+                    /**
+                     * @todo Add coverage for this condition
+                     */
+                    if (is_string($size)) {
+                        $parts  = explode(",", $size);
+                        $actual = (int)$parts[0];
+
+                        if (isset($parts[1])) {
+                            $actual .= "," . (int)$parts[1];
+                        }
+                    } else {
+                        $actual = $size;
+                    }
                     $this->type = strtoupper($type . "($size)");
                 } else {
                     $this->type = strtoupper($type);
                 }
             } else {
-                throw new InvalidArgumentException("Type must be a valid SQL type");
+                throw new InvalidArgumentException("Type must be a valid SQL type: $type is not among allowed types: " . implode(", ", array_keys(self::ALLOWED_TYPES)));
             }
 
             return $this;

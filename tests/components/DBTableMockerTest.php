@@ -3,6 +3,8 @@
     namespace Tests\Components;
 
     use Components\DBTableMocker;
+    use Components\TableColumn;
+    use mysqli;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -43,61 +45,75 @@
          * 
          * @dataProvider provideTableNamesAndPrimaryKeys
          *
-         * @param string $tableName         - name of the described table
-         * @param (string|null)[] $expected - expected result
+         * @param string $tableName - name of the described table
          * @return void
          */
-        public function testGetTableDescription(string $tableName, array $expected):void {            
-            $this->assertContains($expected, $this->mocker->getTableDescription($tableName));
+        public function testGetTableDescription(string $tableName):void {
+            $mysqli = new mysqli("localhost", "root", "", "chemistry");
+            $cols   = $mysqli->query("DESCRIBE `$tableName`;")->fetch_all(MYSQLI_ASSOC);
+
+            $dbToClassMap = [
+                "NO"             => false,
+                "YES"            => true,
+                "PRI"            => true,
+                "MUL"            => false,
+                "UNI"            => false,
+                "auto_increment" => true,
+                ""               => false
+            ];
+            $dbToStringsMap = [
+                "Null" => [
+                    "NO"  => "NOT NULL",
+                    "YES" => ""
+                ],
+                "Key" => [
+                    "PRI" => "PRIMARY KEY",
+                    "MUL" => "",
+                    "UNI" => "",
+                    ""    => ""
+                ],
+                "Extra" => [
+                    "auto_increment" => "AUTO_INCREMENT",
+                    ""               => ""
+                ]
+            ];
+
+            foreach ($cols as $col) {
+                $split      = preg_split("/[()]/", $col["Type"], -1, PREG_SPLIT_NO_EMPTY);
+                $split[1] ??= "";
+                $columns[$col["Field"]] = (new TableColumn($col["Field"]))
+                                ->setType($split[0], $split[1])
+                                ->setNull($dbToClassMap[$col["Null"]])
+                                ->setPrimaryKey($dbToClassMap[$col["Key"]])
+                                ->setAutoIncrement($dbToClassMap[$col["Extra"]]);
+            }
+
+            foreach ($cols as $col) {
+                $key   = $col["Field"];
+                $split = preg_split("/[()]/", $col["Type"], -1, PREG_SPLIT_NO_EMPTY);
+                $type  = $split[0];
+
+                if (isset($split[1])) {
+                    $type .= "({$split[1]})";
+                }
+
+                $this->assertEquals($key, $columns[$key]->getName());
+                $this->assertEquals(strtoupper($type), $columns[$key]->getType());
+                $this->assertEquals($dbToStringsMap["Null"][$col["Null"]], $columns[$key]->getNull());
+                $this->assertEquals($dbToStringsMap["Key"][$col["Key"]], $columns[$key]->getPrimaryKey());
+                $this->assertEquals($dbToStringsMap["Extra"][$col["Extra"]], $columns[$key]->getAutoIncrement());
+
+            }
         }
 
         /**
-         * @covers ::mockTable
-         *
-         * @return void
-         */
-        public function testMockTableCreatesCorrectTable():void {
-
-        }
-
-        /**
-         * @return ((string|null)[]|string)[][]
+         * @return string[][]
          */
         public function provideTableNamesAndPrimaryKeys():array {
             return [
-                "addresses" => [
-                    "addresses",
-                    array(
-                        "Field"   => "address_id",
-                        "Type"    => "int(10)",
-                        "Null"    => "NO",
-                        "Key"     => "PRI",
-                        "Default" => null,
-                        "Extra"   => "auto_increment"
-                    )
-                ],
-                "medicines" => [
-                    "medicines",
-                    array(
-                        "Field"   => "medicine_id",
-                        "Type"    => "int(10)",
-                        "Null"    => "NO",
-                        "Key"     => "PRI",
-                        "Default" => null,
-                        "Extra"   => "auto_increment"
-                    )
-                ],
-                "companies" => [
-                    "companies",
-                    array(
-                        "Field"   => "company_id",
-                        "Type"    => "int(10)",
-                        "Null"    => "NO",
-                        "Key"     => "PRI",
-                        "Default" => null,
-                        "Extra"   => "auto_increment"
-                    )
-                ]
+                "addresses" => ["addresses"],
+                "medicines" => ["medicines"],
+                "companies" => ["companies"]
             ];
         }
     }

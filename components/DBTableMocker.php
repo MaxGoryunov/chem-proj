@@ -11,6 +11,26 @@
     class DBTableMocker {
 
         /**
+         * Map resulting row values to values accepted by TableColumn
+         * 
+         * @var array<string, bool>[]
+         */
+        private const MAP = [
+            "Null" => [
+                "NO"  => false,
+                "YES" => true
+            ],
+            "Key" => [
+                "PRI" => true,
+                ""    => false
+            ],
+            "Extra" => [
+                "auto_increment" => true,
+                ""               => false
+            ]
+        ];
+
+        /**
          * Contains an array of stored table columns
          *
          * @var string[][]
@@ -21,7 +41,7 @@
          * Returns an array of table columns with their description
          *
          * @param string $tableName
-         * @return string[][]
+         * @return TableColumn[]
          */
         public function getTableDescription(string $tableName):array {
             $connection = new MySQLConnection(); 
@@ -30,9 +50,12 @@
             $columns = $result->fetch_all(MYSQLI_ASSOC);
             
             foreach ($columns as $column) {
-                $this->columns[$column["Field"]] = $column;
+                $this->columns[$column["Field"]] = (new TableColumn($column["Field"]))
+                                                    ->setNull(self::MAP["Null"][$column["Null"]])
+                                                    ->setAutoIncrement(self::MAP["Extra"][$column["Extra"]])
+                                                    ->setPrimaryKey(self::MAP["Key"][$column["Key"]]);
             }
 
-            return $columns;
+            return $this->columns;
         }
     }
