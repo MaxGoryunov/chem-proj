@@ -8,6 +8,7 @@
     use Models\AbstractModel;
     use Models\DomainModel;
     use Views\AbstractView;
+    use Models\UsersModel;
 
     /**
      * Base class for implementing other Controllers
@@ -56,7 +57,7 @@
          * 
          * Access to the Model is done in lazy load manner so that it is not created each time a query is made
          *
-         * @return AbstractModel
+         * @return AbstractModel|UsersModel
          */
         protected function getModel():DomainModel {
             if (!isset($this->relatedModel)) {

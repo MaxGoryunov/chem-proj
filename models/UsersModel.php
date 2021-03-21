@@ -4,9 +4,12 @@
 
     use Components\DBConnectionProvider;
     use Components\IDBConnection;
+    use Components\TokenGenerator;
+    use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use Entities\IEntity;
     use Entities\UserEntity;
+    use mysqli;
 
     /**
      * Class containing Users business logic 
@@ -19,6 +22,13 @@
         protected $tableName = "users";
 
         /**
+         * Errors from view forms
+         *
+         * @var array<string, string>
+         */
+        private $errors = [];
+
+        /**
          * {@inheritDoc}
          */
         protected function getDomainName():string {
@@ -26,9 +36,77 @@
         }
 
         /**
+         * Returns an error related to a specified field
+         *
+         * @param string $field
+         * @return string
+         */
+        public function getError(string $field):string {
+            return $this->errors[$field];
+        }
+
+        /**
+         * Returns all stored errors
+         *
+         * @return array<string. string>
+         */
+        public function getErrors():array {
+            return $this->errors;
+        }
+
+        /**
+         * {@inheritDoc}
+         * @return UserEntity[]
+         */
+        public function getList(int $limit, int $offset):array {
+            return [];
+        }
+
+        /**
+         * {@inheritDoc}
+         * @return UserEntity
+         */
+        public function getById(int $id):IEntity {
+            return new UserEntity();
+        }
+
+        /**
+         * {@inheritDoc}
+         * 
+         * @return mysqli
+         */
+        public function add(array $data = []):void {
+            $connection       = DBConnectionProvider::getConnection(IDBConnection::class);
+            $data["salt"]     = (new TokenGenerator())->generateToken();
+            $data["password"] = md5($data["salt"] . $data["password"]);
+
+            $query      = (new InsertQueryBuilder($this->getTableName()))
+                          ->set($data)
+                          ->build();
+
+            $connection->query($query->getQueryString());
+
+            // return $connection;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function edit(array $data = []):void {
+            
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function delete(int $id):void {
+            
+        }
+
+        /**
          * Returns id of the user based on the login and password input
          *
-         * @param string $login    - user's login
+         * @param string $email    - user's email
          * @param string $password - user's password
          * @return string[]
          */
@@ -39,10 +117,13 @@
                 "user_id"
             ];
 
+            $salt           = $this->getSaltByUserEmail($email);
+            $hashedPassword = md5($salt . $password);
+
             $query      = (new SelectQueryBuilder($this->getTableName()))
                           ->what($columns)
-                          ->whereAnd("`user_login` = '$login'")
-                          ->whereAnd("`user_password` = '$password'")
+                          ->whereAnd("`user_email` = '$email'")
+                          ->whereAnd("`user_password` = '$hashedPassword'")
                           ->build();
 
             $result   = $connection->query($query->getQueryString());
@@ -130,5 +211,47 @@
             unset($session["user_id"]);
             unset($session["token"]);
             unset($session["token_time"]);
+        }
+
+        /**
+         * Returns a random user salt
+         *
+         * @return string
+         */
+        public function getSalt():string {
+            return (new TokenGenerator())->generateToken();
+        }
+
+        /**
+         * Returns a hashed salted password
+         *
+         * @param string $password - user password
+         * @param string $salt     - random user salt
+         * @return string
+         */
+        public function hashPassword(string $password, string $salt):string {
+            return md5($password . $salt);
+        }
+
+        /**
+         * Returns a unique user token
+         *
+         * @return string
+         */
+        public function generateUserToken():string {
+            return (new TokenGenerator())->generateToken();
+        }
+
+        /**
+         * Adds a new error message
+         * 
+         * Error messages are later displayed in the view forms
+         *
+         * @param string $field   - input field in which the error occurred
+         * @param string $message - error message for the user to read
+         * @return void
+         */
+        public function addInputError(string $field, string $message):void {
+            $this->errors[$field] = $message;
         }
     }
