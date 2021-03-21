@@ -3,7 +3,15 @@
     namespace Tests\Components;
 
     use Components\MySQLConnection;
+    use DBQueries\IQueryBuilder;
+    use DBQueries\Query;
+    use Entities\IEntity;
+    use mysqli;
+    use mysqli_result;
+    use mysqli_sql_exception;
     use PHPUnit\Framework\TestCase;
+    use ReflectionClass;
+    use ReflectionMethod;
 
     /**
      * Testing MySQLConnection class
@@ -17,7 +25,34 @@
          *
          * @var MySQLConnection
          */
-        protected $mySQLConnection;
+        protected $connection;
+
+        /**
+         * Contains object helping for testing
+         * 
+         * Mocks Query object
+         *
+         * @var \PHPUnit\Framework\MockObject\MockObject|Query
+         */
+        protected $queryMock;
+
+        /**
+         * Contains object helping for testing
+         * 
+         * Mocks builder object
+         *
+         * @var \PHPUnit\Framework\MockObject\MockObject|IQueryBuilder
+         */
+        protected $builder;
+
+        /**
+         * COntains object helping for testing
+         * 
+         * Mocks mysqli_result object
+         *
+         * @var \PHPUnit\Framework\MockObject\MockObject|mysqli_result
+         */
+        protected $resultMock;
 
         /**
          * Creates tested class object
@@ -25,7 +60,35 @@
          * @return void
          */
         protected function setUp():void {
-            $this->mySQLConnection = MySQLConnection::getInstance();
+            $this->connection          = new MySQLConnection();
+            $mySQLConnectionReflection = new ReflectionClass($this->connection);
+            $connectionReflection      = $mySQLConnectionReflection->getProperty("connection");
+
+            $connectionReflection->setAccessible(true);
+
+            $mysqliMock       = $this->getMockBuilder(mysqli::class)
+                                    ->onlyMethods(["query"])
+                                    ->getMock();
+
+            $this->queryMock  = $this->getMockBuilder(Query::class)
+                                    ->disableOriginalConstructor()
+                                    ->onlyMethods(["getQueryString"])
+                                    ->getMock();
+
+            $this->resultMock = $this->getMockBuilder(mysqli_result::class)
+                                    ->disableOriginalConstructor()
+                                    ->getMock();
+
+            $this->builder    = $this->getMockBuilder(IQueryBuilder::class)
+                                    ->disableOriginalConstructor()
+                                    ->onlyMethods(["build"])
+                                    ->getMock();
+
+            $mysqliMock->expects($this->any())
+                        ->method("query")
+                        ->willReturn($this->resultMock);
+
+            $connectionReflection->setValue($this->connection, $mysqliMock);
         }
 
         /**
@@ -34,59 +97,246 @@
          * @return void
          */
         protected function tearDown():void {
-            $this->mySQLConnection = null;
+            $this->connection = null;
         }
-
-        /**
-         * @covers ::getInstance
-         *
-         * @return void
-         */
-        public function testInstanceIsOfMySQLConnectionClass():void {
-            $this->assertInstanceOf(MySQLConnection::class, $this->mySQLConnection);
         
-        }
-
         /**
-         * @covers ::getInstance
+         * Returns the protected or private tested class method
          *
-         * @return MySQLConnection
+         * @param string $methodName
+         * @return ReflectionMethod
          */
-        public function testClassHasOnlyOneInstance():MySQLConnection {
-            $instance = MySQLConnection::getInstance();
+        protected function getInnerMethod(string $methodName):ReflectionMethod {
+            $reflection = new ReflectionClass(MySQLConnection::class);
+            $method     = $reflection->getMethod($methodName);
 
-            $this->assertSame($instance, $this->mySQLConnection);
+            $method->setAccessible(true);
 
-            return $instance;
+            return $method;
         }
 
         /**
-         * @covers ::getConnection
-         * @covers ::getInstance
-         *
-         * @return void
-         */
-        public function testClassReturnsSameMySQLConnectionOnEachCall():void {
-            $connection1 = $this->mySQLConnection->getConnection();
-            $connection2 = $this->mySQLConnection->getConnection();
-
-            $this->assertSame($connection1, $connection2);
-        }
-
-        /**
-         * @covers ::getInstance
-         * @covers ::getConnection
+         * @covers ::__construct
+         * @covers ::establishConnection
          * 
-         * @depends testClassHasOnlyOneInstance
+         * @small
          *
-         * @param MySQLConnection $instance
          * @return void
          */
-        public function testDifferentClassInstancesReturnsSameMySQLConnectionsOnEachCall(MySQLConnection $instance):void {
-            $connection1 = $instance->getConnection();
-            $connection2 = $this->mySQLConnection->getConnection();
+        public function testConstructInvokesEstablishConnectionIfTheConnectionIsNotSet():void {
+            $reflection = new ReflectionClass($this->connection);
+            $mysqli     = $reflection->getProperty("connection");
 
-            $this->assertSame($connection1, $connection2);
+            $mysqli->setAccessible(true);
+            $mysqli->setValue($this->connection, null);
+
+            $connection = new MySQLConnection();
+
+            $this->assertInstanceOf(mysqli::class, $mysqli->getValue($connection));
         }
 
+        /**
+         * @covers ::establishConnection
+         * @covers ::validateConnection
+         *
+         * @return void
+         */
+        public function testEstablishConnectionSetsUpCorrectMySQLiObject():void {
+            $establishConnection = $this->getInnerMethod("establishConnection");
+
+            $this->assertInstanceOf(mysqli::class, $establishConnection->invokeArgs($this->connection, [[
+                "host"     => "localhost",
+                "user"     => "root",
+                "password" => "",
+                "database" => "chemistry",
+                "charset"  => "utf8"
+            ]]));
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::fail
+         * @covers ::establishConnection
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testEstablishConnectionThrowsExceptionOnMySQLiError():void {
+            $this->expectException(mysqli_sql_exception::class);
+
+            $establishConnection = $this->getInnerMethod("establishConnection");
+
+            $this->assertInstanceOf(mysqli::class, $establishConnection->invokeArgs($this->connection, [[
+                "host"     => "aaaaa",
+                "user"     => "root",
+                "password" => "",
+                "database" => "chemistry",
+                "charset"  => "utf8"
+            ]]));
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::fail
+         * 
+         *
+         * @small
+         * @return void
+         */
+        public function testFailThrowsException():void {
+            $this->expectException(mysqli_sql_exception::class);
+
+            $this->assertNull($this->connection->fail(new mysqli_sql_exception()));
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::query
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testQueryCallsMySQLiQueryMethod():void {
+            $this->queryMock->method("getQueryString")
+                        ->will($this->returnValue("SELECT * FROM `addresses`;"));
+
+            $this->builder->expects($this->once())
+                    ->method("build")
+                    ->will($this->returnValue($this->queryMock));
+
+            $this->connection->query($this->builder);
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::query
+         * @covers ::fetchAll
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testFetchAllReturnsArrayOfAssocArrays():void {
+            $assocArr = [
+                [
+                    "id"   => "1",
+                    "name" => "Moscow"
+                ],
+                [
+                    "id"   => "2",
+                    "name" => "Saint-Petersburg"
+                ],
+                [
+                    "id"   => "3",
+                    "name" => "Kazan"
+                ]
+            ];
+
+            $this->resultMock->expects($this->once())
+                        ->method("fetch_all")
+                        ->will($this->returnValue($assocArr));
+
+            $this->queryMock->method("getQueryString")
+                        ->will($this->returnValue("SELECT * FROM `addresses`;"));
+
+            $this->builder->expects($this->once())
+                    ->method("build")
+                    ->will($this->returnValue($this->queryMock));
+
+            $this->assertEquals($assocArr, $this->connection->fetchAll($this->builder));
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::establishConnection
+         * @covers ::query
+         * @covers ::fetchAssoc
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testFetchAssocReturnsResultArray():void {
+            $userInfo = [
+                "id"      => "12",
+                "name"    => "John",
+                "surname" => "Doe"
+            ];
+
+            $this->resultMock->expects($this->exactly(2))
+                        ->method("fetch_assoc")
+                        ->will($this->returnValue($userInfo));
+
+            $this->queryMock->expects($this->exactly(2))
+                        ->method("getQueryString")
+                        ->will($this->returnValue("SELECT * FROM `users` WHERE `user_id` = 12;"));
+
+            $this->builder->expects($this->exactly(2))
+                    ->method("build")
+                    ->will($this->returnValue($this->queryMock));
+
+            $this->assertEquals($userInfo, $this->connection->fetchAssoc($this->builder));
+            $this->assertEquals($userInfo["id"], $this->connection->fetchAssoc($this->builder, "id"));
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::query
+         * @covers ::fetchObject
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testFetchObjectReturnsResultObject():void {
+            $entity = $this->getMockBuilder(IEntity::class)
+                            ->getMock();
+
+            $this->resultMock->expects($this->once())
+                        ->method("fetch_object")
+                        ->willReturn($entity);
+
+            $this->queryMock->expects($this->once())
+                        ->method("getQueryString")
+                        ->willReturn("SELECT * FROM `addresses` WHERE `address_id` = 12;");
+
+            $this->builder->expects($this->once())
+                    ->method("build")
+                    ->willReturn($this->queryMock);
+
+            $this->assertInstanceOf(IEntity::class, $this->connection->fetchObject($this->builder, IEntity::class));
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::query
+         * @covers ::fetchObjects
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testFetchObjectsReturnsResultObjects():void {
+            $entity = $this->getMockBuilder(IEntity::class)
+                                ->getMock();
+
+            $this->resultMock->expects($this->exactly(4))
+                        ->method("fetch_object")
+                        ->will($this->onConsecutiveCalls($entity, $entity, $entity, null));
+
+            $this->queryMock->expects($this->once())
+                        ->method("getQueryString")
+                        ->willReturn("SELECT * FROM `addresses`;");
+
+            $this->builder->expects($this->once())
+                    ->method("build")
+                    ->willReturn($this->queryMock);
+
+            $entities = $this->connection->fetchObjects($this->builder, IEntity::class);
+
+            $this->assertInstanceOf(IEntity::class, $entities[0]);
+            $this->assertEquals([$entity, $entity, $entity], $entities);
+        }
     }

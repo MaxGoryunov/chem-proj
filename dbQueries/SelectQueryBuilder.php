@@ -256,8 +256,8 @@
         /**
          * {@inheritDoc}
          */
-        public function build():IQuery {
-            return new Query("
+        public function getQueryString():string {
+            return "
                 SELECT {$this->getWhat()}
                 FROM `{$this->getTableName()}`
                 {$this->getJoins()}
@@ -266,7 +266,6 @@
                 {$this->getHaving()}
                 {$this->getOrderBy()}
                 {$this->getLimit()};
-            ");
+            ";
         }
-
     }
