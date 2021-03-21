@@ -6,12 +6,12 @@
     use Components\DomainRegistry;
     use OutOfRangeException;
     use PHPUnit\Framework\TestCase;
-use ReflectionClass;
+    use ReflectionClass;
 
-/**
+    /**
      * Testing DomainRegistry class
      * 
-     * @coversDefaultClass DomainRegistry
+     * @coversDefaultClass Components\DomainRegistry
      */
     class DomainRegistryTest extends TestCase {
 
@@ -42,6 +42,8 @@ use ReflectionClass;
         
         /**
          * @covers ::getDomain
+         * 
+         * @small
          *
          * @return void
          */
@@ -54,6 +56,8 @@ use ReflectionClass;
         /**
          * @covers ::setDomainData
          * @covers ::getDomainData
+         * 
+         * @small
          *
          * @return void
          */
@@ -68,6 +72,8 @@ use ReflectionClass;
         /**
          * @covers ::setDomainData
          * @covers ::getDomainData
+         * 
+         * @small
          *
          * @return void
          */
@@ -83,9 +89,13 @@ use ReflectionClass;
         }
 
         /**
+         * @covers ::setDomainData
          * @covers ::getDomain
+         * @uses Components\Domain
          * 
          * @dataProvider provideDomainNames
+         * 
+         * @small
          *
          * @param string $domainPlural      - domain name in plural
          * @param string $domainSingular    - domain name in singular
@@ -105,7 +115,10 @@ use ReflectionClass;
         }
 
         /**
+         * @covers ::setDomainData
          * @covers ::getDomain
+         * 
+         * @small
          * 
          * @return void
          */
@@ -133,6 +146,8 @@ use ReflectionClass;
         /**
          * @covers ::setDomainData
          * @covers ::getDomainData
+         * 
+         * @small
          *
          * @return void
          */

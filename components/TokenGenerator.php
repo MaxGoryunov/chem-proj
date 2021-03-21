@@ -6,52 +6,164 @@
      * Class for creating tokens. Will be used later to create tokens for user connections
      */
     class TokenGenerator {
+
         /**
-         * Symbols used to create a token
-         *
+         * Key for generating only token with symbols from [0-9] range
+         * 
          * @var string[]
          */
-        private $symbols = [];
+        public const DIGITS = ["09"];
+
         /**
-         * Length of the symbols array
+         * Key for generating only token with symbols from [a-Z] range
          * 
-         * @var int
+         * @var string[]
          */
-        private $length;
+        public const LETTERS = ["az", "AZ"];
+
+        /**
+         * Key for generating only token with symbols from [a-z] range
+         * 
+         * @var string[]
+         */
+        public const LETTERS_LOWERCASE = ["az"];
+
+        /**
+         * key for generating only token with symbols from [A-Z] range
+         * 
+         * @var string[]
+         */
+        public const LETTERS_UPPERCASE = ["AZ"];
+
+        /**
+         * Key for generating only token with symbols from [0-9a-Z] range
+         * 
+         * @var string[]
+         */
+        public const ALL = ["09", "az", "AZ"];
+
+        /**
+         * Initiated ranges which can be used for generating tokens
+         *
+         * @var array
+         */
+        private $ranges = [];
+
+        /**
+         * Contains vowel ad consonant sets
+         *
+         * @var int[][]
+         */
+        private $letterSets;
+
+        /**
+         * Returns a generated key based on the given array
+         *
+         * @param string[] $range
+         * @return string
+         */
+        private function getKey(array $range):string {
+            return implode("", $range);
+        }
 
         /**
          * Controls creation of symbols used in tokens
          * 
-         * The initialization of the symbols is done in Lazy Load manner so that the array is not created during the creation of the object
+         * The resulting array depends on the keys supplied in $keys variable and may include digits, letters or both digits and letters.
+         * 
+         * @todo Implement a more effective algorithm
          *
-         * @return int
+         * @param string[][] $keys
+         * @return (int|string)[]
          */
-        public function initSymbols():int {
-            if (empty($this->symbols)) {
-                $this->symbols = array_merge(range(0, 9), range("a", "z"), range("A", "Z"));
-                $this->length  = count($this->symbols);
+        public function getSymbols(array $keys):array {
+            $requiredRanges = [];
+
+            foreach ($keys as $ranges) {
+                $rangeKey = $this->getKey($ranges);
+
+                /**
+                 * If the range is empty then the is is created from smaller ranges
+                 */
+                if (!isset($this->ranges[$rangeKey])) {
+                    $generatedRanges = [];
+
+                    foreach ($ranges as $range) {
+                        $generatedRanges[] = range(...str_split($range));
+                    }
+
+                    $this->ranges[$rangeKey] = array_flip(array_merge(...$generatedRanges));
+                }
+
+                $requiredRanges[] = $this->ranges[$rangeKey];
             }
 
-            return $this->length;
+            return array_merge(...$requiredRanges);
         }
+
+        /**
+         * Returns letter Sets
+         * 
+         * 'Vowels' key contains vowels, 'consonants' contains consonants
+         *
+         * @return int[][]
+         */
+        public function getLetterSets():array {
+            $sets[] = array_flip(["a", "e", "i", "o", "u"]);
+            $sets[]= array_flip(array_diff(range("a", "z"), ["a", "e", "i", "o", "u"]));
+
+            /**
+             * @todo Add classes for letter sets
+             */
+            return $sets;
+        }
+
         /**
          * Function returns a token, user can specify the token length if needed
          *
          * @param int $length - length of the token
+         * @param string[] $keys
          * @return string
          */
-        public function generateToken(int $length = 32):string {
-            $this->initSymbols();
-
-            $token = "";
+        public function generateToken(int $length = 32, array $keys = [self::ALL]):string {
+            $symbols = $this->getSymbols($keys);
+            $token   = "";
 
             for ($i = 0; $i < $length; $i++) {
                 /**
-                 * One is subtracted from Length in order to avoid LengthException
+                 * As the array is flipped, array_rand returns the symbol instead of its index
                  */
-                $token .= $this->symbols[mt_rand(0, $this->length - 1)];
+                $token .= array_rand($symbols);
             }
 
             return $token;
+        }
+
+        /**
+         * Returns a unique token
+         *
+         * @return string
+         */
+        public function generateUniqueToken():string {
+            return md5("" . microtime(true));
+        }
+
+        /**
+         * Returns pseudo word
+         * 
+         * Pseudo word contains alternating vowel and consonant letters
+         *
+         * @param int $length
+         * @return string
+         */
+        public function generatePseudoWord(int $length = 10):string {
+            $this->letterSets = $this->letterSets ?? $this->getLetterSets();
+            $pseudoWord       = "";
+
+            for ($i = 0; $i < $length; $i++) {
+                $pseudoWord .= array_rand($this->letterSets[$i % 2]);
+            }
+
+            return $pseudoWord;
         }
     }
