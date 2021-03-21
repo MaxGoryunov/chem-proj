@@ -200,6 +200,23 @@
         }
 
         /**
+         * @covers ::where
+         * @covers ::and
+         * @covers ::or
+         * @covers ::getWhere
+         *
+         * @return void
+         */
+        public function testBuildsCorrectStatementWithDifferentMethods():void {
+            $this->builder->where("id = 1")
+                            ->and("name = John")
+                            ->or("email = johndoe@example.com")
+                            ->or("password = admin");
+            
+            $this->assertEquals("WHERE `id` = '1' AND `name` = 'John' OR `email` = 'johndoe@example.com' OR `password` = 'admin'", $this->builder->getWhere());
+        }
+
+        /**
          * @return string[][][][]
          */
         public function provideStatements():array {
