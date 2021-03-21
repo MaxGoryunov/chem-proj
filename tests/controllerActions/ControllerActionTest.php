@@ -121,25 +121,14 @@
         public function testGetControllerReturnsProxyIfFactoryCanCreateProxies():void {
             $controller = $this->setMocks();
 
-            $factory = new class($controller) implements IProxyFactory {
-                public $counter = 0;
+            $factory = $this->getMockBuilder(IProxyFactory::class)
+                                ->getMock();
 
-                private $controller;
-
-                public function __construct($controller) {
-                    $this->controller = $controller;
-                }
-
-                public function getController():IController {
-                    return $this->controller;
-                }
-
-                public function getProxy():IController {
-                    $this->counter++;
-
-                    return $this->controller;
-                }
-            };
+            $factory->expects($this->exactly(0))
+                    ->method("getController");
+            $factory->expects($this->once())
+                    ->method("getProxy")
+                    ->willReturn($controller);
 
             $this->action->setFactory($factory);
 
@@ -149,7 +138,6 @@
             $getController->setAccessible(true);
 
             $this->assertSame($controller, $getController->invoke($this->action));
-            $this->assertEquals(1, $factory->counter);
         }
 
         /**
