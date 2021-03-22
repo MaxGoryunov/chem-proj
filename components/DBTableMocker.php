@@ -5,7 +5,6 @@
 use DBQueries\CreateTableQueryBuilder;
 use DBQueries\DescribeQueryBuilder;
     use DBQueries\DropTableQueryBuilder;
-    use DBQueries\Query;
 
     /**
      * Class which is used for mocking Db Tables which allows proper testing
@@ -74,7 +73,7 @@ use DBQueries\DescribeQueryBuilder;
          * @param string $tableName
          * @return void
          */
-        public function createTable(string $tableName):void {
+        public function mockTable(string $tableName):void {
             $connection = new MySQLConnection();
             $drop       = new DropTableQueryBuilder("mock_$tableName");
             
@@ -86,5 +85,18 @@ use DBQueries\DescribeQueryBuilder;
                         );
 
             $connection->query($create);
+        }
+
+        /**
+         * Clears created mock table
+         *
+         * @param string $tableName
+         * @return void
+         */
+        public function clearMock(string $tableName):void {
+            $connection = new MySQLConnection();
+            $builder    = new DropTableQueryBuilder("mock_$tableName");
+
+            $connection->query($builder);
         }
     }

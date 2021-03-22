@@ -3,9 +3,9 @@
     namespace Tests\Components;
 
     use Components\DBTableMocker;
-    use Components\TableColumn;
     use mysqli;
-    use PHPUnit\Framework\TestCase;
+use mysqli_sql_exception;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing DBTableMocker class
@@ -48,7 +48,7 @@
          * @param string $tableName - name of the described table
          * @return void
          */
-        public function testGetTableDescription(string $tableName):void {
+        public function testGetTableDescriptionReturnsCorrectTableDescription(string $tableName):void {
             $mysqli         = new mysqli("localhost", "root", "", "chemistry");
             $cols           = $mysqli->query("DESCRIBE `$tableName`;")->fetch_all(MYSQLI_ASSOC);
             $dbToStringsMap = [
@@ -90,15 +90,15 @@
 
         /**
          * @covers ::getTableDescription
-         * @covers ::createTable
+         * @covers ::mockTable
          * 
          * @dataProvider provideTableNames
          *
          * @param string $table
          * @return void
          */
-        public function testCreateTableCreatesCorrectMockTable(string $table):void {
-            $this->assertNull($this->mocker->createTable($table));
+        public function testMockTableCreatesCorrectMockTable(string $table):void {
+            $this->assertNull($this->mocker->mockTable($table));
 
             $original  = $this->mocker->getTableDescription($table);
             $resulting = $this->mocker->getTableDescription("mock_$table");
@@ -112,6 +112,28 @@
                 $this->assertEquals($column->getAutoIncrement(), $col->getAutoIncrement());
                 $this->assertEquals($column->getPrimaryKey(), $col->getPrimaryKey());
             }
+        }
+
+        /**
+         * @covers ::mockTable
+         * @covers ::clearMock
+         * 
+         * @dataProvider provideTableNames
+         *
+         * @param string $name
+         * @return void
+         */
+        public function testClearMockDropsMockTable(string $name):void {
+            $this->mocker->mockTable($name);
+
+            $mysqli = new mysqli("localhost", "root", "", "chemistry");
+
+            $this->assertNotNull($mysqli->query("DESCRIBE `mock_$name`;"));
+            $this->assertNull($this->mocker->clearMock($name));
+
+            $this->expectException(mysqli_sql_exception::class);
+
+            $mysqli->query("DESCRIBE `mock_$name`;");
         }
 
         /**
