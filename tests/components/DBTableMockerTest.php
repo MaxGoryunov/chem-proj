@@ -43,24 +43,14 @@
          * @covers ::getTableDescription
          * @covers ::getCurrentColumn
          * 
-         * @dataProvider provideTableNamesAndPrimaryKeys
+         * @dataProvider provideTableNames
          *
          * @param string $tableName - name of the described table
          * @return void
          */
         public function testGetTableDescription(string $tableName):void {
-            $mysqli = new mysqli("localhost", "root", "", "chemistry");
-            $cols   = $mysqli->query("DESCRIBE `$tableName`;")->fetch_all(MYSQLI_ASSOC);
-
-            $dbToClassMap = [
-                "NO"             => false,
-                "YES"            => true,
-                "PRI"            => true,
-                "MUL"            => false,
-                "UNI"            => false,
-                "auto_increment" => true,
-                ""               => false
-            ];
+            $mysqli         = new mysqli("localhost", "root", "", "chemistry");
+            $cols           = $mysqli->query("DESCRIBE `$tableName`;")->fetch_all(MYSQLI_ASSOC);
             $dbToStringsMap = [
                 "Null" => [
                     "NO"  => "NOT NULL",
@@ -78,15 +68,7 @@
                 ]
             ];
 
-            foreach ($cols as $col) {
-                $split      = preg_split("/[()]/", $col["Type"], -1, PREG_SPLIT_NO_EMPTY);
-                $split[1] ??= "";
-                $columns[$col["Field"]] = (new TableColumn($col["Field"]))
-                                ->setType($split[0], $split[1])
-                                ->setNull($dbToClassMap[$col["Null"]])
-                                ->setPrimaryKey($dbToClassMap[$col["Key"]])
-                                ->setAutoIncrement($dbToClassMap[$col["Extra"]]);
-            }
+            $columns = $this->mocker->getTableDescription($tableName);
 
             foreach ($cols as $col) {
                 $key   = $col["Field"];
@@ -107,9 +89,35 @@
         }
 
         /**
+         * @covers ::getTableDescription
+         * @covers ::createTable
+         * 
+         * @dataProvider provideTableNames
+         *
+         * @param string $table
+         * @return void
+         */
+        public function testCreateTableCreatesCorrectMockTable(string $table):void {
+            $this->assertNull($this->mocker->createTable($table));
+
+            $original  = $this->mocker->getTableDescription($table);
+            $resulting = $this->mocker->getTableDescription("mock_$table");
+
+            foreach ($original as $column) {
+                $name = $column->getName();
+                $col  = $resulting[$name];
+
+                $this->assertEquals($name, $col->getName());
+                $this->assertEquals($column->getType(), $col->getType());
+                $this->assertEquals($column->getAutoIncrement(), $col->getAutoIncrement());
+                $this->assertEquals($column->getPrimaryKey(), $col->getPrimaryKey());
+            }
+        }
+
+        /**
          * @return string[][]
          */
-        public function provideTableNamesAndPrimaryKeys():array {
+        public function provideTableNames():array {
             return [
                 "addresses" => ["addresses"],
                 "medicines" => ["medicines"],

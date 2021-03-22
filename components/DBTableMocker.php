@@ -2,7 +2,9 @@
 
     namespace Components;
 
-    use DBQueries\DescribeQueryBuilder;
+use DBQueries\CreateTableQueryBuilder;
+use DBQueries\DescribeQueryBuilder;
+    use DBQueries\DropTableQueryBuilder;
     use DBQueries\Query;
 
     /**
@@ -22,11 +24,14 @@
             ],
             "Key" => [
                 "PRI" => true,
+                "MUL" => false,
+                "UNI" => false,
                 ""    => false
             ],
             "Extra" => [
-                "auto_increment" => true,
-                ""               => false
+                "auto_increment"                => true,
+                "on update current_timestamp()" => false,
+                ""                              => false
             ]
         ];
 
@@ -50,12 +55,36 @@
             $columns = $result->fetch_all(MYSQLI_ASSOC);
             
             foreach ($columns as $column) {
+                $split      = preg_split("/[()]/", $column["Type"], -1, PREG_SPLIT_NO_EMPTY);
+                $split[1] ??= "";
+
                 $this->columns[$column["Field"]] = (new TableColumn($column["Field"]))
+                                                    ->setType($split[0], $split[1])
                                                     ->setNull(self::MAP["Null"][$column["Null"]])
                                                     ->setAutoIncrement(self::MAP["Extra"][$column["Extra"]])
                                                     ->setPrimaryKey(self::MAP["Key"][$column["Key"]]);
             }
 
             return $this->columns;
+        }
+
+        /**
+         * Creates a new mock table
+         *
+         * @param string $tableName
+         * @return void
+         */
+        public function createTable(string $tableName):void {
+            $connection = new MySQLConnection();
+            $drop       = new DropTableQueryBuilder("mock_$tableName");
+            
+            $connection->query($drop);
+
+            $create = (new CreateTableQueryBuilder("mock_$tableName"))
+                        ->setColumns(
+                            $this->getTableDescription($tableName)
+                        );
+
+            $connection->query($create);
         }
     }

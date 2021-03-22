@@ -158,7 +158,7 @@
          * @param int|string|null $size - column size for sized columns(have to accept string because of float format)
          * @return $this
          */
-        public function setType(string $type, int|string|null $size):self {
+        public function setType(string $type, int|string $size = null):self {
             $sizeRequired = self::ALLOWED_TYPES[$type] ?? null;
 
             if (isset($sizeRequired)) {
