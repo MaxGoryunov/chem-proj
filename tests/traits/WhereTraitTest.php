@@ -53,6 +53,8 @@
          * @covers ::initWhere
          * @covers ::getWhere
          * @covers ::getCurrentCondition
+         * 
+         * @small
          *
          * @return void
          */
@@ -70,6 +72,9 @@
          * @covers ::initWhereAnd
          * @covers ::getWhere
          * @covers ::getCurrentCondition
+         * 
+         * @small
+         *
          * @return void
          */
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
@@ -86,6 +91,8 @@
          * @covers ::getWhere
          * @covers ::getCurrentCondition
          * 
+         * @small
+         * 
          * @return void
          */
         public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
@@ -100,6 +107,8 @@
          * @covers ::where
          * 
          * @dataProvider provideStatements
+         * 
+         * @small
          *
          * @param string[][] $statements
          * @return void
@@ -116,6 +125,8 @@
          * @covers ::and
          * 
          * @dataProvider provideStatements
+         * 
+         * @small
          *
          * @param string[][] $statements
          * @return void
@@ -137,6 +148,8 @@
          * @covers ::or
          * 
          * @dataProvider provideStatements
+         * 
+         * @small
          *
          * @param string[][] $statements
          * @return void
@@ -158,6 +171,8 @@
          * @covers ::where
          * 
          * @dataProvider provideQuoteVariations
+         * 
+         * @small
          *
          * @param string $statement - applied statement
          * @param string $expected  - expected result
@@ -173,6 +188,8 @@
          * @covers ::and
          * 
          * @dataProvider provideQuoteVariations
+         * 
+         * @small
          *
          * @param string $statement - applied statement
          * @param string $expected  - expected result
@@ -188,6 +205,8 @@
          * @covers ::or
          * 
          * @dataProvider provideQuoteVariations
+         * 
+         * @small
          *
          * @param string $statement - applied statement
          * @param string $expected  - expected result
@@ -204,6 +223,8 @@
          * @covers ::and
          * @covers ::or
          * @covers ::getWhere
+         * 
+         * @small
          *
          * @return void
          */
