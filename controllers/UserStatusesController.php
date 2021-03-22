@@ -21,25 +21,6 @@
         /**
          * {@inheritDoc}
          */
-        public function add():void {
-            $title          = "Добавление статуса пользователя";
-			$fullUserStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
-			
-			if (isset($_POST["name"])) {
-				$name = $_POST["name"];
-                $data = compact("name");
-
-                $this->getModel()->add($data);
-			}
-
-            $viewData = array_merge($fullUserStatus, compact("title"));
-            
-			$this->getView()->render(__FUNCTION__, $viewData);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
         public function delete(int $id):void {
             $title          = "Удаление статуса пользователя";
             $userStatus     = $this->getModel()->getById($id);

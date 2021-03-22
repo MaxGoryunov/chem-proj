@@ -104,6 +104,27 @@
         /**
          * {@inheritDoc}
          */
+        public function add():void {
+            $title       = "Добавление " . $this->relatedFactory->getDomain()->getTranslationClause();
+			$adminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+            $paramsList  = $this->paramsList();
+			
+			if ($this->getModel()->paramsExist($_POST, $paramsList)) {
+                foreach ($paramsList as $name => $type) {
+                    $data[$name] = $_POST[$name];
+                }
+
+                $this->getModel()->add($data);
+			}
+
+            $viewData = compact("title", "adminStatus");
+            
+			$this->getView()->render(__FUNCTION__, $viewData);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
         public function edit(int $id):void {
             $title       = "Редактирование " . $this->relatedFactory->getDomain()->getTranslationClause();
             $entity      = $this->getModel()->getById($id);

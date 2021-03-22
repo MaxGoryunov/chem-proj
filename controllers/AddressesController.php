@@ -19,27 +19,6 @@
         }
 
         /**
-         * Controls the creation of an Address
-         *
-         * @return void
-         */
-        public function add():void {
-            $title          = "Добавление адреса";
-			$fullUserStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
-			
-			if (isset($_POST["name"])) {
-				$name = $_POST["name"];
-                $data = compact("name");
-
-                $this->getModel()->add($data);
-			}
-
-            $viewData = array_merge($fullUserStatus, compact("title"));
-            
-			$this->getView()->render(__FUNCTION__, $viewData);
-        }
-
-        /**
          * Controls the deletion process of an Address based on id
          *
          * @param int $id - id of the Address to be deleted
