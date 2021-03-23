@@ -81,7 +81,7 @@
 
             $this->builder    = $this->getMockBuilder(IQueryBuilder::class)
                                     ->disableOriginalConstructor()
-                                    ->onlyMethods(["build"])
+                                    ->onlyMethods(["build", "getQueryString"])
                                     ->getMock();
 
             $mysqliMock->expects($this->any())
