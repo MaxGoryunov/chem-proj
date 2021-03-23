@@ -50,9 +50,8 @@
 
         /**
          * @covers ::where
-         * @covers ::initWhere
+         * @covers ::statement
          * @covers ::getWhere
-         * @covers ::getCurrentCondition
          * 
          * @small
          *
@@ -69,9 +68,8 @@
 
         /**
          * @covers ::and
-         * @covers ::initWhereAnd
+         * @covers ::statement
          * @covers ::getWhere
-         * @covers ::getCurrentCondition
          * 
          * @small
          *
@@ -87,9 +85,8 @@
 
         /**
          * @covers ::or
-         * @covers ::initWhereOr
+         * @covers ::statement
          * @covers ::getWhere
-         * @covers ::getCurrentCondition
          * 
          * @small
          * 
@@ -105,6 +102,8 @@
 
         /**
          * @covers ::where
+         * @covers ::statement
+         * @covers ::getWhere
          * 
          * @dataProvider provideStatements
          * 
@@ -123,6 +122,8 @@
 
         /**
          * @covers ::and
+         * @covers ::statement
+         * @covers ::getWhere
          * 
          * @dataProvider provideStatements
          * 
@@ -146,6 +147,8 @@
 
         /**
          * @covers ::or
+         * @covers ::statement
+         * @covers ::getWhere
          * 
          * @dataProvider provideStatements
          * 
@@ -169,6 +172,8 @@
 
         /**
          * @covers ::where
+         * @covers ::statement
+         * @covers ::getWhere
          * 
          * @dataProvider provideQuoteVariations
          * 
@@ -186,6 +191,8 @@
 
         /**
          * @covers ::and
+         * @covers ::statement
+         * @covers ::getWhere
          * 
          * @dataProvider provideQuoteVariations
          * 
@@ -203,6 +210,8 @@
 
         /**
          * @covers ::or
+         * @covers ::statement
+         * @covers ::getWhere
          * 
          * @dataProvider provideQuoteVariations
          * 
@@ -222,6 +231,7 @@
          * @covers ::where
          * @covers ::and
          * @covers ::or
+         * @covers ::statement
          * @covers ::getWhere
          * 
          * @small
