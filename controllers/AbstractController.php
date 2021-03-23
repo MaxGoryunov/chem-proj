@@ -13,7 +13,7 @@
     /**
      * Base class for implementing other Controllers
      */
-    abstract class AbstractController {
+    abstract class AbstractController implements IController {
         
         /**
          * Related Factory used to get other components of MVCPDM structure
@@ -143,6 +143,24 @@
             
             $viewData =  compact("title", "entity", "adminStatus");
             
+            $this->getView()->render(__FUNCTION__, $viewData);
+        }
+
+        
+        /**
+         * {@inheritDoc}
+         */
+        public function delete(int $id):void {
+            $title       = "Удаление " . $this->relatedFactory->getDomain()->getTranslationClause();
+            $entity      = $this->getModel()->getById($id);
+            $adminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
+
+            if (isset($_POST["delete"])) {
+                $this->getModel()->delete($id);
+            }
+
+            $viewData = compact("title", "entity", "adminStatus");
+
             $this->getView()->render(__FUNCTION__, $viewData);
         }
     }
