@@ -7,7 +7,7 @@
     use PHPUnit\Framework\TestCase;
 
     /**
-     * @coversDefaultClass TableColumn
+     * @coversDefaultClass Components\TableColumn
      */
     class TableColumnTest extends TestCase {
 
@@ -41,6 +41,8 @@
          * @covers ::getName
          * 
          * @dataProvider provideNames
+         * 
+         * @small
          *
          * @param string $name
          * @return void
@@ -54,6 +56,8 @@
         /**
          * @covers ::getNull
          * @covers ::setNull
+         * 
+         * @small
          *
          * @return void
          */
@@ -68,6 +72,8 @@
         /**
          * @covers ::getAutoIncrement
          * @covers ::setAutoIncrement
+         * 
+         * @small
          *
          * @return void
          */
@@ -82,6 +88,8 @@
         /**
          * @covers ::getPrimaryKey
          * @covers ::setPrimaryKey
+         * 
+         * @small
          *
          * @return void
          */
@@ -96,6 +104,8 @@
         /**
          * @covers ::setType
          * @covers ::getType
+         * 
+         * @small
          *
          * @return void
          */
@@ -112,6 +122,8 @@
         /**
          * @covers ::setType
          * @covers ::getType
+         * 
+         * @small
          *
          * @return void
          */
@@ -128,6 +140,8 @@
         /**
          * @covers ::setType
          * @covers ::getType
+         * 
+         * @small
          *
          * @return void
          */
@@ -141,6 +155,10 @@
 
         /**
          * @covers ::getStatement
+         * 
+         * @dataProvider provideColumnData
+         * 
+         * @small
          *
          * @param string $name        - column name
          * @param bool $null          - can column be null or not
@@ -148,9 +166,6 @@
          * @param bool $primaryKey    - is column a primary key
          * @param array $type         - column type
          * @param string $expected    - expected result
-         * 
-         * @dataProvider provideColumnData
-         * 
          * @return void
          */
         public function testGetStatementReturnsCorrectStatement(string $name, bool $null, bool $autoIncrement, bool $primaryKey, array $type, string $expected):void {

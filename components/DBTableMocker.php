@@ -5,8 +5,9 @@
 use DBQueries\CreateTableQueryBuilder;
 use DBQueries\DescribeQueryBuilder;
     use DBQueries\DropTableQueryBuilder;
+use Models\AbstractModel;
 
-    /**
+/**
      * Class which is used for mocking Db Tables which allows proper testing
      */
     class DBTableMocker {
@@ -48,9 +49,11 @@ use DBQueries\DescribeQueryBuilder;
          * @return TableColumn[]
          */
         public function getTableDescription(string $tableName):array {
-            $connection = new MySQLConnection(); 
+            $connection = new MySQLConnection();
 
-            $result  = $connection->query(new DescribeQueryBuilder($tableName));
+            $result  = $connection->query(new DescribeQueryBuilder(
+                new class("$tableName") extends AbstractModel {}
+            ));
             $columns = $result->fetch_all(MYSQLI_ASSOC);
             
             foreach ($columns as $column) {
@@ -75,11 +78,15 @@ use DBQueries\DescribeQueryBuilder;
          */
         public function mockTable(string $tableName):void {
             $connection = new MySQLConnection();
-            $drop       = new DropTableQueryBuilder("mock_$tableName");
+            $drop       = new DropTableQueryBuilder(
+                new class("mock_$tableName") extends AbstractModel {}
+            );
             
             $connection->query($drop);
 
-            $create = (new CreateTableQueryBuilder("mock_$tableName"))
+            $create = (new CreateTableQueryBuilder(
+                new class("mock_$tableName") extends AbstractModel {}
+            ))
                         ->setColumns(
                             $this->getTableDescription($tableName)
                         );
@@ -95,7 +102,9 @@ use DBQueries\DescribeQueryBuilder;
          */
         public function clearMock(string $tableName):void {
             $connection = new MySQLConnection();
-            $builder    = new DropTableQueryBuilder("mock_$tableName");
+            $builder    = new DropTableQueryBuilder(
+                new class("mock_$tableName") extends AbstractModel {}
+            );
 
             $connection->query($builder);
         }

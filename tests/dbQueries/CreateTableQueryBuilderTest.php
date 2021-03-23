@@ -8,7 +8,7 @@ use DBQueries\IQuery;
 use PHPUnit\Framework\TestCase;
 
     /**
-     * @coversDefaultClass CreateTableQueryBuilder
+     * @coversDefaultClass DBQueries\CreateTableQueryBuilder
      */
     class CreateTableQueryBuilderTest extends TestCase {
 
@@ -39,6 +39,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::setColumns
+         * 
+         * @small
          *
          * @return void
          */
@@ -61,6 +63,8 @@ use PHPUnit\Framework\TestCase;
          * @covers ::column
          * 
          * @dataProvider provideColumnNames
+         * 
+         * @small
          *
          * @return void
          */
@@ -74,6 +78,8 @@ use PHPUnit\Framework\TestCase;
          * @covers ::column
          * @covers ::canBeNull
          * @covers ::getCurrentColumn
+         * 
+         * @small
          *
          * @return void
          */
@@ -92,6 +98,8 @@ use PHPUnit\Framework\TestCase;
          * @covers ::column
          * @covers ::autoIncrement
          * @covers ::getCurrentColumn
+         * 
+         * @small
          *
          * @return void
          */
@@ -107,6 +115,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::isPrimaryKey
+         * 
+         * @small
          *
          * @return void
          */
@@ -129,6 +139,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::int
+         * 
+         * @small
          *
          * @return void
          */
@@ -139,6 +151,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::varchar
+         * 
+         * @small
          *
          * @return void
          */
@@ -149,6 +163,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::text
+         * 
+         * @small
          *
          * @return void
          */
@@ -159,6 +175,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::timestamp
+         * 
+         * @small
          *
          * @return void
          */
@@ -169,6 +187,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::build
+         * 
+         * @small
          *
          * @return void
          */

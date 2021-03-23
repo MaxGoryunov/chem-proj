@@ -9,7 +9,7 @@
     /**
      * Testing DescribeQueryBuilder class
      * 
-     * @coversDefaultClass DescribeQueryBuilder
+     * @coversDefaultClass Components\DescribeQueryBuilder
      */
     class DescribeQueryBuilderTest extends TestCase {
 
@@ -17,6 +17,8 @@
          * @covers ::build
          * 
          * @dataProvider provideTableNames
+         * 
+         * @small
          *
          * @param string $tableName
          * @return void

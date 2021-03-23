@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
     /**
      * Testing DBTableMocker class
      * 
-     * @coversDefaultClass DBTableMocker
+     * @coversDefaultClass Components\DBTableMocker
      */
     class DBTableMockerTest extends TestCase {
 
@@ -44,6 +44,8 @@ use PHPUnit\Framework\TestCase;
          * @covers ::getCurrentColumn
          * 
          * @dataProvider provideTableNames
+         * 
+         * @small
          *
          * @param string $tableName - name of the described table
          * @return void
@@ -93,6 +95,8 @@ use PHPUnit\Framework\TestCase;
          * @covers ::mockTable
          * 
          * @dataProvider provideTableNames
+         * 
+         * @small
          *
          * @param string $table
          * @return void
@@ -119,6 +123,8 @@ use PHPUnit\Framework\TestCase;
          * @covers ::clearMock
          * 
          * @dataProvider provideTableNames
+         * 
+         * @small
          *
          * @param string $name
          * @return void

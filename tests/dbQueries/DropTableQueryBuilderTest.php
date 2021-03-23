@@ -9,12 +9,14 @@
     /**
      * Testing DropTableQueryBuilder class
      * 
-     * @coversDefaultClass DropTableQueryBuilder
+     * @coversDefaultClass Components\DropTableQueryBuilder
      */
     class DropTableQueryBuilderTest extends TestCase {
 
         /**
          * @covers ::build
+         * 
+         * @small
          *
          * @return void
          */
