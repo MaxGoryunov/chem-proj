@@ -4,6 +4,7 @@
     use DBQueries\IQueryBuilder;
     use PHPUnit\Framework\TestCase;
     use Traits\WhereTrait;
+    use DBQueries\SelectQueryBuilder;
 
     /**
      * Testing WhereTrait trait
@@ -48,136 +49,226 @@
         }
 
         /**
-         * @covers ::whereAnd
-         * @covers ::initWhereAnd
+         * @covers ::where
+         * @covers ::statement
          * @covers ::getWhere
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testWhereBuildsCorrectWhereStatementOnEmptyInput():void {
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where(" > 10"));
+            $this->assertEquals("", $this->builder->getWhere());
 
+            
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->where("name > "));
+            $this->assertEquals("", $this->builder->getWhere());
+        }
+
+        /**
+         * @covers ::and
+         * @covers ::statement
+         * @covers ::getWhere
+         * 
+         * @small
+         *
          * @return void
          */
         public function testWhereAndBuildsCorrectWhereAndStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->whereAnd(""));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and(" > 10"));
+            $this->assertEquals("", $this->builder->getWhere());
 
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->and("name > "));
             $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
-         * @covers ::whereOr
-         * @covers ::initWhereOr
+         * @covers ::or
+         * @covers ::statement
          * @covers ::getWhere
-
+         * 
+         * @small
+         * 
          * @return void
          */
         public function testWhereOrBuildsCorrectWhereOrStatementOnEmptyInput():void {
-            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->whereOr(""));
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or(" > 10"));
+            $this->assertEquals("", $this->builder->getWhere());
 
+            $this->assertInstanceOf(IQueryBuilder::class, $this->builder->or("name > "));
             $this->assertEquals("", $this->builder->getWhere());
         }
 
         /**
-         * @covers ::whereOr
-         * @covers ::initWhereOr
-         * @covers ::whereAnd
-         * @covers ::initWhereAnd
+         * @covers ::where
+         * @covers ::statement
          * @covers ::getWhere
          * 
-         * @dataProvider provideMixedWhereConditions
+         * @dataProvider provideStatements
+         * 
+         * @small
          *
-         * @param string[][] $statements - statements to be built
-         * @param string $expected - expected result
+         * @param string[][] $statements
          * @return void
          */
-        public function testsWhereBuildCorrectWhereStatement(array $statements, string $expected):void {
+        public function testWhereBuildsCorrectStatement(array $statements):void {
             foreach ($statements as $statement) {
-                if ($statement["type"] == "and") {
-                    $this->builder->whereAnd($statement["condition"]);
-                } else {
-                    $this->builder->whereOr($statement["condition"]);
-                }
-            }
+                $this->builder->where($statement[0]);
 
-            $this->assertEquals($expected, $this->builder->getWhere());
+                $this->assertEquals("WHERE " . $statement[1], $this->builder->getWhere());
+            }
         }
 
         /**
-         * @covers ::whereOr
-         * @covers ::initWhereOr
-         * @covers ::whereAnd
-         * @covers ::initWhereAnd
+         * @covers ::and
+         * @covers ::statement
          * @covers ::getWhere
+         * 
+         * @dataProvider provideStatements
+         * 
+         * @small
+         *
+         * @param string[][] $statements
+         * @return void
+         */
+        public function testAndBuildsCorrectStatement(array $statements):void {
+            $expected = "WHERE";
+
+            foreach ($statements as $statement) {
+                $this->builder->and($statement[0]);
+
+                $expected .= ($expected === "WHERE") ? " " : " AND ";
+                $expected .= $statement[1];
+
+                $this->assertEquals($expected, $this->builder->getWhere());
+            }
+        }
+
+        /**
+         * @covers ::or
+         * @covers ::statement
+         * @covers ::getWhere
+         * 
+         * @dataProvider provideStatements
+         * 
+         * @small
+         *
+         * @param string[][] $statements
+         * @return void
+         */
+        public function testOrBuildsCorrectStatement(array $statements):void {
+            $expected = "WHERE";
+
+            foreach ($statements as $statement) {
+                $this->builder->or($statement[0]);
+
+                $expected .= ($expected === "WHERE") ? " " : " OR ";
+                $expected .= $statement[1];
+
+                $this->assertEquals($expected, $this->builder->getWhere());
+            }
+        }
+
+        /**
+         * @covers ::where
+         * @covers ::statement
+         * @covers ::getWhere
+         * 
+         * @dataProvider provideQuoteVariations
+         * 
+         * @small
+         *
+         * @param string $statement - applied statement
+         * @param string $expected  - expected result
+         * @return void
+         */
+        public function testWhereBuildsCorrectStatementWithDifferentQuoteVariations(string $statement, string $expected):void {
+            $this->builder->where($statement);
+
+            $this->assertEquals("WHERE " . $expected, $this->builder->getWhere());
+        }
+
+        /**
+         * @covers ::and
+         * @covers ::statement
+         * @covers ::getWhere
+         * 
+         * @dataProvider provideQuoteVariations
+         * 
+         * @small
+         *
+         * @param string $statement - applied statement
+         * @param string $expected  - expected result
+         * @return void
+         */
+        public function testAndBuildsCorrectStatementWithDifferentQuoteVariations(string $statement, string $expected):void {
+            $this->builder->and($statement);
+
+            $this->assertEquals("WHERE " . $expected, $this->builder->getWhere());
+        }
+
+        /**
+         * @covers ::or
+         * @covers ::statement
+         * @covers ::getWhere
+         * 
+         * @dataProvider provideQuoteVariations
+         * 
+         * @small
+         *
+         * @param string $statement - applied statement
+         * @param string $expected  - expected result
+         * @return void
+         */
+        public function testOrBuildsCorrectStatementWithDifferentQuoteVariations(string $statement, string $expected):void {
+            $this->builder->or($statement);
+
+            $this->assertEquals("WHERE " . $expected, $this->builder->getWhere());
+        }
+
+        /**
+         * @covers ::where
+         * @covers ::and
+         * @covers ::or
+         * @covers ::statement
+         * @covers ::getWhere
+         * 
+         * @small
          *
          * @return void
          */
-        public function testBadUsageOfWhereMethods():void {
-            $this->builder->whereAnd("");
-            $this->builder->whereOr("");
-            $this->builder->whereAnd("");
-
-            $this->builder->whereAnd("`medicine_id` = 1");
-            $this->builder->whereOr("");
-            $this->builder->whereOr("`medicine_price` < 750");
-            $this->builder->whereAnd("");
-
-            $this->assertEquals("WHERE 1 AND `medicine_id` = 1 OR `medicine_price` < 750", $this->builder->getWhere());
+        public function testBuildsCorrectStatementWithDifferentMethods():void {
+            $this->builder->where("id = 1")
+                            ->and("name = John")
+                            ->or("email = johndoe@example.com")
+                            ->or("password = admin");
+            
+            $this->assertEquals("WHERE `id` = '1' AND `name` = 'John' OR `email` = 'johndoe@example.com' OR `password` = 'admin'", $this->builder->getWhere());
         }
 
         /**
-         * Provides different condition combinations for testing that both 'whereOr' and 'whereAnd' are built correctly
-         *
-         * @return (string[][]|string)[][]
+         * @return string[][][][]
          */
-        public function provideMixedWhereConditions():array {
+        public function provideStatements():array {
             return [
-                "multipleAnds" => [
-                    [
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE 1 AND `medicine_id` = 1 AND `medicine_price` < 750 AND `medicine_doze` > 30"
-                ],
-                "multipleOrs"  => [
-                    [
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE 0 OR `medicine_id` = 1 OR `medicine_price` < 750 OR `medicine_doze` > 30"
-                ],
-                "mixed"        => [
-                    [
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_id` = 1"
-                        ],
-                        [
-                            "type"      => "and",
-                            "condition" => "`medicine_price` < 750"
-                        ],
-                        [
-                            "type"      => "or",
-                            "condition" => "`medicine_doze` > 30"
-                        ]
-                    ],
-                    "WHERE 0 OR `medicine_id` = 1 AND `medicine_price` < 750 OR `medicine_doze` > 30"
-                ]
+                [[
+                    ["`name` = 'John'", "`name` = 'John'"],
+                    ["`price` = '300'", "`price` = '300'"],
+                    ["`desc` = 'This is a description'", "`desc` = 'This is a description'"]
+                ]]
+            ];
+        }
+
+        /**
+         * @return string[][]
+         */
+        public function provideQuoteVariations():array {
+            return [
+                ["`name` = 'John'", "`name` = 'John'"],
+                ["`name` = John", "`name` = 'John'"],
+                ["name = 'John'", "`name` = 'John'"],
+                ["name = John", "`name` = 'John'"]
             ];
         }
     }
