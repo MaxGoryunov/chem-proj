@@ -28,12 +28,67 @@
         protected $connection;
 
         /**
+         * Contains object helping for testing
+         * 
+         * Mocks Query object
+         *
+         * @var \PHPUnit\Framework\MockObject\MockObject|Query
+         */
+        protected $queryMock;
+
+        /**
+         * Contains object helping for testing
+         * 
+         * Mocks builder object
+         *
+         * @var \PHPUnit\Framework\MockObject\MockObject|IQueryBuilder
+         */
+        protected $builder;
+
+        /**
+         * COntains object helping for testing
+         * 
+         * Mocks mysqli_result object
+         *
+         * @var \PHPUnit\Framework\MockObject\MockObject|mysqli_result
+         */
+        protected $resultMock;
+
+        /**
          * Creates tested class object
          *
          * @return void
          */
         protected function setUp():void {
-            $this->connection = new MySQLConnection();
+            $this->connection          = new MySQLConnection();
+            $mySQLConnectionReflection = new ReflectionClass($this->connection);
+            $connectionReflection      = $mySQLConnectionReflection->getProperty("connection");
+
+            $connectionReflection->setAccessible(true);
+
+            $mysqliMock       = $this->getMockBuilder(mysqli::class)
+                                    ->onlyMethods(["query"])
+                                    ->getMock();
+
+            $this->queryMock  = $this->getMockBuilder(Query::class)
+                                    ->disableOriginalConstructor()
+                                    ->onlyMethods(["getQueryString"])
+                                    ->getMock();
+
+            $this->resultMock = $this->getMockBuilder(mysqli_result::class)
+                                    ->disableOriginalConstructor()
+                                    ->getMock();
+
+            $this->builder    = $this->getMockBuilder(IQueryBuilder::class)
+                                    ->disableOriginalConstructor()
+                                    ->onlyMethods(["build", "getQueryString"])
+                                    ->getMock();
+
+            $mysqliMock->expects($this->any())
+                        ->method("query")
+                        ->willReturn($this->resultMock);
+
+            $connectionReflection->setValue($this->connection, $mysqliMock);
         }
 
         /**
@@ -63,6 +118,8 @@
         /**
          * @covers ::__construct
          * @covers ::establishConnection
+         * 
+         * @small
          *
          * @return void
          */
@@ -100,6 +157,8 @@
          * @covers ::__construct
          * @covers ::fail
          * @covers ::establishConnection
+         * 
+         * @small
          *
          * @return void
          */
@@ -120,7 +179,9 @@
         /**
          * @covers ::__construct
          * @covers ::fail
+         * 
          *
+         * @small
          * @return void
          */
         public function testFailThrowsException():void {
@@ -132,79 +193,32 @@
         /**
          * @covers ::__construct
          * @covers ::query
+         * 
+         * @small
          *
          * @return void
          */
         public function testQueryCallsMySQLiQueryMethod():void {
-            $mySQLConnectionReflection = new ReflectionClass($this->connection);
-            $connection                = $mySQLConnectionReflection->getProperty("connection");
-            
-            $connection->setAccessible(true);
-
-            $mysqliMock   = $this->getMockBuilder(mysqli::class)
-                                    ->onlyMethods(["query"])
-                                    ->getMock();
-            $queryMock    = $this->getMockBuilder(Query::class)
-                                    ->disableOriginalConstructor()
-                                    ->onlyMethods(["getQueryString"])
-                                    ->getMock();
-            $mysqliResult = $this->getMockBuilder(mysqli_result::class)
-                                    ->disableOriginalConstructor()
-                                    ->getMock();
-            $builder      = $this->getMockBuilder(IQueryBuilder::class)
-                                    ->disableOriginalConstructor()
-                                    ->onlyMethods(["build"])
-                                    ->getMock();
-
-            $mysqliMock->expects($this->once())
-                        ->method("query")
-                        ->willReturn($mysqliResult);
-
-            $queryMock->method("getQueryString")
+            $this->queryMock->method("getQueryString")
                         ->will($this->returnValue("SELECT * FROM `addresses`;"));
 
-            $builder->expects($this->once())
+            $this->builder->expects($this->once())
                     ->method("build")
-                    ->will($this->returnValue($queryMock));
+                    ->will($this->returnValue($this->queryMock));
 
-            $connection->setValue($this->connection, $mysqliMock);
-
-            $this->connection->query($builder);
+            $this->connection->query($this->builder);
         }
 
         /**
          * @covers ::__construct
          * @covers ::query
          * @covers ::fetchAll
+         * 
+         * @small
          *
          * @return void
          */
         public function testFetchAllReturnsArrayOfAssocArrays():void {
-            $mySQLConnectionReflection = new ReflectionClass($this->connection);
-            $connection                = $mySQLConnectionReflection->getProperty("connection");
-            
-            $connection->setAccessible(true);
-
-            $mysqliMock = $this->getMockBuilder(mysqli::class)
-                                    ->onlyMethods(["query"])
-                                    ->getMock();
-            $queryMock  = $this->getMockBuilder(Query::class)
-                                    ->disableOriginalConstructor()
-                                    ->onlyMethods(["getQueryString"])
-                                    ->getMock();
-            $resultMock = $this->getMockBuilder(mysqli_result::class)
-                                    ->disableOriginalConstructor()
-                                    ->onlyMethods(["fetch_all"])
-                                    ->getMock();
-            $builder    = $this->getMockBuilder(IQueryBuilder::class)
-                                    ->disableOriginalConstructor()
-                                    ->onlyMethods(["build"])
-                                    ->getMock();
-
-            $mysqliMock->expects($this->once())
-                        ->method("query")
-                        ->willReturn($resultMock);
-
             $assocArr = [
                 [
                     "id"   => "1",
@@ -220,20 +234,18 @@
                 ]
             ];
 
-            $resultMock->expects($this->once())
+            $this->resultMock->expects($this->once())
                         ->method("fetch_all")
                         ->will($this->returnValue($assocArr));
 
-            $queryMock->method("getQueryString")
+            $this->queryMock->method("getQueryString")
                         ->will($this->returnValue("SELECT * FROM `addresses`;"));
 
-            $builder->expects($this->once())
+            $this->builder->expects($this->once())
                     ->method("build")
-                    ->will($this->returnValue($queryMock));
+                    ->will($this->returnValue($this->queryMock));
 
-            $connection->setValue($this->connection, $mysqliMock);
-
-            $this->assertEquals($assocArr, $this->connection->fetchAll($builder));
+            $this->assertEquals($assocArr, $this->connection->fetchAll($this->builder));
         }
 
         /**
@@ -241,174 +253,88 @@
          * @covers ::establishConnection
          * @covers ::query
          * @covers ::fetchAssoc
+         * 
+         * @small
          *
          * @return void
          */
         public function testFetchAssocReturnsResultArray():void {
-            $reflection = new ReflectionClass($this->connection);
-            $connection = $reflection->getProperty("connection");
-
-            $connection->setAccessible(true);
-
-            $mysqliMock = $this->getMockBuilder(mysqli::class)
-                            ->onlyMethods(["query"])
-                            ->getMock();
-
-            $queryMock  = $this->getMockBuilder(Query::class)
-                            ->disableOriginalConstructor()
-                            ->onlyMethods(["getQueryString"])
-                            ->getMock();
-
-            $resultMock = $this->getMockBuilder(mysqli_result::class)
-                            ->disableOriginalConstructor()
-                            ->onlyMethods(["fetch_assoc"])
-                            ->getMock();
-
-            $builder    = $this->getMockBuilder(IQueryBuilder::class)
-                            ->disableOriginalConstructor()
-                            ->onlyMethods(["build"])
-                            ->getMock();
-
-            $mysqliMock->expects($this->exactly(2))
-                        ->method("query")
-                        ->will($this->returnValue($resultMock));
-
             $userInfo = [
                 "id"      => "12",
                 "name"    => "John",
                 "surname" => "Doe"
             ];
 
-            $resultMock->expects($this->exactly(2))
+            $this->resultMock->expects($this->exactly(2))
                         ->method("fetch_assoc")
                         ->will($this->returnValue($userInfo));
 
-            $queryMock->expects($this->exactly(2))
+            $this->queryMock->expects($this->exactly(2))
                         ->method("getQueryString")
                         ->will($this->returnValue("SELECT * FROM `users` WHERE `user_id` = 12;"));
 
-            $builder->expects($this->exactly(2))
+            $this->builder->expects($this->exactly(2))
                     ->method("build")
-                    ->will($this->returnValue($queryMock));
+                    ->will($this->returnValue($this->queryMock));
 
-            $connection->setValue($this->connection, $mysqliMock);
-
-            $this->assertEquals($userInfo, $this->connection->fetchAssoc($builder));
-
-            $this->assertEquals($userInfo["id"], $this->connection->fetchAssoc($builder, "id"));
+            $this->assertEquals($userInfo, $this->connection->fetchAssoc($this->builder));
+            $this->assertEquals($userInfo["id"], $this->connection->fetchAssoc($this->builder, "id"));
         }
 
         /**
          * @covers ::__construct
          * @covers ::query
          * @covers ::fetchObject
+         * 
+         * @small
          *
          * @return void
          */
         public function testFetchObjectReturnsResultObject():void {
-            $reflection = new ReflectionClass($this->connection);
-            $connection = $reflection->getProperty("connection");
+            $entity = $this->getMockBuilder(IEntity::class)
+                            ->getMock();
 
-            $connection->setAccessible(true);
-
-            $mysqliMock = $this->getMockBuilder(mysqli::class)
-                                ->onlyMethods(["query"])
-                                ->getMock();
-
-            $queryMock  = $this->getMockBuilder(Query::class)
-                                ->disableOriginalConstructor()
-                                ->onlyMethods(["getQueryString"])
-                                ->getMock();
-
-            $resultMock = $this->getMockBuilder(mysqli_result::class)
-                                ->disableOriginalConstructor()
-                                ->onlyMethods(["fetch_object"])
-                                ->getMock();
-
-            $builder    = $this->getMockBuilder(IQueryBuilder::class)
-                                ->disableOriginalConstructor()
-                                ->onlyMethods(["build"])
-                                ->getMock();
-
-            $entity     = $this->getMockBuilder(IEntity::class)
-                                ->getMock();
-
-            $mysqliMock->expects($this->once())
-                        ->method("query")
-                        ->willReturn($resultMock);
-
-            $resultMock->expects($this->once())
+            $this->resultMock->expects($this->once())
                         ->method("fetch_object")
                         ->willReturn($entity);
 
-            $queryMock->expects($this->once())
+            $this->queryMock->expects($this->once())
                         ->method("getQueryString")
                         ->willReturn("SELECT * FROM `addresses` WHERE `address_id` = 12;");
 
-            $builder->expects($this->once())
+            $this->builder->expects($this->once())
                     ->method("build")
-                    ->willReturn($queryMock);
+                    ->willReturn($this->queryMock);
 
-            $connection->setValue($this->connection, $mysqliMock);
-
-            $this->assertInstanceOf(IEntity::class, $this->connection->fetchObject($builder, IEntity::class));
-
+            $this->assertInstanceOf(IEntity::class, $this->connection->fetchObject($this->builder, IEntity::class));
         }
 
         /**
          * @covers ::__construct
          * @covers ::query
          * @covers ::fetchObjects
+         * 
+         * @small
          *
          * @return void
          */
         public function testFetchObjectsReturnsResultObjects():void {
-            $reflection = new ReflectionClass($this->connection);
-            $connection = $reflection->getProperty("connection");
-
-            $connection->setAccessible(true);
-
-            $mysqliMock = $this->getMockBuilder(mysqli::class)
-                                ->onlyMethods(["query"])
+            $entity = $this->getMockBuilder(IEntity::class)
                                 ->getMock();
 
-            $queryMock  = $this->getMockBuilder(Query::class)
-                                ->disableOriginalConstructor()
-                                ->onlyMethods(["getQueryString"])
-                                ->getMock();
-
-            $resultMock = $this->getMockBuilder(mysqli_result::class)
-                                ->disableOriginalConstructor()
-                                ->onlyMethods(["fetch_object"])
-                                ->getMock();
-
-            $builder    = $this->getMockBuilder(IQueryBuilder::class)
-                                ->disableOriginalConstructor()
-                                ->onlyMethods(["build"])
-                                ->getMock();
-
-            $entity     = $this->getMockBuilder(IEntity::class)
-                                ->getMock();
-
-            $mysqliMock->expects($this->once())
-                        ->method("query")
-                        ->willReturn($resultMock);
-
-            $resultMock->expects($this->exactly(4))
+            $this->resultMock->expects($this->exactly(4))
                         ->method("fetch_object")
                         ->will($this->onConsecutiveCalls($entity, $entity, $entity, null));
 
-            $queryMock->expects($this->once())
+            $this->queryMock->expects($this->once())
                         ->method("getQueryString")
                         ->willReturn("SELECT * FROM `addresses`;");
 
-            $builder->expects($this->once())
+            $this->builder->expects($this->once())
                     ->method("build")
-                    ->willReturn($queryMock);
+                    ->willReturn($this->queryMock);
 
-            $connection->setValue($this->connection, $mysqliMock);
-
-            $entities = $this->connection->fetchObjects($builder, IEntity::class);
+            $entities = $this->connection->fetchObjects($this->builder, IEntity::class);
 
             $this->assertInstanceOf(IEntity::class, $entities[0]);
             $this->assertEquals([$entity, $entity, $entity], $entities);

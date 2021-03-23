@@ -20,11 +20,4 @@
                 SET {$this->getValues()};
             ";
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function build():IQuery {
-            return new Query($this);
-        }
     }

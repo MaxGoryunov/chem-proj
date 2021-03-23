@@ -26,11 +26,4 @@
                 {$this->getLimit()};
             ";
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public function build():IQuery {
-            return new Query($this);
-        }
     }

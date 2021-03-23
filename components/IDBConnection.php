@@ -49,7 +49,7 @@
          *
          * @param IQueryBuilder $builder - builder for retrieving a query string
          * @param string $className      - class name of the result object array
-         * @return IEntity[]
+         * @return object[]
          */
         public function fetchObjects(IQueryBuilder $builder, string $className):array;
     }

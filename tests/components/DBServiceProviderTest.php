@@ -43,6 +43,8 @@
          * 
          * @uses Components\MySQLConnection
          * 
+         * @small
+         * 
          * @return void
          */
         public function testClassProvidesConnection():void {
