@@ -14,7 +14,7 @@ use ControllerActions\ControllerAction;
          */
         protected function fillData(array $partedUri, ControllerAction $action):ControllerAction {
             if ((isset($partedUri[4])) && (preg_match("/([1-9][0-9]*$)/", $partedUri[4]))) {
-                $action->setData(["id" => (int)$partedUri[4]]);
+                $action->addData("id", (int)$partedUri[4]);
             }
             
             return $action;

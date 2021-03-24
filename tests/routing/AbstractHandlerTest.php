@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
         /**
          * Contains tested abstract class object
          *
-         * @var AbstractHandler
+         * @var AbstractHandler&\PHPUnit\Framework\MockObject\MockObject
          */
         protected $handler;
 
@@ -48,6 +48,9 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testSetNextHandlerReturnsSuppliedHandler():void {
+            /**
+             * @var AbstractHandler&\PHPUnit\Framework\MockObject\MockObject
+             */
             $nextHandler = $this->getMockBuilder(IRoutingHandler::class)
                             ->onlyMethods([])
                             ->getMock();
@@ -66,6 +69,10 @@ use PHPUnit\Framework\TestCase;
                     ->will($this->returnArgument(1));
 
             $uri    = ["root", "domain", "action"];
+
+            /**
+             * @var ControllerAction&\PHPUnit\Framework\MockObject\MockObject
+             */
             $action = $this->getMockBuilder(ControllerAction::class)
                             ->getMock();
 
@@ -82,16 +89,22 @@ use PHPUnit\Framework\TestCase;
                     ->method("fillData")
                     ->will($this->returnArgument(1));
 
+            /**
+             * @var AbstractHandler&\PHPUnit\Framework\MockObject\MockObject
+             */
             $handler = $this->createMock(AbstractHandler::class);
 
             $handler->expects($this->once())
                     ->method("handle")
                     ->will($this->returnCallback(function ($uri, ControllerAction $action) {
-                        $action->setData(["id"]);
+                        $action->addData("id", 13);
 
                         return $action;
                     }));
 
+            /**
+             * @var ControllerAction&\PHPUnit\Framework\MockObject\MockObject
+             */
             $action = $this->getMockBuilder(ControllerAction::class)
                             ->getMock();
 
