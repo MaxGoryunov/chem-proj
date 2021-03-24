@@ -6,7 +6,7 @@
     use Models\UsersModel;
     use mysqli;
 
-    class UsersController extends AbstractController {
+    class UsersController extends DomainController {
 
         /**
          * {@inheritDoc}

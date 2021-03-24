@@ -2,7 +2,6 @@
 
     namespace Controllers;
 
-    use Components\DomainRegistry;
     use Factories\AbstractMVCPDMFactory;
     use Factories\UsersFactory;
     use Models\AbstractModel;
@@ -13,8 +12,33 @@
     /**
      * Base class for implementing other Controllers
      */
-    abstract class AbstractController implements IController {
-        
+    class DomainController implements IController {
+
+        /**
+         * Contains requirements for post variables
+         * 
+         * @var array<string, array<string, string>>
+         */
+        private const REQUIREMENTS = [
+            "addresses"     => [
+                                "name" => "string"
+                            ],
+            "genders"       => [
+                                "name"       => "string",
+                                "short_name" => "string"
+                            ],
+            "user_statuses" => [
+                                "name" => "string"
+                            ]
+        ];
+
+        /**
+         * Domain to which the controller belongs
+         *
+         * @var string
+         */
+        private $domain = "";
+
         /**
          * Related Factory used to get other components of MVCPDM structure
          *
@@ -37,20 +61,24 @@
         protected $relatedView;
 
         /**
-         * Accepts the Factory to delegate it the creation of MVCPDM components
-         *
-         * @param AbstractMVCPDMFactory $relatedFactory
+         * @param AbstractMVCPDMFactory $relatedFactory - factory which creates required components
+         * @param string                $domain         - domain name
          */
-        public function __construct(AbstractMVCPDMFactory $relatedFactory) {
+        public function __construct(AbstractMVCPDMFactory $relatedFactory, string $domain) {
             $this->relatedFactory = $relatedFactory;
+            $this->domain         = $domain;
         }
 
         /**
          * Returns a list of parameters needed for the model
+         * 
+         * @todo Refactor useless string keys
          *
          * @return array<string, string>
          */
-        protected abstract function paramsList():array;
+        protected function paramsList():array {
+            return self::REQUIREMENTS[$this->domain] ?? [];
+        }
 
         /**
          * Returns a related Model
