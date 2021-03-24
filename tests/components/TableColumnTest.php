@@ -54,6 +54,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getNull
          * @covers ::setNull
          * 
@@ -70,6 +71,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getAutoIncrement
          * @covers ::setAutoIncrement
          * 
@@ -86,6 +88,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getPrimaryKey
          * @covers ::setPrimaryKey
          * 
@@ -102,6 +105,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::setType
          * @covers ::getType
          * 
@@ -120,6 +124,7 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::setType
          * @covers ::getType
          * 
@@ -129,15 +134,45 @@
          */
         public function testSetTypeSetsTypeWithoutSize():void {
             $this->assertSame($this->column, $this->column->setType("text"));
-
             $this->assertEquals("TEXT", $this->column->getType());
 
             $this->assertSame($this->column, $this->column->setType("timestamp"));
-
             $this->assertEquals("TIMESTAMP", $this->column->getType());
         }
 
         /**
+         * @covers ::__construct
+         * @covers ::setType
+         * @covers ::getType
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testSetTypeSetsStringSize():void {
+            $this->assertSame($this->column, $this->column->setType("int", "10"));
+            $this->assertEquals("INT(10)", $this->column->getType());
+
+            $this->assertSame($this->column, $this->column->setType("varchar", "25"));
+            $this->assertSame("VARCHAR(25)", $this->column->getType());
+        }
+
+        /**
+         * @covers ::__construct
+         * @covers ::setType
+         * @covers ::getType
+         * 
+         * @small
+         *
+         * @return void
+         */
+        public function testSetTypeCorrectlySetsFloatTypeWithCommaSize():void {
+            $this->assertSame($this->column, $this->column->setType("float", "3,2"));
+            $this->assertEquals("FLOAT(3,2)", $this->column->getType());
+        }
+
+        /**
+         * @covers ::__construct
          * @covers ::setType
          * @covers ::getType
          * 
@@ -154,6 +189,16 @@
         }
 
         /**
+         * @covers ::__construct
+         * @covers ::getAutoIncrement
+         * @covers ::getName
+         * @covers ::getNull
+         * @covers ::getPrimaryKey
+         * @covers ::getType
+         * @covers ::setAutoIncrement
+         * @covers ::setNull
+         * @covers ::setPrimaryKey
+         * @covers ::setType
          * @covers ::getStatement
          * 
          * @dataProvider provideColumnData
