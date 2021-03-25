@@ -13,7 +13,7 @@
     /**
      * Base class for implementing other Data Mappers
      */
-    class DataMapper implements IDataMapper {
+    class DomainMapper implements IDataMapper {
 
         /**
          * Allowed entity types

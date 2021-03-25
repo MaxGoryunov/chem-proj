@@ -2,8 +2,9 @@
 
     namespace ProxyControllers;
 
-    use Controllers\AbstractController;
-    use Factories\IMVCPDMFactory;
+    use Controllers\DomainController;
+use Controllers\IController;
+use Factories\DomainFactory;
     use Factories\UsersFactory;
     use InvalidArgumentException;
 
@@ -14,7 +15,7 @@
      * @method void edit(int $id)   Protects edit action
      * @method void delete(int $id) Protects delete action
      */
-    class CRUDProxyController {
+    class DomainProxyController implements IController {
 
         /**
          * Protected controller methods
@@ -39,25 +40,25 @@
         /**
          * Related Controller which is invoked(or not) after the Proxy Controller finishes its business
          *
-         * @var AbstractController
+         * @var DomainController
          */
         private $relatedController;
 
         /**
          * Accepts the Factory to delegate it the creation Related Controller
          *
-         * @param IMVCPDMFactory $relatedFactory
+         * @param DomainFactory $relatedFactory
          */
-        public function __construct(IMVCPDMFactory $relatedFactory) {
+        public function __construct(DomainFactory $relatedFactory) {
             $this->relatedFactory = $relatedFactory;
         }
 
         /**
          * Returns a related Controller from the same domain
          *
-         * @return AbstractController
+         * @return DomainController
          */
-        private function getController():AbstractController {
+        private function getController():DomainController {
             if (!isset($this->relatedController)) {
                 $this->relatedController = $this->relatedFactory->getController();
             }
