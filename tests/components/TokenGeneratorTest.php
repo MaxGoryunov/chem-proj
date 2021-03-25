@@ -40,7 +40,6 @@
         }
 
         /**
-         * @covers ::__construct
          * @covers ::getKey
          * 
          * @dataProvider provideKeys
@@ -61,8 +60,6 @@
         }
 
         /**
-         * @covers ::__construct
-         * @covers ::initSymbols
          * @covers ::getKey
          * 
          * @dataProvider provideInitSymbolsKeys
@@ -78,8 +75,6 @@
         }
         
         /**
-         * @covers ::__construct
-         * @covers ::initSymbols
          * @covers ::getKey
          * @covers ::generateToken
          * 
@@ -96,8 +91,6 @@
         }
 
         /**
-         * @covers ::__construct
-         * @covers ::initSymbols
          * @covers ::getKey
          * @covers ::generateToken
          * 
