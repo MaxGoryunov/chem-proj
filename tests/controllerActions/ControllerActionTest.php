@@ -57,6 +57,8 @@
         /**
          * @covers ::setFactory
          * @covers ::getFactory
+         * 
+         * @small
          *
          * @return void
          */
@@ -71,6 +73,8 @@
 
         /**
          * @covers ::setActionName
+         * 
+         * @small
          *
          * @return void
          */
@@ -85,6 +89,8 @@
          * @covers ::getActionName
          * 
          * @dataProvider provideActionNames
+         * 
+         * @small
          *
          * @return void
          */
@@ -97,6 +103,8 @@
         /**
          * @covers ::addData
          * @covers ::getData
+         * 
+         * @small
          *
          * @return void
          */
@@ -115,6 +123,10 @@
         /**
          * @covers ::setFactory
          * @covers ::getController
+         * 
+         * @uses Factories\IProxyFactory
+         * 
+         * @small
          *
          * @return void
          */
@@ -143,6 +155,11 @@
         /**
          * @covers ::setFactory
          * @covers ::getController
+         * 
+         * @uses Controllers\IController
+         * @uses Factories\IControllerFactory
+         * 
+         * @small
          *
          * @return void
          */
@@ -172,9 +189,14 @@
          * @covers ::getController
          * @covers ::setActionName
          * @covers ::setFactory
+         * @covers ::addData
          * @covers ::execute
          * 
+         * @uses Controllers\IController
+         * 
          * @dataProvider provideIds
+         * 
+         * @small
          *
          * @param int $id
          * @return void
@@ -207,6 +229,8 @@
          * @covers ::setActionName
          * @covers ::setFactory
          * @covers ::execute
+         * 
+         * @small
          *
          * @return void
          */
@@ -230,6 +254,8 @@
          * @covers ::setActionName
          * @covers ::setFactory
          * @covers ::execute
+         * 
+         * @small
          *
          * @return void
          */
