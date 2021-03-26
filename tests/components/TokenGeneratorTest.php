@@ -61,6 +61,7 @@
 
         /**
          * @covers ::getKey
+         * @covers ::getSymbols
          * 
          * @dataProvider provideInitSymbolsKeys
          * 
@@ -70,12 +71,13 @@
          * @param (string|int)[] $expected
          * @return void
          */
-        public function testInitSymbolsReturnsInitiatedSymbols(array $keys, array $expected):void {
+        public function testGetSymbolsReturnsInitiatedSymbols(array $keys, array $expected):void {
             $this->assertEquals($expected, $this->tokenGenerator->getSymbols($keys));
         }
         
         /**
          * @covers ::getKey
+         * @covers ::getSymbols
          * @covers ::generateToken
          * 
          * @dataProvider provideTokenLengths
@@ -92,6 +94,7 @@
 
         /**
          * @covers ::getKey
+         * @covers ::getSymbols
          * @covers ::generateToken
          * 
          * @dataProvider provideSymbolTypes
@@ -141,6 +144,7 @@
         }
 
         /**
+         * @covers ::getLetterSets
          * @covers ::generatePseudoWord
          *
          * @return void
@@ -153,6 +157,7 @@
         }
 
         /**
+         * @covers ::getLetterSets
          * @covers ::generatePseudoWord
          * 
          * @dataProvider provideTokenLengths
