@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
     /**
      * Testing DBTableMocker class
      * 
+     * @runTestsInSeparateProcesses
+     * 
      * @coversDefaultClass Components\DBTableMocker
      */
     class DBTableMockerTest extends TestCase {
@@ -41,7 +43,6 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::getTableDescription
-         * @covers ::getCurrentColumn
          * 
          * @dataProvider provideTableNames
          * 
