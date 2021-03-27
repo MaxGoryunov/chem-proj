@@ -7,12 +7,11 @@
     use LogicException;
     use PHPUnit\Framework\TestCase;
 
-    define("ROOT", "/chem-proj/");
 
     /**
      * Testing Router class
      * 
-     * @coversDefaultClass Router
+     * @coversDefaultClass Components\Router
      */
     class RouterTest extends TestCase {
 
@@ -24,23 +23,12 @@
         protected $router;
 
         /**
-         * Set up required ROOT constant for 'run' method
-         *
-         * @return void
-         */
-        public static function setUpBeforeClass():void {
-            // define("ROOT", "/chem-proj/");
-        }
-
-        /**
          * Creates tested class object
          *
          * @return void
          */
         protected function setUp():void {
-            $this->router = $this->getMockBuilder(Router::class)
-                                 ->onlyMethods(["invokeFactory"])
-                                 ->getMock();
+            $this->router = new Router();
         }
 
         /**
@@ -54,11 +42,12 @@
 
         /**
          * @covers ::run
+         * 
+         * @small
          *
          * @return void
          */
         public function testRunThrowsInvalidArgumentExceptionOnEmptyInput():void {
-            // define("ROOT", "/chem-proj/");
             $this->expectException(InvalidArgumentException::class);
 
             $this->router->run();
@@ -66,24 +55,25 @@
 
         /**
          * @covers ::run
-         *
-         * @return void
-         */
-        public function testRunThrowsLogicExceptionOnEmptyInput():void {
-            $this->markTestSkipped();
-            $this->expectException(LogicException::class);
-
-            $this->router->run("http://localhost/chem-proj/addresses/list");
-        }
-
-        /**
-         * @covers ::run
          * 
-         * @dataProvider provideRoutes
-         *
+         * @uses Controllers\IController
+         * @uses Factories\AbstractFactory
+         * @uses Factories\AddressesFactory
+         * @uses Factories\GendersFactory
+         * @uses Factories\IControllerFactory
+         * @uses Factories\UserStatusesFactory
+         * @uses Routing\AbstractHandler
+         * @uses Routing\ActionHandler
+         * @uses Routing\FactoryHandler
+         * @uses Routing\IRoutingHandler
+         * @uses Routing\IdHandler
+         * @uses ControllerActions\ControllerAction
+         * 
+         * @small
+         * 
          * @return void
          */
-        public function testRunSpeed(array $routes):void {
+        public function testRunSpeed():void {
             $domains      = ["addresses", "genders", "user_statuses"];
             $actions      = ["list", "add", "edit/1", "delete/1"];
             $currTime     = microtime(true);
@@ -104,6 +94,8 @@
         /**
          * @covers ::headerTo
          * 
+         * @small
+         * 
          * @runInSeparateProcess
          *
          * @return void
@@ -120,73 +112,4 @@
                 }
             }
         }
-
-        /**
-         * Provides routes for 'run' method
-         *
-         * @return string[][][][]
-         */
-        public function provideRoutes():array {
-            return [
-                [
-                    array(
-                        "AddressesFactory" => array(
-                            "addresses/list"                  => "index",
-                            "addresses/add"                   => "add",
-                            "addresses/edit/([1-9][0-9]*$)"   => "edit",
-                            "addresses/delete/([1-9][0-9]*$)" => "delete"
-                        ),
-                        "ChemicalsFactory" => array(
-                            "chemicals/list"                  => "index",
-                            "chemicals/add"                   => "add",
-                            "chemicals/edit/([1-9][0-9]*$)"   => "edit",
-                            "chemicals/delete/([1-9][0-9]*$)" => "delete"
-                        ),
-                        "CompaniesFactory" => array(
-                            "companies/list"                  => "index",
-                            "companies/add"                   => "add",
-                            "companies/edit/([1-9][0-9]*$)"   => "edit",
-                            "companies/delete/([1-9][0-9]*$)" => "delete"
-                        ),
-                        "CountriesFactory" => array(
-                            "countries/list"                  => "index",
-                            "countries/add"                   => "add",
-                            "countries/edit/([1-9][0-9]*$)"   => "edit",
-                            "countries/delete/([1-9][0-9]*$)" => "delete"
-                        ),
-                        "GendersFactory" => array(
-                            "genders/list"                  => "index",
-                            "genders/add"                   => "add",
-                            "genders/edit/([1-9][0-9]*$)"   => "edit",
-                            "genders/delete/([1-9][0-9]*$)" => "delete"
-                        ),
-                        "MedicinesFactory" => array(
-                            "medicines/list"                  => "index",
-                            "medicines/add"                   => "add",
-                            "medicines/edit/([1-9][0-9]*$)"   => "edit",
-                            "medicines/delete/([1-9][0-9]*$)" => "delete"
-                        ),
-                        "PurposesFactory" => array(
-                            "purposes/list"                  => "index",
-                            "purposes/add"                   => "add",
-                            "purposes/edit/([1-9][0-9]*$)"   => "edit",
-                            "purposes/delete/([1-9][0-9]*$)" => "delete"
-                        ),
-                        "RestrictsFactory" => array(
-                            "restricts/list"                  => "index",
-                            "restricts/add"                   => "add",
-                            "restricts/edit/([1-9][0-9]*$)"   => "edit",
-                            "restricts/delete/([1-9][0-9]*$)" => "delete"
-                        ),
-                        "UsersFactory" => array(
-                            "users/list"      => "index",
-                            "users/register"  => "register",
-                            "users/authorise" => "authorise",
-                            "users/logout"    => "logout"
-                        )
-                    )
-                ]
-            ];
-        }
-
     }
