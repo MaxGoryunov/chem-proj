@@ -6,10 +6,10 @@
     use Factories\UsersFactory;
     use Models\AbstractModel;
     use Models\DomainModel;
-    use Views\AbstractView;
     use Models\UsersModel;
+    use Views\DomainView;
 
-    /**
+/**
      * Base class for implementing other Controllers
      */
     class DomainController implements IController {
@@ -17,19 +17,12 @@
         /**
          * Contains requirements for post variables
          * 
-         * @var array<string, array<string, string>>
+         * @var array<string, string[]>
          */
         private const REQUIREMENTS = [
-            "addresses"     => [
-                                "name" => "string"
-                            ],
-            "genders"       => [
-                                "name"       => "string",
-                                "short_name" => "string"
-                            ],
-            "user_statuses" => [
-                                "name" => "string"
-                            ]
+            "addresses"     => ["name"],
+            "genders"       => ["name", "short_name"],
+            "user_statuses" => ["name"]
         ];
 
         /**
@@ -74,7 +67,7 @@
          * 
          * @todo Refactor useless string keys
          *
-         * @return array<string, string>
+         * @return string[]
          */
         protected function paramsList():array {
             return self::REQUIREMENTS[$this->domain] ?? [];
@@ -102,7 +95,7 @@
          *
          * @return AbstractView
          */
-        protected function getView():AbstractView {
+        protected function getView():DomainView {
             if (!isset($this->relatedView)) {
                 $this->relatedView = $this->relatedFactory->getView();
             }
