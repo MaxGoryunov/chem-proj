@@ -52,8 +52,10 @@
          * @covers ::getLimit
          * 
          * @dataProvider provideLimits
+         * 
+         * @small
          *
-         * @param int $limit - limit passed to 'limit' method
+         * @param int    $limit    - limit passed to 'limit' method
          * @param string $expected - expected result
          * @return void
          */
