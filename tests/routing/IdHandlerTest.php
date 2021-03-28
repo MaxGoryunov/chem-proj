@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
     /**
      * Testing IdHandler class
      * 
-     * @coversDefaultClass IdHandler
+     * @coversDefaultClass Routing\IdHandler
      */
     class IdHandlerTest extends TestCase {
 
@@ -49,6 +49,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::handle
+         * @covers ::fillData
+         * @uses ControllerActions\ControllerAction
          * 
          * @dataProvider providePartedUriWithValidId
          *
@@ -62,6 +64,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::handle
+         * @covers ::fillData
+         * @uses ControllerActions\ControllerAction
          * 
          * @dataProvider providePartedUriWithInvalidId
          *

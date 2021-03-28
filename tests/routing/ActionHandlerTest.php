@@ -7,7 +7,7 @@
     use Routing\ActionHandler;
 
     /**
-     * @coversDefaultClass ActionHandler
+     * @coversDefaultClass Routing\ActionHandler
      */
     class ActionHandlerTest extends TestCase {
 
@@ -46,6 +46,9 @@
 
         /**
          * @covers ::handle
+         * @covers ::fillData
+         * 
+         * @uses ControllerActions\ControllerAction
          * 
          * @dataProvider providePartedUriWithActionNames
          *

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
     /**
      * Testing AbstractHandler abstract class
      * 
-     * @coversDefaultClass AbstractHandler
+     * @coversDefaultClass Routing\AbstractHandler
      */
     class AbstractHandlerTest extends TestCase {
 
@@ -81,6 +81,7 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::handle
+         * @covers ::setNextHandler
          *
          * @return void
          */

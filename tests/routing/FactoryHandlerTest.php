@@ -12,7 +12,7 @@ use Factories\AddressesFactory;
     /**
      * Testing FactoryHandler class
      * 
-     * @coversDefaultClass FactoryHandler
+     * @coversDefaultClass Routing\FactoryHandler
      */
     class FactoryHandlerTest extends TestCase {
 
@@ -52,6 +52,9 @@ use Factories\AddressesFactory;
 
         /**
          * @covers ::handle
+         * @covers ::fillData
+         * 
+         * @uses ControllerActions\ControllerAction
          * 
          * @dataProvider providePartedUriWithValidFactoryName
          *
