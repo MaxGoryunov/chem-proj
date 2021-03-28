@@ -111,6 +111,8 @@
 
         /**
          * @covers ::generateUniqueToken
+         * 
+         * @small
          *
          * @return void
          */
@@ -131,6 +133,8 @@
 
         /**
          * @covers ::getLetterSets
+         * 
+         * @small
          *
          * @return void
          */
@@ -146,6 +150,8 @@
         /**
          * @covers ::getLetterSets
          * @covers ::generatePseudoWord
+         * 
+         * @small
          *
          * @return void
          */
@@ -161,6 +167,8 @@
          * @covers ::generatePseudoWord
          * 
          * @dataProvider provideTokenLengths
+         * 
+         * @small
          *
          * @param int $length   - token length
          * @param int $expected - expected length
