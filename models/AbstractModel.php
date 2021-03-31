@@ -8,14 +8,21 @@
     abstract class AbstractModel {
 
         /**
-         * Table name to which the model belongs
+         * Table name to which the model relates
          *
          * @var string
          */
-        private $tableName;
+        protected $tableName = "";
 
         /**
-         * Returns table name
+         * @param string $tableName
+         */
+        public function __construct(string $tableName) {
+            $this->tableName = $tableName;
+        }
+
+        /**
+         * Returns table name to which the model relates
          *
          * @return string
          */

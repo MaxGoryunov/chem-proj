@@ -137,7 +137,6 @@
 
         /**
          * @covers ::establishConnection
-         * @covers ::validateConnection
          *
          * @return void
          */

@@ -24,5 +24,4 @@
         public function getConnection():IDBConnection {
             return new MySQLConnection();
         }
-
     }
