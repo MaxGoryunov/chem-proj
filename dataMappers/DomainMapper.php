@@ -2,7 +2,7 @@
 
     namespace DataMappers;
 
-    use Components\DBConnectionProvider;
+use Components\DBServiceProvider;
 use Components\IDBConnection;
 use DBQueries\SelectQueryBuilder;
     use Entities\AddressEntity;
@@ -48,11 +48,9 @@ use DBQueries\SelectQueryBuilder;
          * {@inheritDoc}
          */
         public function mapQueryResultToEntity(SelectQueryBuilder $builder):IEntity {
-            $connection = DBConnectionProvider::getConnection(IDBConnection::class);
-            $query      = $builder->build();
-
-            $result = $connection->query($query->getQueryString());
-            $entity = $result->fetch_object(self::ENTITY_TYPES[$this->type]);
+            $connection = (new DBServiceProvider())->getConnection(IDBConnection::class);
+            $result     = $connection->query($builder);
+            $entity     = $result->fetch_object(self::ENTITY_TYPES[$this->type]);
 
             return $entity;
         }
