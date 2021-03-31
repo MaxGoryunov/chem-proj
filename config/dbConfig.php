@@ -10,5 +10,7 @@
         "user" => "root",
         "password" => "",
         "database" => "chemistry",
-        "charset" => "utf8"
+        "charset" => "utf8mb4"
     );
+
+    return $dbConfig;

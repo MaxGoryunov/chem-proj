@@ -20,6 +20,7 @@ vendor/
 phploc.phar
 
 #Ignore code coverage files
+coverage
 tests/_css
 tests/_js
 tests/_icons

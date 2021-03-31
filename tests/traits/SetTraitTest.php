@@ -54,7 +54,7 @@
          * 
          * @small
          *
-         * @param array $values - values passed to 'set' method
+         * @param array  $values   - values passed to 'set' method
          * @param string $expected - expected result
          * @return void
          */

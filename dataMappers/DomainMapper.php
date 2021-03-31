@@ -3,7 +3,8 @@
     namespace DataMappers;
 
     use Components\DBConnectionProvider;
-    use DBQueries\SelectQueryBuilder;
+use Components\IDBConnection;
+use DBQueries\SelectQueryBuilder;
     use Entities\AddressEntity;
     use Entities\GenderEntity;
     use Entities\IEntity;
