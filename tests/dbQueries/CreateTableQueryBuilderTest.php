@@ -5,6 +5,7 @@
     use DBQueries\CreateTableQueryBuilder;
     use Components\TableColumn;
 use DBQueries\IQuery;
+use Models\AbstractModel;
 use PHPUnit\Framework\TestCase;
 
     /**
@@ -25,7 +26,11 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         protected function setUp():void {
-            $this->builder = new CreateTableQueryBuilder("medicines");
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs(["medicines"])
+                            ->getMock();
+
+            $this->builder = new CreateTableQueryBuilder($model);
         }
 
         /**
