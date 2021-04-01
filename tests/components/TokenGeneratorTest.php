@@ -40,7 +40,6 @@
         }
 
         /**
-         * @covers ::__construct
          * @covers ::getKey
          * 
          * @dataProvider provideKeys
@@ -61,9 +60,8 @@
         }
 
         /**
-         * @covers ::__construct
-         * @covers ::initSymbols
          * @covers ::getKey
+         * @covers ::getSymbols
          * 
          * @dataProvider provideInitSymbolsKeys
          * 
@@ -73,14 +71,13 @@
          * @param (string|int)[] $expected
          * @return void
          */
-        public function testInitSymbolsReturnsInitiatedSymbols(array $keys, array $expected):void {
+        public function testGetSymbolsReturnsInitiatedSymbols(array $keys, array $expected):void {
             $this->assertEquals($expected, $this->tokenGenerator->getSymbols($keys));
         }
         
         /**
-         * @covers ::__construct
-         * @covers ::initSymbols
          * @covers ::getKey
+         * @covers ::getSymbols
          * @covers ::generateToken
          * 
          * @dataProvider provideTokenLengths
@@ -96,9 +93,8 @@
         }
 
         /**
-         * @covers ::__construct
-         * @covers ::initSymbols
          * @covers ::getKey
+         * @covers ::getSymbols
          * @covers ::generateToken
          * 
          * @dataProvider provideSymbolTypes
@@ -115,6 +111,8 @@
 
         /**
          * @covers ::generateUniqueToken
+         * 
+         * @small
          *
          * @return void
          */
@@ -135,6 +133,8 @@
 
         /**
          * @covers ::getLetterSets
+         * 
+         * @small
          *
          * @return void
          */
@@ -148,7 +148,10 @@
         }
 
         /**
+         * @covers ::getLetterSets
          * @covers ::generatePseudoWord
+         * 
+         * @small
          *
          * @return void
          */
@@ -160,9 +163,12 @@
         }
 
         /**
+         * @covers ::getLetterSets
          * @covers ::generatePseudoWord
          * 
          * @dataProvider provideTokenLengths
+         * 
+         * @small
          *
          * @param int $length   - token length
          * @param int $expected - expected length
