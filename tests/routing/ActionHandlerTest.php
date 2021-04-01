@@ -51,6 +51,8 @@
          * @uses ControllerActions\ControllerAction
          * 
          * @dataProvider providePartedUriWithActionNames
+         * 
+         * @small
          *
          * @return void
          */
@@ -60,6 +62,9 @@
 
         /**
          * @covers ::handle
+         * @covers ::fillData
+         * 
+         * @small
          * 
          * @runInSeparateProcess
          *

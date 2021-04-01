@@ -44,6 +44,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::setNextHandler
+         * 
+         * @small
          *
          * @return void
          */
@@ -60,6 +62,8 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::handle
+         * 
+         * @small
          *
          * @return void
          */
@@ -82,6 +86,8 @@ use PHPUnit\Framework\TestCase;
         /**
          * @covers ::handle
          * @covers ::setNextHandler
+         * 
+         * @small
          *
          * @return void
          */

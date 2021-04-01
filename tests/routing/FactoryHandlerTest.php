@@ -57,6 +57,8 @@ use Factories\AddressesFactory;
          * @uses ControllerActions\ControllerAction
          * 
          * @dataProvider providePartedUriWithValidFactoryName
+         * 
+         * @small
          *
          * @param string[] $partedUri - array of URI parts
          * @param string $expected    - expected result
@@ -68,6 +70,9 @@ use Factories\AddressesFactory;
 
         /**
          * @covers ::handle
+         * @covers ::fillData
+         * 
+         * @small
          * 
          * @runInSeparateProcess
          *

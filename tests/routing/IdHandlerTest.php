@@ -50,12 +50,15 @@ use PHPUnit\Framework\TestCase;
         /**
          * @covers ::handle
          * @covers ::fillData
+         * 
          * @uses ControllerActions\ControllerAction
          * 
          * @dataProvider providePartedUriWithValidId
+         * 
+         * @small
          *
          * @param string[] $partedUri -  array of uri parts
-         * @param int $expected       - expected result
+         * @param int      $expected  - expected result
          * @return void
          */
         public function testHandleReturnsIdWithValidId(array $partedUri, int $expected):void {
@@ -65,12 +68,15 @@ use PHPUnit\Framework\TestCase;
         /**
          * @covers ::handle
          * @covers ::fillData
+         * 
          * @uses ControllerActions\ControllerAction
          * 
          * @dataProvider providePartedUriWithInvalidId
+         * 
+         * @small
          *
          * @param string[] $partedUri - array of uri parts
-         * @param int $expected       - expected result
+         * @param int      $expected  - expected result
          * @return void
          */
         public function testHandleDoesNotReturnInvalidId(array $partedUri, int $expected):void {
