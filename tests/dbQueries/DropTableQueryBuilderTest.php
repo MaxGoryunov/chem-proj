@@ -4,7 +4,8 @@
 
     use DBQueries\DropTableQueryBuilder;
     use DBQueries\Query;
-    use PHPUnit\Framework\TestCase;
+use Models\AbstractModel;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing DropTableQueryBuilder class
@@ -21,7 +22,11 @@
          * @return void
          */
         public function testBuildBuildsCorrectQueryObject():void {
-            $query = (new DropTableQueryBuilder("addresses"))
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs(["addresses"])
+                            ->getMock();
+
+            $query = (new DropTableQueryBuilder($model))
                         ->build();
             
             $this->assertInstanceOf(Query::class, $query);

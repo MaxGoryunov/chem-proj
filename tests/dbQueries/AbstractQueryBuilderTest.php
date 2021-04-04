@@ -24,7 +24,8 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testGetTableNameReturnsCorrectTable(string $tableName):void {
-            $model = $this->getMockForAbstractClass(AbstractModel::class);
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->getMock();
 
             $model->expects($this->once())
                     ->method("getTableName")
@@ -44,7 +45,8 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testBuildReturnsIQueryObject():void {
-            $model = $this->getMockForAbstractClass(AbstractModel::class);
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->getMock();
 
             $model->expects($this->once())
                     ->method("getTableName")
