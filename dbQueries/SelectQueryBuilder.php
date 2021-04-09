@@ -2,21 +2,29 @@
 
     namespace DBQueries;
 
-    use Traits\WhereTrait;
+use Models\AbstractModel;
+use Traits\WhereTrait;
     
     /**
      * Class for building a Select query
      */
     class SelectQueryBuilder extends AbstractQueryBuilder {
 
+        use WhereTrait;
+
+        /**
+         * Columns to be selected
+         *
+         * @var array<(int|string), string>
+         */
+        private $columns = [];
+
         /**
          * Columns to be selected from DB Table
          *
          * @var string
          */
-        private $what = "*";
-
-        use WhereTrait;
+        private $what = "";
 
         /**
          * The GROUP BY statement
@@ -53,12 +61,38 @@
          */
         private $joins = "";
 
+        public function __construct(AbstractModel $model, array $columns = ["*"]) {
+            parent::__construct($model);
+
+            $this->columns = $columns;
+        }
+
         /**
          * Returns a statement with the selected columns
          *
          * @return string
          */
         public function getWhat():string {
+            if ($this->what === "") {
+                $expr = "";
+
+                foreach ($this->columns as $alias => $column) {
+                    if (!preg_match("/[()*]/", $column)) {
+                        $column = "`$column`";
+                    }
+
+                    $expr .= $column;
+
+                    if (is_string($alias)) {
+                        $expr .= " AS `$alias`";
+                    }
+
+                    $expr .= ", ";
+                }
+
+                $this->what = rtrim($expr, ", ");
+            }
+
             return $this->what;
         }
 

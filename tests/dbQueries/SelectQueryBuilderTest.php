@@ -55,9 +55,13 @@
          * @return void
          */
         public function testWhatBuildsCorrectWhatStatement(array $columns, string $expected):void {
-            $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->what($columns));
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs(["medicines"])
+                            ->getMock();
 
-            $this->assertEquals($expected, $this->selectBuilder->getWhat());
+            $builder = new SelectQueryBuilder($model, $columns);
+
+            $this->assertEquals($expected, $builder->getWhat());
         }
 
         /**
