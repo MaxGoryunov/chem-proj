@@ -193,8 +193,8 @@
                                         ->join("chemicals", "chemical_id", "medicine_chemical_id")
                                         ->join("companies", "company_id", "medicine_company_id")
                                         ->join("countries", "country_id", "medicine_country_id")
-                                        ->whereAnd("`medicine_price` > 500")
-                                        ->whereOr("`medicine_doze` > 30")
+                                        ->where("`medicine_price` > 500")
+                                        ->or("`medicine_doze` > 30")
                                         ->groupBy("medicine_price")
                                         ->orderBy([
                                             [

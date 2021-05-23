@@ -54,8 +54,8 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testBuildBuildsCorrectQueryObject():void {
-            $query = $this->deleteBuilder->whereAnd("`medicine_price` < 300")
-                                         ->whereOr("`medicine_price` > 500")
+            $query = $this->deleteBuilder->where("`medicine_price` < 300")
+                                         ->or("`medicine_price` > 500")
                                          ->limit(3)
                                          ->build();
 
