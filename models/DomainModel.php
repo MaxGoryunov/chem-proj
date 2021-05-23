@@ -2,10 +2,11 @@
 
     namespace Models;
 
-    use Components\DBConnectionProvider;
-    use Components\IDBConnection;
+use Components\DBServiceProvider;
+use Components\IDBConnection;
     use DataMappers\DataMapper;
-    use DBQueries\InsertQueryBuilder;
+use DataMappers\DomainMapper;
+use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
     use DBQueries\UpdateQueryBuilder;
     use Entities\IEntity;
@@ -78,7 +79,7 @@
          *
          * @return AbstractDataMapper
          */
-        protected function getDataMapper():DataMapper {
+        protected function getDataMapper():DomainMapper {
             if (!isset($this->relatedMapper)) {
                 $this->relatedMapper = $this->relatedFactory->getDataMapper();
             }
@@ -89,10 +90,10 @@
         /**
          * Returns the Database connection
          *
-         * @return mysqli
+         * @return IDBConnection
          */
-        protected function connectToDB():mysqli {
-            return DBConnectionProvider::getConnection(IDBConnection::class);
+        protected function connectToDB():IDBConnection {
+            return (new DBServiceProvider())->getConnection();
         }
 
         /**
@@ -101,12 +102,11 @@
         public function getList(int $limit, int $offset):array {
             $connection = $this->connectToDB();
 
-            $query      = (new SelectQueryBuilder($this->getTableName()))
-                            ->whereAnd("`" . $this->getDomainName() . "_is_deleted` = 0")
-                            ->limit($limit, $offset)
-                            ->build();
+            $builder    = (new SelectQueryBuilder($this))
+                            ->where("`" . $this->getDomainName() . "_is_deleted` = 0")
+                            ->limit($limit, $offset);
 
-            $result    = $connection->query($query->getQueryString());
+            $result    = $connection->query($builder);
             $itemsList = $result->fetch_all(MYSQLI_ASSOC);
 
             return $itemsList;
@@ -116,9 +116,9 @@
          * {@inheritDoc}
          */
         public function getById(int $id):IEntity {
-            $builder = (new SelectQueryBuilder($this->getTableName()))
-                        ->whereAnd("`" . $this->getDomainName() . "_is_deleted` = 0")
-                        ->whereAnd("`" . $this->getDomainName() . "_id` = " . $id);
+            $builder = (new SelectQueryBuilder($this))
+                        ->where("`" . $this->getDomainName() . "_is_deleted` = 0")
+                        ->and("`" . $this->getDomainName() . "_id` = " . $id);
 
             $entity = $this->getDataMapper()->mapQueryResultToEntity($builder);
 
@@ -131,11 +131,10 @@
         public function add(array $data = []):void {
             $connection = $this->connectToDB();
 
-            $query      = (new InsertQueryBuilder($this->getTableName()))
-                          ->set($data)
-                          ->build();
+            $builder    = (new InsertQueryBuilder($this))
+                          ->set($data);
 
-            $connection->query($query->getQueryString());
+            $connection->query($builder);
         }
 
         /**
@@ -144,12 +143,11 @@
         public function edit(array $data = []):void {
             $connection = $this->connectToDB();
 
-            $query      = (new UpdateQueryBuilder($this->getTableName()))
+            $builder    = (new UpdateQueryBuilder($this))
                             ->set($data)
-                            ->whereAnd("`" . $this->getDomainName() . "_id` = " . $data["id"])
-                            ->build();
+                            ->where("`" . $this->getDomainName() . "_id` = " . $data["id"]);
 
-            $connection->query($query->getQueryString());
+            $connection->query($builder);
         }
 
         /**
@@ -159,12 +157,11 @@
             $connection = $this->connectToDB();
             $domainName = $this->getDomainName();
 
-            $query      = (new UpdateQueryBuilder($this->getTableName()))
+            $builder    = (new UpdateQueryBuilder($this))
                           ->set([$domainName . "_is_deleted" => 1])
-                          ->whereAnd("`{$domainName}_id` = " . $id)
-                          ->build();
+                          ->where("`{$domainName}_id` = " . $id);
 
-            $connection->query($query->getQueryString());
+            $connection->query($builder);
         }
 
         /**
@@ -176,11 +173,10 @@
             $connection = $this->connectToDB();
             $columns    = ["count" => "count(*)"];
 
-            $query      = (new SelectQueryBuilder($this->getTableName()))
-                            ->what($columns)
-                            ->build();
+            $builder    = (new SelectQueryBuilder($this))
+                            ->what($columns);
 
-			$result = $connection->query($query->getQueryString());
+			$result = $connection->query($builder);
             $count  = $result->fetch_assoc()["count"];
             
 			return $count;
