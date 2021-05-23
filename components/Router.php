@@ -1,71 +1,50 @@
 <?php
 
 	namespace Components;
-	
+
+	use Components\RoutePackage;
+	use ControllerActions\ControllerAction;
+	use InvalidArgumentException;
+	use LogicException;
+	use Routing\ActionHandler;
+	use Routing\FactoryHandler;
+	use Routing\IdHandler;
+
 	/**
 	 * Class for providing routing within the site
 	 */
     class Router {
-		/**
-		 * Routes for controller actions
-		 *
-		 * @var string[][]
-		 */
-        private $routes;
 
-		/**
-		 * Constructor assigns the routes to the inner routes property
-		 */
-        public function __construct() {
-			include_once("./config/routes.php");
-			
-			$this->routes = $routes;
-        }
-
-		/**
-		 * @todo Extract the calling of controller action into another method
-		 */
 		/**
 		 * This function looks finds the controller using the routes and executes the associated action
+		 * 
+		 * @throws InvalidArgumentException if the URI  is empty
 		 *
 		 * @return void
 		 */
-        public function run():void {
-			$userUri = $_SERVER['REQUEST_URI'];
-
-			/**
-			 * @todo Implement a more efficient algorithm as this works for O(n) where n is the overall number of patterns
-			 */
-			foreach ($this->routes as $factory => $patterns) {
-				foreach ($patterns as $pattern => $action) {
-					$completePattern = ROOT . $pattern;
-                    
-					if (preg_match("~$completePattern$~", $userUri, $matches)) {
-						/**
-						 * Id of the specified item
-						 * 
-						 * If the id of some item is specified in the URL then it is contained in the first submask
-						 * 
-						 * @var string $id
-						 */
-						$id = $matches[1] ?? '';
-
-						/**
-						 * Factory used for creating MVCPDM components
-						 * 
-						 * @var IMVCPDMFactory
-						 */
-						$factoryObj = new $factory();
-
-						$proxyController = $factoryObj->getProxy();
-
-						if ($id) {
-							$proxyController->$action($id);
-						} else {
-							$proxyController->$action();
-						}
-					}
-				}
+        public function run(string $userUri = ""):void {
+			if ($userUri === "") {
+				throw new InvalidArgumentException("User URI must not be empty");
 			}
-        }
+
+			$handler = new FactoryHandler();
+
+			$handler->setNextHandler(new ActionHandler())->setNextHandler(new IdHandler());
+
+			$action = $handler->handle(explode("/", $userUri), new ControllerAction());
+			
+			$action->execute();
+		}
+
+		/**
+		 * Routing mechanism used for redirection of faulty routes
+		 * 
+		 * @todo Put this method into a different class or make it non-static
+		 *
+		 * @param string $location - URI where the user is redirected
+		 * @return void
+		 */
+		public static function headerTo(string $location):void {
+			header("Location: " . $location);
+		}
     }
