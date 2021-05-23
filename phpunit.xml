@@ -12,6 +12,10 @@
          verbose="true"
          colors="true">
     <testsuites>
+        <testsuite name="Connection">
+            <file>./tests/components/DBServiceProviderTest.php</file>
+            <file>./tests/components/MySQLConnectionTest.php</file>
+        </testsuite>
         <testsuite name="Components">
             <directory suffix="Test.php">./tests/components/</directory>
         </testsuite>
@@ -31,7 +35,6 @@
             <directory suffix=".php">./</directory>
         </include>
         <exclude>
-            <file>./components/Router.php</file>
             <directory>.vscode</directory>
             <directory>assets</directory>
             <directory>config</directory>
