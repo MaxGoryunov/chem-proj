@@ -109,25 +109,28 @@
          * @return void
          */
         public function index():void {
-            $title        = $this->relatedFactory->getDomain()->getDomainPlural();
-            $adminStatus  = (new UsersFactory())->getModel()->getUserAdminStatus();
-            $count        = $this->getModel()->calculateRecordCount();
-            $pageNumber   = $this->getModel()->getCurrentPageNumber($_SERVER["REQUEST_URI"]);
             $limit        = 5;
-            $offset       = ($pageNumber - 1) * $limit;
-            $entitiesList = $this->getModel()->getList($limit, $offset);
 
-            $viewData = compact("title", "adminStatus", "entitiesList");
-
-            $this->getView()->render(__METHOD__, $viewData);
+            $this->getView()->render(
+                __METHOD__, 
+                [
+                    "title"        => $this->relatedFactory->getDomain()->getDomainPlural(),
+                    "adminStatus"  => (new UsersFactory())->getModel()->getUserAdminStatus(),
+                    "count"        => $this->getModel()->calculateRecordCount(),
+                    "entitiesList" => $this->getModel()->getList(
+                        $limit, 
+                        $limit * (
+                            $this->getModel()->getCurrentPageNumber($_SERVER["REQUEST_URI"]) - 1
+                        )
+                    )
+                ]
+            );
         }
 
         /**
          * {@inheritDoc}
          */
         public function add():void {
-            $title       = "Добавление " . $this->relatedFactory->getDomain()->getTranslationClause();
-			$adminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
             $paramsList  = $this->paramsList();
 			
 			if ($this->getModel()->paramsExist($_POST, $paramsList)) {
@@ -138,18 +141,20 @@
                 $this->getModel()->add($data);
 			}
 
-            $viewData = compact("title", "adminStatus");
-            
-			$this->getView()->render(__FUNCTION__, $viewData);
+			$this->getView()->render(
+                __FUNCTION__, 
+                [
+                    "title"       => "Добавление " . $this->relatedFactory->getDomain()->getTranslationClause(),
+                    "adminStatus" => (new UsersFactory())->getModel()->getUserAdminStatus(),
+    
+                ]
+            );
         }
 
         /**
          * {@inheritDoc}
          */
         public function edit(int $id):void {
-            $title       = "Редактирование " . $this->relatedFactory->getDomain()->getTranslationClause();
-            $entity      = $this->getModel()->getById($id);
-            $adminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
 			$paramsList  = $this->paramsList();
 
 			if ($this->getModel()->paramsExist($_POST, $paramsList)) {
@@ -161,10 +166,17 @@
 
                 $this->getModel()->edit($data);
             }
-            
-            $viewData =  compact("title", "entity", "adminStatus");
-            
-            $this->getView()->render(__FUNCTION__, $viewData);
+
+            $this->getView()->render(
+                __FUNCTION__, 
+                [
+                    "title"       => "Редактирование " . $this->relatedFactory
+                                                        ->getDomain()
+                                                        ->getTranslationClause(),
+                    "entity"      => $this->getModel()->getById($id),
+                    "adminStatus" => (new UsersFactory())->getModel()->getUserAdminStatus()
+                ]
+            );
         }
 
         
@@ -172,16 +184,17 @@
          * {@inheritDoc}
          */
         public function delete(int $id):void {
-            $title       = "Удаление " . $this->relatedFactory->getDomain()->getTranslationClause();
-            $entity      = $this->getModel()->getById($id);
-            $adminStatus = (new UsersFactory())->getModel()->getUserAdminStatus();
-
             if (isset($_POST["delete"])) {
                 $this->getModel()->delete($id);
             }
 
-            $viewData = compact("title", "entity", "adminStatus");
-
-            $this->getView()->render(__FUNCTION__, $viewData);
+            $this->getView()->render(
+                __FUNCTION__,
+                [
+                    "title"       => "Удаление " . $this->relatedFactory->getDomain()->getTranslationClause(),
+                    "entity"      => $this->getModel()->getById($id),
+                    "adminStatus" => (new UsersFactory())->getModel()->getUserAdminStatus()
+                ]
+            );
         }
     }
