@@ -144,7 +144,8 @@
          * {@inheritDoc}
          */
         public function edit(int $id):void {
-			$data = $this->getModel()->filledOrEmpty($_POST, $this->paramsList());
+			$data       = $this->getModel()->filledOrEmpty($_POST, $this->paramsList());
+            $data["id"] = $id;
 			
 			if ($data !== []) {
                 $this->getModel()->edit($data);
