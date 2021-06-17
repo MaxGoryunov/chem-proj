@@ -109,20 +109,13 @@
          * @return void
          */
         public function index():void {
-            $limit        = 5;
-
             $this->getView()->render(
                 __METHOD__, 
                 [
                     "title"        => $this->relatedFactory->getDomain()->getDomainPlural(),
                     "adminStatus"  => (new UsersFactory())->getModel()->getUserAdminStatus(),
                     "count"        => $this->getModel()->calculateRecordCount(),
-                    "entitiesList" => $this->getModel()->getList(
-                        $limit, 
-                        $limit * (
-                            $this->getModel()->getCurrentPageNumber($_SERVER["REQUEST_URI"]) - 1
-                        )
-                    )
+                    "entitiesList" => $this->getModel()->getList(5, $_SERVER["REQUEST_URI"])
                 ]
             );
         }
@@ -131,13 +124,9 @@
          * {@inheritDoc}
          */
         public function add():void {
-            $paramsList  = $this->paramsList();
+            $data = $this->getModel()->filledOrEmpty($_POST, $this->paramsList());
 			
-			if ($this->getModel()->paramsExist($_POST, $paramsList)) {
-                foreach ($paramsList as $name => $type) {
-                    $data[$name] = $_POST[$name];
-                }
-
+			if ($data !== []) {
                 $this->getModel()->add($data);
 			}
 
@@ -155,17 +144,11 @@
          * {@inheritDoc}
          */
         public function edit(int $id):void {
-			$paramsList  = $this->paramsList();
-
-			if ($this->getModel()->paramsExist($_POST, $paramsList)) {
-                $data["id"] = $id;
-
-                foreach ($paramsList as $name => $type) {
-                    $data[$name] = $_POST[$name];
-                }
-
+			$data = $this->getModel()->filledOrEmpty($_POST, $this->paramsList());
+			
+			if ($data !== []) {
                 $this->getModel()->edit($data);
-            }
+			}
 
             $this->getView()->render(
                 __FUNCTION__, 

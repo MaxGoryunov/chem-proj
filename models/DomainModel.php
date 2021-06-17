@@ -97,11 +97,14 @@ use DBQueries\InsertQueryBuilder;
         /**
          * {@inheritDoc}
          */
-        public function getList(int $limit, int $offset):array {
+        public function getList(int $limit, string $uri):array {
             return $this->connectToDB()->query(
                 (new SelectQueryBuilder($this))
                 ->where("`" . $this->getDomainName() . "_is_deleted` = 0")
-                ->limit($limit, $offset)
+                ->limit(
+                    $limit,
+                    $limit * ($this->getCurrentPageNumber($uri) - 1)
+                )
             )->fetch_all(MYSQLI_ASSOC);
         }
 
@@ -192,5 +195,26 @@ use DBQueries\InsertQueryBuilder;
             }
 
             return true;
+        }
+
+        /**
+         * Fills data output or leaves it empty if some parameters are missing
+         *
+         * @param array $source from which the elements are extracted
+         * @param array $list   list of parameters to be resent
+         * @return array
+         */
+        public function filledOrEmpty(array $source, array $list): array {
+            $filled = [];
+            foreach ($list as $param) {
+                if (isset($source[$param])) {
+                    $filled[$param] = $source[$param];
+                } else {
+                    $filled = [];
+                    break;
+                }
+            }
+
+            return $filled;
         }
     }

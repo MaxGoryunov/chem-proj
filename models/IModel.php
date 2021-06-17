@@ -19,11 +19,11 @@
         /**
          * Gets a list of Database Table Entities
          *
-         * @param int $limit number of entities to retrieve from the database
-         * @param int $offset - offset for retrieving, used for pagination in index() method of Controllers
+         * @param int    $limit number of entities to retrieve from the database
+         * @param string $uri   request uri
          * @return IEntity[]
          */
-        public function getList(int $limit, int $offset):array;
+        public function getList(int $limit, string $uri):array;
 
         /**
          * Returns a specific Database Table Entity

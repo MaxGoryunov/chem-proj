@@ -58,7 +58,7 @@
          * {@inheritDoc}
          * @return UserEntity[]
          */
-        public function getList(int $limit, int $offset):array {
+        public function getList(int $limit, string $uri):array {
             return [];
         }
 
