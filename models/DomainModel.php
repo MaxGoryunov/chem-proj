@@ -123,21 +123,25 @@ use DBQueries\InsertQueryBuilder;
          * {@inheritDoc}
          */
         public function add(array $data = []):void {
-            $this->connectToDB()->query(
-                (new InsertQueryBuilder($this))
-                ->set($data)
-            );
+            if ($data !== []) {
+                $this->connectToDB()->query(
+                    (new InsertQueryBuilder($this))
+                    ->set($data)
+                );
+            }
         }
 
         /**
          * {@inheritDoc}
          */
-        public function edit(array $data = []):void {
-            $this->connectToDB()->query(
-                (new UpdateQueryBuilder($this))
-                ->set($data)
-                ->where("`" . $this->getDomainName() . "_id` = " . $data["id"])
-            );
+        public function edit(array $data = [], int $id):void {
+            if ($data !== []) {
+                $this->connectToDB()->query(
+                    (new UpdateQueryBuilder($this))
+                    ->set($data)
+                    ->where("`" . $this->getDomainName() . "_id` = " . $id)
+                );
+            }
         }
 
         /**

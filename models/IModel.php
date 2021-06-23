@@ -44,10 +44,11 @@
         /**
          * Edits Entity based on the supplied data
          *
-         * @param array - Entity data
+         * @param array $data - Entity data
+         * @param int   $id   - Entity id
          * @return void
          */
-        public function edit(array $data = []):void;
+        public function edit(array $data = [], int $id):void;
 
         /**
          * Function does not actually delete the Entity from the Database: instead it sets a specific field to a DELETED status

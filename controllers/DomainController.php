@@ -78,7 +78,7 @@
          * 
          * Access to the Model is done in lazy load manner so that it is not created each time a query is made
          *
-         * @return AbstractModel|UsersModel
+         * @return AbstractModel
          */
         protected function getModel():DomainModel {
             if (!isset($this->relatedModel)) {
@@ -124,11 +124,9 @@
          * {@inheritDoc}
          */
         public function add():void {
-            $data = $this->getModel()->filledOrEmpty($_POST, $this->paramsList());
-			
-			if ($data !== []) {
-                $this->getModel()->add($data);
-			}
+            $this->getModel()->add(
+                $this->getModel()->filledOrEmpty($_POST, $this->paramsList())
+            );
 
 			$this->getView()->render(
                 __FUNCTION__, 
@@ -144,12 +142,10 @@
          * {@inheritDoc}
          */
         public function edit(int $id):void {
-			$data       = $this->getModel()->filledOrEmpty($_POST, $this->paramsList());
-            $data["id"] = $id;
-			
-			if ($data !== []) {
-                $this->getModel()->edit($data);
-			}
+            $this->getModel()->edit(
+                $this->getModel()->filledOrEmpty($_POST, $this->paramsList()),
+                $id
+            );
 
             $this->getView()->render(
                 __FUNCTION__, 
