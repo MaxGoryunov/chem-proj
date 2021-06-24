@@ -23,8 +23,11 @@ use PHPUnit\Framework\TestCase;
          */
         public function testBuildBuildsCorrectQueryObject():void {
             $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs(["addresses"])
+                            ->disableOriginalConstructor()
                             ->getMock();
+
+            $model->method("getTableName")
+                    ->willReturn("addresses");
 
             $query = (new DropTableQueryBuilder($model))
                         ->build();

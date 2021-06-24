@@ -27,8 +27,11 @@ use PHPUnit\Framework\TestCase;
          */
         protected function setUp():void {
             $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs(["medicines"])
+                            ->disableOriginalConstructor()
                             ->getMock();
+
+            $model->method("getTableName")
+                    ->willReturn("medicines");
 
             $this->builder = new CreateTableQueryBuilder($model);
         }
