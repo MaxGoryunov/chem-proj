@@ -43,21 +43,24 @@
         }
 
         /**
-         * @covers ::what
          * @covers ::getWhat
          * 
          * @uses DBQueries\AbstractQueryBuilder
          * 
          * @dataProvider provideWhatColumns
          *
-         * @param array $columns - columns passed to 'what' method
+         * @param array  $columns  - columns to be selected
          * @param string $expected - expected string
          * @return void
          */
-        public function testWhatBuildsCorrectWhatStatement(array $columns, string $expected):void {
-            $this->assertInstanceOf(SelectQueryBuilder::class, $this->selectBuilder->what($columns));
+        public function testConstructorBuildsCorrectWhatStatement(array $columns, string $expected):void {
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs(["medicines"])
+                            ->getMock();
 
-            $this->assertEquals($expected, $this->selectBuilder->getWhat());
+            $builder = new SelectQueryBuilder($model, $columns);
+
+            $this->assertEquals($expected, $builder->getWhat());
         }
 
         /**
@@ -167,7 +170,6 @@
         }
 
         /**
-         * @covers ::what
          * @covers ::getWhat
          * @covers ::join
          * @covers ::getJoins
@@ -188,25 +190,30 @@
          * @return void
          */
         public function testBuildBuildsCorrectQueryObject():void {
-            $query = $this->selectBuilder->what(["medicine_id", 
-                                                "name" =>"medicine_name"])
-                                        ->join("chemicals", "chemical_id", "medicine_chemical_id")
-                                        ->join("companies", "company_id", "medicine_company_id")
-                                        ->join("countries", "country_id", "medicine_country_id")
-                                        ->where("`medicine_price` > 500")
-                                        ->or("`medicine_doze` > 30")
-                                        ->groupBy("medicine_price")
-                                        ->orderBy([
-                                            [
-                                                "name"      => "medicine_name"
-                                            ],
-                                            [
-                                                "name"      => "medicine_price",
-                                                "orderType" => "DESC"
-                                            ]
-                                        ])
-                                        ->limit(30)
-                                        ->build();
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs(["medicines"])
+                            ->getMock();
+
+            $query = (new SelectQueryBuilder(
+                $model, 
+                ["medicine_id", "name" =>"medicine_name"])
+            )->join("chemicals", "chemical_id", "medicine_chemical_id")
+            ->join("companies", "company_id", "medicine_company_id")
+            ->join("countries", "country_id", "medicine_country_id")
+            ->where("`medicine_price` > 500")
+            ->or("`medicine_doze` > 30")
+            ->groupBy("medicine_price")
+            ->orderBy([
+                [
+                    "name" => "medicine_name"
+                ],
+                [
+                    "name"      => "medicine_price",
+                    "orderType" => "DESC"
+                ]
+            ])
+            ->limit(30)
+            ->build();
 
             $this->assertEquals(preg_replace("/\n/", "", " SELECT `medicine_id`, `medicine_name` AS `name` FROM `medicines` LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` LEFT JOIN `countries` ON `country_id` = `medicine_country_id` WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30 GROUP BY `medicine_price` ORDER BY `medicine_name`, `medicine_price` DESC LIMIT 0, 30; "), preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
         }
