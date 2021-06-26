@@ -2,8 +2,6 @@
 
     namespace Components;
 
-    use InvalidArgumentException;
-
     /**
      * CLass for providing Database Connections
      * 
