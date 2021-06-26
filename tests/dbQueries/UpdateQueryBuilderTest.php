@@ -60,8 +60,8 @@
                         "medicine_price" => 760,
                         "medicine_doze"  => 50
                     ])
-                     ->whereAnd("`medicine_id` = 1")
-                     ->whereOr("`medicine_id` = 3")
+                     ->where("`medicine_id` = 1")
+                     ->or("`medicine_id` = 3")
                      ->limit(4)
                      ->build();
 

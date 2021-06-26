@@ -41,6 +41,7 @@
         /**
          * @covers ::getConnection
          * 
+         * @uses Components\IDBConnection
          * @uses Components\MySQLConnection
          * 
          * @small

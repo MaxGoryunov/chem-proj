@@ -136,7 +136,12 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::establishConnection
+         * 
+         * @uses DBQueries\IQuery
+         * @uses DBQueries\IQueryBuilder
+         * @uses DBQueries\Query
          *
          * @return void
          */
@@ -179,6 +184,9 @@
          * @covers ::__construct
          * @covers ::fail
          * 
+         * @uses DBQueries\IQuery
+         * @uses DBQueries\IQueryBuilder
+         * @uses DBQueries\Query
          *
          * @small
          * @return void
@@ -192,6 +200,10 @@
         /**
          * @covers ::__construct
          * @covers ::query
+         * 
+         * @uses DBQueries\IQuery
+         * @uses DBQueries\IQueryBuilder
+         * @uses DBQueries\Query
          * 
          * @small
          *
@@ -285,6 +297,8 @@
          * @covers ::query
          * @covers ::fetchObject
          * 
+         * @uses Entities\IEntity
+         * 
          * @small
          *
          * @return void
@@ -312,6 +326,8 @@
          * @covers ::__construct
          * @covers ::query
          * @covers ::fetchObjects
+         * 
+         * @covers DBQueries\IEntity
          * 
          * @small
          *

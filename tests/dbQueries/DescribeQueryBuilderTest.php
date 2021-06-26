@@ -26,8 +26,11 @@ use PHPUnit\Framework\TestCase;
          */
         public function testBuildBuildsCorrectQueryObject(string $tableName):void {
             $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs([$tableName])
+                            ->disableOriginalConstructor()
                             ->getMock();
+
+            $model->method("getTableName")
+                    ->willReturn($tableName);
 
             $builder = new DescribeQueryBuilder($model);
 

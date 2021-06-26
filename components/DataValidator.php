@@ -40,6 +40,6 @@ use InvalidArgumentException;
                 return $set[$key];
             }
 
-            call_user_func($closure);
+            return call_user_func($closure);
         }
     }

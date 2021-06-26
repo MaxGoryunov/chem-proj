@@ -197,23 +197,23 @@
             $query = (new SelectQueryBuilder(
                 $model, 
                 ["medicine_id", "name" =>"medicine_name"])
-                )->join("chemicals", "chemical_id", "medicine_chemical_id")
-                ->join("companies", "company_id", "medicine_company_id")
-                ->join("countries", "country_id", "medicine_country_id")
-                ->whereAnd("`medicine_price` > 500")
-                ->whereOr("`medicine_doze` > 30")
-                ->groupBy("medicine_price")
-                ->orderBy([
-                    [
-                        "name"      => "medicine_name"
-                    ],
-                    [
-                        "name"      => "medicine_price",
-                        "orderType" => "DESC"
-                    ]
-                ])
-                ->limit(30)
-                ->build();
+            )->join("chemicals", "chemical_id", "medicine_chemical_id")
+            ->join("companies", "company_id", "medicine_company_id")
+            ->join("countries", "country_id", "medicine_country_id")
+            ->where("`medicine_price` > 500")
+            ->or("`medicine_doze` > 30")
+            ->groupBy("medicine_price")
+            ->orderBy([
+                [
+                    "name" => "medicine_name"
+                ],
+                [
+                    "name"      => "medicine_price",
+                    "orderType" => "DESC"
+                ]
+            ])
+            ->limit(30)
+            ->build();
 
             $this->assertEquals(preg_replace("/\n/", "", " SELECT `medicine_id`, `medicine_name` AS `name` FROM `medicines` LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` LEFT JOIN `countries` ON `country_id` = `medicine_country_id` WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30 GROUP BY `medicine_price` ORDER BY `medicine_name`, `medicine_price` DESC LIMIT 0, 30; "), preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
         }
