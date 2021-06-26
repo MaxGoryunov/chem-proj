@@ -27,11 +27,8 @@ use PHPUnit\Framework\TestCase;
          */
         protected function setUp():void {
             $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs(["medicines"])
                             ->getMock();
-
-            $model->expects($this->once())
-                    ->method("getTableName")
-                    ->willReturn("medicines");
 
             $this->deleteBuilder = new DeleteQueryBuilder($model);
         }

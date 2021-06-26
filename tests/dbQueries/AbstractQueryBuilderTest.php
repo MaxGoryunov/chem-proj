@@ -24,11 +24,9 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testGetTableNameReturnsCorrectTable(string $tableName):void {
-            $model = $this->getMockForAbstractClass(AbstractModel::class);
-
-            $model->expects($this->once())
-                    ->method("getTableName")
-                    ->willReturn($tableName);
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs([$tableName])
+                            ->getMock();
 
             $builder = $this->getMockForAbstractClass(AbstractQueryBuilder::class, [$model]);
 
@@ -44,12 +42,10 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testBuildReturnsIQueryObject():void {
-            $model = $this->getMockForAbstractClass(AbstractModel::class);
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs(["addresses"])
+                            ->getMock();
 
-            $model->expects($this->once())
-                    ->method("getTableName")
-                    ->willReturn("addresses");
-            
             $builder = $this->getMockForAbstractClass(AbstractQueryBuilder::class, [$model]);
 
             $this->assertInstanceOf(IQuery::class, $builder->build());

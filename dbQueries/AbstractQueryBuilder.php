@@ -13,8 +13,7 @@
         use TableNameTrait;
 
         /**
-         * @param string $tableName
-         * 
+         * @param AbstractModel $model
          * @return void
          */
         public function __construct(DomainModel $model) {

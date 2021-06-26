@@ -4,7 +4,8 @@
 
     use DBQueries\DescribeQueryBuilder;
     use DBQueries\IQuery;
-    use PHPUnit\Framework\TestCase;
+use Models\AbstractModel;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing DescribeQueryBuilder class
@@ -24,7 +25,11 @@
          * @return void
          */
         public function testBuildBuildsCorrectQueryObject(string $tableName):void {
-            $builder = new DescribeQueryBuilder($tableName);
+            $model = $this->getMockBuilder(AbstractModel::class)
+                            ->setConstructorArgs([$tableName])
+                            ->getMock();
+
+            $builder = new DescribeQueryBuilder($model);
 
             $this->assertInstanceOf(IQuery::class, $builder->build());
 
