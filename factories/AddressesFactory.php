@@ -2,7 +2,9 @@
 
     namespace Factories;
 
-    use Controllers\AddressesController;
+use Components\Domain;
+use Components\DomainRegistry;
+use Controllers\AddressesController;
     use Controllers\IController;
     use DataMappers\AddressesMapper;
     use DataMappers\IDataMapper;
@@ -60,5 +62,10 @@
          */
         public function getDataMapper():IDataMapper {
             return new AddressesMapper();
+        }
+
+        public function getDomain(): Domain
+        {
+            return (new DomainRegistry())->getDomain("addresses");
         }
     }
