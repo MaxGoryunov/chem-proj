@@ -92,7 +92,7 @@
         /**
          * {@inheritDoc}
          */
-        public function edit(array $data = []):void {
+        public function edit(array $data = [], int $id):void {
             
         }
 
