@@ -19,8 +19,6 @@ use DBQueries\InsertQueryBuilder;
      */
     class DomainModel implements IModel {
 
-        use TableNameTrait;
-
         /**
          * Pairings between table and domain names
          * 
@@ -63,6 +61,14 @@ use DBQueries\InsertQueryBuilder;
         public function __construct(string $tableName, AbstractMVCPDMFactory $relatedFactory = null) {
             $this->tableName      = $tableName;
             $this->relatedFactory = $relatedFactory;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function getTableName(): string
+        {
+            return $this->tableName;
         }
 
         /**
