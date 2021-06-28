@@ -1,0 +1,28 @@
+#Ignore vscode settings.json file
+.vscode/
+
+#Ignore all the libraries (some time ago it was not ignored and created a big mess)
+assets/libs/
+
+#Ignore composer files
+composer.*
+
+#Ignore vendor/files
+vendor/
+
+#Ignore cache files
+*.cache
+
+#Ingore css map files
+*.css.map
+
+#Ignore LOC file
+phploc.phar
+
+#Ignore code coverage files
+coverage
+tests/_css
+tests/_js
+tests/_icons
+tests/*.html
+tests/*/*.html
