@@ -2,7 +2,9 @@
 
     namespace Factories;
 
-    use Controllers\IController;
+use Components\Domain;
+use Components\DomainRegistry;
+use Controllers\IController;
     use Controllers\UsersController;
     use DataMappers\IDataMapper;
     use DataMappers\UsersMapper;
@@ -40,6 +42,11 @@
 
         public function getDataMapper():IDataMapper {
             return new UsersMapper();
+        }
+
+        public function getDomain(): Domain
+        {
+            return (new DomainRegistry())->getDomain("users");
         }
 
     }
