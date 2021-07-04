@@ -12,13 +12,13 @@
          *
          * @var string
          */
-        protected $tableName = "";
+        protected string $table = "";
 
         /**
-         * @param string $tableName
+         * @param string $table
          */
-        public function __construct(string $tableName) {
-            $this->tableName = $tableName;
+        public function __construct(string $table) {
+            $this->table = $table;
         }
 
         /**
@@ -27,6 +27,6 @@
          * @return string
          */
         public function getTableName():string {
-            return $this->tableName;
+            return $this->table;
         }
     }

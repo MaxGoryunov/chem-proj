@@ -7,7 +7,6 @@
     use DBQueries\DeleteQueryBuilder;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
-    use Entities\IEntity;
 
     /**
      * Class containing Connects business logic
@@ -15,9 +14,11 @@
     class ConnectsModel extends AbstractModel {
 
         /**
-         * {@inheritDoc}
+         * Ctor.
          */
-        protected $tableName = "connects";
+        public function __construct(string $table = "connects") {
+            $this->table = $table;
+        }
 
         /**
          * {@inheritDoc}
