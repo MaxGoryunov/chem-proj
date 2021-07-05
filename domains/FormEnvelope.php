@@ -2,15 +2,15 @@
 
 namespace Domains;
 
-abstract class FormEnvelope
+abstract class FormEnvelope implements Form
 {
 
     /**
      * Current domain
      * 
-     * @var Domain
+     * @var string
      */
-    private Domain $domain;
+    private string $domain;
 
     /**
      * Form of domain name
@@ -22,9 +22,10 @@ abstract class FormEnvelope
     /**
      * Ctor.
      *
-     * @param Domain $domain
+     * @param string $domain
+     * @param string $form
      */
-    public function __construct(Domain $domain, string $form)
+    public function __construct(string $domain, string $form)
     {
         $this->domain = $domain;
         $this->form   = $form;
@@ -37,6 +38,6 @@ abstract class FormEnvelope
      */
     public function value(): string
     {
-        return $this->domain->forms()[$this->form];
+        return include ("./config/domainData.php")[$this->domain][$this->form];
     }
 }
