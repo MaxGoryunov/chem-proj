@@ -5,7 +5,7 @@
 use DBQueries\CreateTableQueryBuilder;
 use DBQueries\DescribeQueryBuilder;
     use DBQueries\DropTableQueryBuilder;
-use Models\AbstractModel;
+use Models\DomainModel;
 
 /**
      * Class which is used for mocking Db Tables which allows proper testing
@@ -52,7 +52,7 @@ use Models\AbstractModel;
             $connection = new MySQLConnection();
 
             $result  = $connection->query(new DescribeQueryBuilder(
-                new class("$tableName") extends AbstractModel {}
+                new class("$tableName") extends DomainModel {}
             ));
             $columns = $result->fetch_all(MYSQLI_ASSOC);
             
@@ -79,13 +79,13 @@ use Models\AbstractModel;
         public function mockTable(string $tableName):void {
             $connection = new MySQLConnection();
             $drop       = new DropTableQueryBuilder(
-                new class("mock_$tableName") extends AbstractModel {}
+                new class("mock_$tableName") extends DomainModel {}
             );
             
             $connection->query($drop);
 
             $create = (new CreateTableQueryBuilder(
-                new class("mock_$tableName") extends AbstractModel {}
+                new class("mock_$tableName") extends DomainModel {}
             ))
                         ->setColumns(
                             $this->getTableDescription($tableName)
@@ -103,7 +103,7 @@ use Models\AbstractModel;
         public function clearMock(string $tableName):void {
             $connection = new MySQLConnection();
             $builder    = new DropTableQueryBuilder(
-                new class("mock_$tableName") extends AbstractModel {}
+                new class("mock_$tableName") extends DomainModel {}
             );
 
             $connection->query($builder);
