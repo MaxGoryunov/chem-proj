@@ -265,6 +265,10 @@
          * @covers ::query
          * @covers ::fetchAssoc
          * 
+         * @uses DBQueries\IQuery
+         * @uses DBQueries\IQueryBuilder
+         * @uses DBQueries\Query
+         * 
          * @small
          *
          * @return void
@@ -327,7 +331,7 @@
          * @covers ::query
          * @covers ::fetchObjects
          * 
-         * @covers DBQueries\IEntity
+         * @uses Entities\IEntity
          * 
          * @small
          *
