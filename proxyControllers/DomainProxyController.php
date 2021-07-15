@@ -10,10 +10,6 @@ use Factories\DomainFactory;
 
     /**
      * Base class for implementing other ProxyControllers
-     * 
-     * @method void add()           Protects add action
-     * @method void edit(int $id)   Protects edit action
-     * @method void delete(int $id) Protects delete action
      */
     class DomainProxyController implements IController {
 
@@ -76,12 +72,24 @@ use Factories\DomainFactory;
         }
 
         /**
+         * {@inheritDoc}
+         */
+        public function add(): void
+        {
+            if ((new UsersFactory())->getModel()->getUserAdminStatus($_COOKIE["id"])) {
+                $this->getController()->add();
+            } else {
+                throw new 
+            }
+        }
+
+        /**
          * Magic method for invoking protected methods
          * 
          * @throws InvalidArgumentException if id is not supplied
          *
          * @param string $name     - name of protected method
-         * @param int[] $arguments - method arguments
+         * @param int[]  $arguments - method arguments
          * @return void
          */
         public function __call(string $name, array $arguments):void {
