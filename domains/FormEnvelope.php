@@ -13,6 +13,13 @@ abstract class FormEnvelope implements Form
     private string $domain;
 
     /**
+     * File with domains.
+     * 
+     * @var string
+     */
+    private string $file;
+
+    /**
      * Form of domain name
      * 
      * @var string
@@ -23,11 +30,13 @@ abstract class FormEnvelope implements Form
      * Ctor.
      *
      * @param string $domain
+     * @param string $file
      * @param string $form
      */
-    public function __construct(string $domain, string $form)
+    public function __construct(string $domain, string $file, string $form)
     {
         $this->domain = $domain;
+        $this->file   = $file;
         $this->form   = $form;
     }
 
@@ -38,6 +47,6 @@ abstract class FormEnvelope implements Form
      */
     public function value(): string
     {
-        return include ("./config/domainData.php")[$this->domain][$this->form];
+        return (include ("./{$this->file}.php"))[$this->domain][$this->form];
     }
 }
