@@ -119,26 +119,6 @@
          * @covers ::__construct
          * @covers ::establishConnection
          * 
-         * @small
-         *
-         * @return void
-         */
-        public function testConstructInvokesEstablishConnectionIfTheConnectionIsNotSet():void {
-            $reflection = new ReflectionClass($this->connection);
-            $mysqli     = $reflection->getProperty("connection");
-
-            $mysqli->setAccessible(true);
-            $mysqli->setValue($this->connection, null);
-
-            $connection = new MySQLConnection();
-
-            $this->assertInstanceOf(mysqli::class, $mysqli->getValue($connection));
-        }
-
-        /**
-         * @covers ::__construct
-         * @covers ::establishConnection
-         * 
          * @uses DBQueries\IQuery
          * @uses DBQueries\IQueryBuilder
          * @uses DBQueries\Query
