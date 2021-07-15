@@ -92,15 +92,6 @@ use DBQueries\InsertQueryBuilder;
         }
 
         /**
-         * Returns the Database connection
-         *
-         * @return IDBConnection
-         */
-        protected function connectToDB():IDBConnection {
-            return (new DBServiceProvider())->getConnection();
-        }
-
-        /**
          * {@inheritDoc}
          */
         public function getList(int $limit, string $uri):array {

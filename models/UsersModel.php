@@ -14,7 +14,7 @@
     /**
      * Class containing Users business logic 
      */
-    class UsersModel extends DomainModel {
+    class UsersModel extends AbstractModel {
 
         /**
          * {@inheritDoc}
@@ -161,19 +161,14 @@
          * @return int
          */
         public function calculateRegisteredCount(string $email):int {
-            $email = preg_quote($email);
-            $connection = $this->connectToDB();
-            $columns       = ["count" => "COUNT(`user_id`)"];
-
-            $query       = (new SelectQueryBuilder($this->getTableName()))
-                           ->what($columns)
-                           ->whereAnd("`user_email` = '$email'")
-                           ->build();
-
-            $result = $connection->query($query->getQueryString());
-            $count  = $result->fetch_assoc()["count"];
-            
-            return $count;
+            return $this->connectToDB()->query(
+                (new SelectQueryBuilder(
+                    $this, 
+                    ["count" => "COUNT(`user_id`)"]
+                ))->where(
+                    join("", ["`user_email` = '", preg_quote($email), "'"])
+                )
+            )->fetch_assoc()["count"];
         }
 
         /**
@@ -183,22 +178,15 @@
          * @return bool
          */
         public function getUserAdminStatus(int $userId = 0):bool {
-            if ($userId == 0) {
+            if ($userId === 0) {
                 return false;
             }
-
-            $connection = $this->connectToDB();
-            $what       = ["user_is_admin"];
-
-            $query      = (new SelectQueryBuilder($this->getTableName()))
-                          ->what($what)
-                          ->whereAnd("`user_id` = " . $userId)
-                          ->build();
-
-            $result      = $connection->query($query->getQueryString());
-            $userIsAdmin = $result->fetch_assoc()["user_is_admin"];
-
-            return (bool)$userIsAdmin;
+            return (bool)$this->connectToDB()->query(
+                (new SelectQueryBuilder(
+                    $this,
+                    ["user_is_admin"]
+                ))->where("`user_id` = " . $userId)
+            )->fetch_assoc()["user_is_admin"];
         }
 
         /**

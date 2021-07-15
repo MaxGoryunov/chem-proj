@@ -26,7 +26,7 @@
          * @return void
          */
         protected function setUp():void {
-            $this->usersModel = new UsersModel($this->getMockForAbstractClass(AbstractMVCPDMFactory::class));
+            $this->usersModel = new UsersModel("users", $this->getMockForAbstractClass(AbstractMVCPDMFactory::class));
         }
 
         /**
