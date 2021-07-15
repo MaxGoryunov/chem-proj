@@ -1,8 +1,11 @@
 <?php
 
     namespace Models;
-    
-    /**
+
+use Components\DBServiceProvider;
+use Components\IDBConnection;
+
+/**
      * Base class for implementing other Models
      */
     abstract class AbstractModel {
@@ -19,6 +22,15 @@
          */
         public function __construct(string $table) {
             $this->table = $table;
+        }
+
+        /**
+         * Returns the Database connection
+         *
+         * @return IDBConnection
+         */
+        protected function connectToDB():IDBConnection {
+            return (new DBServiceProvider())->getConnection();
         }
 
         /**
