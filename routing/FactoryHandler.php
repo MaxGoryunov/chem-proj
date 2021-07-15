@@ -5,7 +5,8 @@
     use Components\Router;
 use ControllerActions\ControllerAction;
 use Factories\AddressesFactory;
-    use Factories\GendersFactory;
+use Factories\DomainFactory;
+use Factories\GendersFactory;
     use Factories\UserStatusesFactory;
 
     /**
@@ -14,24 +15,35 @@ use Factories\AddressesFactory;
     class FactoryHandler extends AbstractHandler {
 
         /**
-         * Contains allowed factories
+         * Allowed Factories
          * 
-         * @var string[]
+         * @var array<string, string>
          */
-        private const FACTORIES = [
-            "addresses"     => AddressesFactory::class,
-            "genders"       => GendersFactory::class,
-            "user_statuses" => UserStatusesFactory::class
-        ];
+        private array $factories;
+
+        /**
+         * Ctor.
+         *
+         * @param array<string, AbstractMVCPDMFactory> $factories
+         */
+        public function __construct(
+            array $factories = [
+                "addresses"     => DomainFactory::class,
+                "genders"       => DomainFactory::class,
+                "user_statuses" => DomainFactory::class
+            ]
+        ) {
+            $this->factories = $factories;
+        }
 
         /**
          * {@inheritDoc}
          */
         protected function fillData(array $partedUri, ControllerAction $action):ControllerAction {
-            $factory = self::FACTORIES[$partedUri[2]] ?? null;
+            $factory = $this->factories[$partedUri[2]] ?? null;
 
             if (isset($factory)) {
-                $action->setFactory(new $factory());
+                $action->setFactory(new $factory($partedUri[2]));
             } else {
                 Router::headerTo("./errors/not_found");
             }
