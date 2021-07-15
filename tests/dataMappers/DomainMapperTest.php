@@ -13,37 +13,14 @@ use PHPUnit\Framework\TestCase;
      */
     class DomainMapperTest extends TestCase {
 
-        // /**
-        //  * Contains tested class object
-        //  *
-        //  * @var DomainMapper
-        //  */
-        // protected $mapper;
-
-        // /**
-        //  * Creates testes class object
-        //  *
-        //  * @return void
-        //  */
-        // protected function setUp():void {
-        //     $this->mapper = new DomainMapper("addresses");
-        // }
-
-        // /**
-        //  * Removes tested class object
-        //  *
-        //  * @return void
-        //  */
-        // protected function tearDown():void {
-        //     $this->mapper = null;
-        // }
-
         /**
          * @covers ::mapQueryResultToEntity
          * 
          * @dataProvider provideDomains
          * 
          * @small
+         * 
+         * @runInSeparateProcess
          *
          * @param string $domain   - domain name
          * @param string $singular - domain name in singular form
