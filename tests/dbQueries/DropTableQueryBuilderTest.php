@@ -11,12 +11,16 @@ use PHPUnit\Framework\TestCase;
     /**
      * Testing DropTableQueryBuilder class
      * 
-     * @coversDefaultClass Components\DropTableQueryBuilder
+     * @coversDefaultClass DBQueries\DropTableQueryBuilder
      */
     class DropTableQueryBuilderTest extends TestCase {
 
         /**
          * @covers ::build
+         * @covers ::getQueryString
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
          * 
          * @small
          *

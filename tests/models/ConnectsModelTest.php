@@ -8,7 +8,7 @@
     /**
      * Testing ConnectsModel class
      * 
-     * @coversDefaultClass ConnectsModel
+     * @coversDefaultClass Models\ConnectsModel
      */
     class ConnectsModelTest extends TestCase {
 
@@ -38,7 +38,16 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getUserAuthStatus
+         * 
+         * @uses Components\DBServiceProvider
+         * @uses Components\MySQLConnection
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\IQueryBuilder
+         * @uses DBQueries\Query
+         * @uses DBQueries\SelectQueryBuilder
+         * @uses Models\AbstractModel
          * 
          * @dataProvider provideUserIdsTokensAndSessionIds
          *

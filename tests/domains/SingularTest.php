@@ -15,6 +15,8 @@ class SingularTest extends TestCase
      * @covers ::__construct
      * @covers ::value
      * 
+     * @uses Domains\FormEnvelope
+     * 
      * @small
      *
      * @return void

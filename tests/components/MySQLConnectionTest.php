@@ -162,6 +162,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::fail
          * 
          * @uses DBQueries\IQuery
@@ -179,6 +180,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::query
          * 
          * @uses DBQueries\IQuery
@@ -202,6 +204,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::query
          * @covers ::fetchAll
          * 
@@ -278,6 +281,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::query
          * @covers ::fetchObject
          * 
@@ -308,6 +312,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::query
          * @covers ::fetchObjects
          * 

@@ -11,12 +11,16 @@ use PHPUnit\Framework\TestCase;
     /**
      * Testing DescribeQueryBuilder class
      * 
-     * @coversDefaultClass Components\DescribeQueryBuilder
+     * @coversDefaultClass DBQueries\DescribeQueryBuilder
      */
     class DescribeQueryBuilderTest extends TestCase {
 
         /**
          * @covers ::build
+         * @covers ::getQueryString
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
          * 
          * @dataProvider provideTableNames
          * 

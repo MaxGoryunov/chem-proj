@@ -10,7 +10,7 @@ use Models\UsersModel;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass Controllers\ProxyController
+ * @coversDefaultClass Controllers\AdminCheckController
  */
 class AdminCheckControllerTest extends TestCase
 {

@@ -52,10 +52,12 @@ use Factories\GendersFactory;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::handle
          * @covers ::fillData
          * 
          * @uses ControllerActions\ControllerAction
+         * @uses factories\DomainFactory
          * 
          * @dataProvider providePartedUriWithValidFactoryName
          * 

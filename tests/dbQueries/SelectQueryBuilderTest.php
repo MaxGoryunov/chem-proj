@@ -45,6 +45,7 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getWhat
          * 
          * @uses DBQueries\AbstractQueryBuilder
@@ -67,6 +68,7 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::groupBy
          * @covers ::getGroupBy
          * 
@@ -85,6 +87,7 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::having
          * @covers ::getHaving
          * 
@@ -103,6 +106,7 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::orderBy
          * @covers ::getOrderBy
          * 
@@ -121,6 +125,7 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::limit
          * @covers ::getLimit
          * 
@@ -135,6 +140,7 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::limit
          * @covers ::getLimit
          * 
@@ -149,6 +155,7 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::join
          * @covers ::getJoins
          * 
@@ -173,6 +180,7 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getWhat
          * @covers ::join
          * @covers ::getJoins
