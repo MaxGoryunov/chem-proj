@@ -4,7 +4,8 @@
 
     use Models\AbstractModel;
     use DBQueries\UpdateQueryBuilder;
-    use PHPUnit\Framework\TestCase;
+use Models\IModel;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing UpdateQueryBuilder
@@ -26,9 +27,11 @@
          * @return void
          */
         protected function setUp():void {
-            $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs(["medicines"])
+            $model = $this->getMockBuilder(IModel::class)
+                            ->disableOriginalConstructor()
                             ->getMock();
+
+            $model->method("getTableName")->willReturn("medicines");
 
             $this->updateBuilder = new UpdateQueryBuilder($model);
         }
@@ -65,7 +68,7 @@
                      ->limit(4)
                      ->build();
 
-            $this->assertEquals(" UPDATE `medicines` SET `medicine_name` = 'Sensu Bean', `medicine_price` = '760', `medicine_doze` = '50' WHERE 1 AND `medicine_id` = 1 OR `medicine_id` = 3 LIMIT 4; ", preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
+            $this->assertEquals(" UPDATE `medicines` SET `medicine_name` = 'Sensu Bean', `medicine_price` = '760', `medicine_doze` = '50' WHERE `medicine_id` = '1' OR `medicine_id` = '3' LIMIT 4; ", preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
 
         }
     }

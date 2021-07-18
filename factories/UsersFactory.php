@@ -20,12 +20,20 @@ use Controllers\IController;
     class UsersFactory extends AbstractMVCPDMFactory {
 
         /**
+         * {@inheritDoc}
+         */
+        public function domainString(): string
+        {
+            return "users";
+        }
+
+        /**
          * Returns a Users Model
          *
          * @return UsersModel
          */
         public function getModel():IModel {
-            return new UsersModel($this);
+            return new UsersModel("users", $this);
         }
 
         public function getView():IView {

@@ -17,7 +17,7 @@ use DBQueries\InsertQueryBuilder;
     /**
      * Base class for implementing other Models
      */
-    class DomainModel implements IModel {
+    class DomainModel extends AbstractModel implements IModel {
 
         /**
          * Pairings between table and domain names

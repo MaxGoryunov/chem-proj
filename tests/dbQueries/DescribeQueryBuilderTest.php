@@ -5,6 +5,7 @@
     use DBQueries\DescribeQueryBuilder;
     use DBQueries\IQuery;
 use Models\AbstractModel;
+use Models\IModel;
 use PHPUnit\Framework\TestCase;
 
     /**
@@ -25,7 +26,7 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testBuildBuildsCorrectQueryObject(string $tableName):void {
-            $model = $this->getMockBuilder(AbstractModel::class)
+            $model = $this->getMockBuilder(IModel::class)
                             ->disableOriginalConstructor()
                             ->getMock();
 

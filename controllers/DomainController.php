@@ -2,7 +2,8 @@
 
     namespace Controllers;
 
-    use Factories\AbstractMVCPDMFactory;
+use Domains\Plural;
+use Factories\AbstractMVCPDMFactory;
     use Factories\UsersFactory;
     use Models\AbstractModel;
     use Models\DomainModel;
@@ -112,7 +113,10 @@
             $this->getView()->render(
                 __METHOD__, 
                 [
-                    "title"        => $this->relatedFactory->getDomain()->getDomainPlural(),
+                    "title"        => (new Plural(
+                        $this->relatedFactory->domainString(),
+                        "./config/domains"
+                    ))->value(),
                     "adminStatus"  => (new UsersFactory())->getModel()->getUserAdminStatus(),
                     "count"        => $this->getModel()->calculateRecordCount(),
                     "entitiesList" => $this->getModel()->getList(5, $_SERVER["REQUEST_URI"])

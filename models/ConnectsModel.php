@@ -7,11 +7,12 @@
     use DBQueries\DeleteQueryBuilder;
     use DBQueries\InsertQueryBuilder;
     use DBQueries\SelectQueryBuilder;
+use Entities\IEntity;
 
-    /**
+/**
      * Class containing Connects business logic
      */
-    class ConnectsModel extends AbstractModel {
+    class ConnectsModel extends AbstractModel implements IModel {
 
         /**
          * Ctor.
@@ -25,6 +26,22 @@
          */
         protected function getDomainName():string {
             return "connect";
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function getList(int $limit, string $uri): array
+        {
+            return [];
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function getById(int $id): IEntity
+        {
+            return new class implements IEntity {};
         }
 
         /**
@@ -44,9 +61,11 @@
         /**
          * {@inheritDoc}
          */
-        public function edit(array $data = []):void {
+        public function edit(array $data = [], int $id): void
+        {
             
         }
+
         /**
          * {@inheritDoc}
          */

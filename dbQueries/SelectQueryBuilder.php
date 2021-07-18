@@ -3,6 +3,7 @@
     namespace DBQueries;
 
 use Models\AbstractModel;
+use Models\IModel;
 use Traits\WhereTrait;
     
     /**
@@ -61,9 +62,14 @@ use Traits\WhereTrait;
          */
         private $joins = "";
 
-        public function __construct(AbstractModel $model, array $columns = ["*"]) {
+        /**
+         * Ctor.
+         *
+         * @param IModel $model
+         * @param array<int|string, string> $columns
+         */
+        public function __construct(IModel $model, array $columns = ["*"]) {
             parent::__construct($model);
-
             $this->columns = $columns;
         }
 

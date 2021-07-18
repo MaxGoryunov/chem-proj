@@ -4,7 +4,8 @@
 
     use Models\AbstractModel;
     use DBQueries\SelectQueryBuilder;
-    use PHPUnit\Framework\TestCase;
+use Models\IModel;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing SelectQueryBuilder
@@ -26,9 +27,10 @@
          * @return void
          */
         protected function setUp():void {
-            $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs(["medicines"])
+            $model = $this->getMockBuilder(IModel::class)
+                            ->disableOriginalConstructor()
                             ->getMock();
+            $model->method("getTableName")->willReturn("medicines");
 
             $this->selectBuilder = new SelectQueryBuilder($model);
         }
@@ -54,9 +56,10 @@
          * @return void
          */
         public function testConstructorBuildsCorrectWhatStatement(array $columns, string $expected):void {
-            $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs(["medicines"])
+            $model = $this->getMockBuilder(IModel::class)
+                            ->disableOriginalConstructor()
                             ->getMock();
+            $model->method("getTableName")->willReturn("medicines");
 
             $builder = new SelectQueryBuilder($model, $columns);
 
@@ -190,9 +193,10 @@
          * @return void
          */
         public function testBuildBuildsCorrectQueryObject():void {
-            $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs(["medicines"])
+            $model = $this->getMockBuilder(IModel::class)
+                            ->disableOriginalConstructor()
                             ->getMock();
+            $model->method("getTableName")->willReturn("medicines");
 
             $query = (new SelectQueryBuilder(
                 $model, 
@@ -215,7 +219,7 @@
             ->limit(30)
             ->build();
 
-            $this->assertEquals(preg_replace("/\n/", "", " SELECT `medicine_id`, `medicine_name` AS `name` FROM `medicines` LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` LEFT JOIN `countries` ON `country_id` = `medicine_country_id` WHERE 1 AND `medicine_price` > 500 OR `medicine_doze` > 30 GROUP BY `medicine_price` ORDER BY `medicine_name`, `medicine_price` DESC LIMIT 0, 30; "), preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
+            $this->assertEquals(preg_replace("/\n/", "", " SELECT `medicine_id`, `medicine_name` AS `name` FROM `medicines` LEFT JOIN `chemicals` ON `chemical_id` = `medicine_chemical_id` LEFT JOIN `companies` ON `company_id` = `medicine_company_id` LEFT JOIN `countries` ON `country_id` = `medicine_country_id` WHERE `medicine_price` > '500' OR `medicine_doze` > '30' GROUP BY `medicine_price` ORDER BY `medicine_name`, `medicine_price` DESC LIMIT 0, 30; "), preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
         }
 
         /**
@@ -226,7 +230,7 @@
         public function provideWhatColumns():array {
             return [
                 "empty"       => [
-                    [],
+                    ["*"],
                     "*"
                 ],
                 "numericKeys" => [

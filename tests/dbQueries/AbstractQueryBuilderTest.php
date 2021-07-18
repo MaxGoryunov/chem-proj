@@ -5,6 +5,7 @@
     use DBQueries\AbstractQueryBuilder;
 use DBQueries\IQuery;
 use Models\AbstractModel;
+use Models\IModel;
 use PHPUnit\Framework\TestCase;
 
     /**
@@ -24,9 +25,11 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testGetTableNameReturnsCorrectTable(string $tableName):void {
-            $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs([$tableName])
+            $model = $this->getMockBuilder(IModel::class)
+                            ->disableOriginalConstructor()
                             ->getMock();
+
+            $model->method("getTableName")->willReturn($tableName);
 
             $builder = $this->getMockForAbstractClass(AbstractQueryBuilder::class, [$model]);
 
@@ -42,9 +45,9 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testBuildReturnsIQueryObject():void {
-            $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs(["addresses"])
+            $model = $this->getMockBuilder(IModel::class)
                             ->getMock();
+            $model->method("getTableName")->willReturn("addresses");
 
             $builder = $this->getMockForAbstractClass(AbstractQueryBuilder::class, [$model]);
 

@@ -4,7 +4,8 @@
 
 use ControllerActions\ControllerAction;
 use Factories\AddressesFactory;
-    use Factories\GendersFactory;
+use Factories\DomainFactory;
+use Factories\GendersFactory;
     use Factories\UserStatusesFactory;
     use PHPUnit\Framework\TestCase;
     use Routing\FactoryHandler;
@@ -92,9 +93,9 @@ use Factories\AddressesFactory;
             $offset = ["", "chem-proj"];
 
             return [
-                [array_merge($offset, ["addresses", "edit", "12"]), AddressesFactory::class],
-                [array_merge($offset, ["genders", "add"]), GendersFactory::class],
-                [array_merge($offset, ["user_statuses", "index"]), UserStatusesFactory::class]
+                [array_merge($offset, ["addresses", "edit", "12"]), DomainFactory::class],
+                [array_merge($offset, ["genders", "add"]), DomainFactory::class],
+                [array_merge($offset, ["user_statuses", "index"]), DomainFactory::class]
             ];
         }
     }

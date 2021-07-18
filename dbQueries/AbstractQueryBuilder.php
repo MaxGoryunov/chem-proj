@@ -3,6 +3,7 @@
     namespace DBQueries;
 
 use Models\AbstractModel;
+use Models\IModel;
 use Traits\TableNameTrait;
 
     /**
@@ -13,10 +14,9 @@ use Traits\TableNameTrait;
         use TableNameTrait;
 
         /**
-         * @param AbstractModel $model
-         * @return void
+         * @param IModel $model
          */
-        public function __construct(AbstractModel $model) {
+        public function __construct(IModel $model) {
             $this->tableName = $model->getTableName();
         }
 

@@ -4,6 +4,7 @@
 
     use DBQueries\DeleteQueryBuilder;
 use Models\AbstractModel;
+use Models\IModel;
 use PHPUnit\Framework\TestCase;
 
     /**
@@ -26,9 +27,11 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         protected function setUp():void {
-            $model = $this->getMockBuilder(AbstractModel::class)
-                            ->setConstructorArgs(["medicines"])
+            $model = $this->getMockBuilder(IModel::class)
+                            ->disableOriginalConstructor()
                             ->getMock();
+
+            $model->method("getTableName")->willReturn("medicines");
 
             $this->deleteBuilder = new DeleteQueryBuilder($model);
         }
@@ -59,6 +62,6 @@ use PHPUnit\Framework\TestCase;
                                          ->limit(3)
                                          ->build();
 
-            $this->assertEquals(" DELETE FROM `medicines` WHERE 1 AND `medicine_price` < 300 OR `medicine_price` > 500 LIMIT 3; ", preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
+            $this->assertEquals(" DELETE FROM `medicines` WHERE `medicine_price` < '300' OR `medicine_price` > '500' LIMIT 3; ", preg_replace("/\s+/", " ", preg_replace("/\n/", " ", $query->getQueryString())));
         }
     }

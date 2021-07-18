@@ -6,6 +6,7 @@
     use Components\TableColumn;
 use DBQueries\IQuery;
 use Models\AbstractModel;
+use Models\IModel;
 use PHPUnit\Framework\TestCase;
 
     /**
@@ -26,7 +27,7 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         protected function setUp():void {
-            $model = $this->getMockBuilder(AbstractModel::class)
+            $model = $this->getMockBuilder(IModel::class)
                             ->disableOriginalConstructor()
                             ->getMock();
 
