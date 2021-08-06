@@ -1,22 +1,22 @@
 <?php
 
-namespace Tests\Connections;
+namespace Tests\Components;
 
-use Connections\BaseResult;
+use Components\BaseRedirection;
 use Connections\MethodNotFoundException;
 use mysqli_result;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * @coversDefaultClass Connections\Result
+ * @coversDefaultClass Components\BaseRedirection
  */
-final class BaseResultTest extends TestCase
+final class BaseRedirectionTest extends TestCase
 {
 
     /**
      * @covers ::__construct
-     * @covers ::fetchAssoc
+     * @covers ::__call
      * 
      * @small
      *
@@ -35,7 +35,7 @@ final class BaseResultTest extends TestCase
         $origin->method("fetch_assoc")->willReturn($input);
         $this->assertEquals(
             $input,
-            (new BaseResult(
+            (new BaseRedirection(
                 $origin,
                 ["fetchAssoc" => "fetch_assoc"]
             ))->fetchAssoc()
@@ -52,6 +52,6 @@ final class BaseResultTest extends TestCase
     public function testFailsIfMethodIsNotFound(): void
     {
         $this->expectException(MethodNotFoundException::class);
-        (new BaseResult(new stdClass(), []))->fetchAssoc();
+        (new BaseRedirection(new stdClass(), []))->fetchAssoc();
     }
 }

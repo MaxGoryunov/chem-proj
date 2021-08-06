@@ -1,26 +1,29 @@
 <?php
 
-namespace Connections;
+namespace Components;
+
+use Connections\MethodNotFoundException;
 
 /**
- * Database query result with basic functionality.
+ * Simple Redirection class.
  */
-final class BaseResult implements Result
+final class BaseRedirection implements Redirection
 {
 
     /**
      * Ctor.
      * 
-     * @param mixed $origin
+     * @param object                $origin       original object.
+     * @param array<string, string> $redirections map of method redirections.
      */
     public function __construct(
         /**
          * Original object.
          * 
-         * @var mixed
+         * @var object
          */
-        private mixed $origin,
-
+        private object $origin,
+        
         /**
          * Map of method redirections.
          * 
@@ -31,13 +34,13 @@ final class BaseResult implements Result
     }
 
     /**
-     * {@inheritdoc}
-     * @throws MethodNotFoundException if origin does not have this method.
+     * {@inheritDoc}
+     * @throws MethodNotFoundException if target method is not found.
      */
-    public function fetchAssoc(): array
+    public function __call(string $method, array $args): mixed
     {
         return $this->origin->{
-            $this->redirections[__FUNCTION__] ??
+            $this->redirections[$method] ??
             throw new MethodNotFoundException(
                 sprintf(
                     "Method %s was not found in list of allowed methods: [%s]",__FUNCTION__,
