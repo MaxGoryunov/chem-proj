@@ -11,22 +11,28 @@ use Traits\TableNameTrait;
      */
     abstract class AbstractQueryBuilder implements IQueryBuilder {
         
-        use TableNameTrait;
-
         /**
-         * @param IModel $model
+         * Ctor.
+         * 
+         * @param string $table
          */
-        public function __construct(IModel $model) {
-            $this->tableName = $model->getTableName();
+        public function __construct(
+            /**
+             * Table name.
+             * 
+             * @var string
+             */
+            private string $table
+        ) {
         }
 
         /**
-         * Builds a Query object
+         * Table name.
          *
-         * @return IQuery
+         * @return string
          */
         public function getTableName():string {
-            return $this->tableName;
+            return $this->table;
         }
 
         /**

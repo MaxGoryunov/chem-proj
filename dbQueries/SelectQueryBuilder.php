@@ -65,11 +65,11 @@ use Traits\WhereTrait;
         /**
          * Ctor.
          *
-         * @param IModel $model
+         * @param string                    $table
          * @param array<int|string, string> $columns
          */
-        public function __construct(IModel $model, array $columns = ["*"]) {
-            parent::__construct($model);
+        public function __construct(string $table, array $columns = ["*"]) {
+            parent::__construct($table);
             $this->columns = $columns;
         }
 
