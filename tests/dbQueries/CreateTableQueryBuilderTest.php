@@ -6,6 +6,7 @@
     use Components\TableColumn;
 use DBQueries\IQuery;
 use Models\AbstractModel;
+use Models\IModel;
 use PHPUnit\Framework\TestCase;
 
     /**
@@ -26,7 +27,7 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         protected function setUp():void {
-            $model = $this->getMockBuilder(AbstractModel::class)
+            $model = $this->getMockBuilder(IModel::class)
                             ->disableOriginalConstructor()
                             ->getMock();
 
@@ -47,6 +48,10 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::setColumns
+         * @covers ::getQueryString
+         * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
          * 
          * @small
          *
@@ -70,6 +75,10 @@ use PHPUnit\Framework\TestCase;
         /**
          * @covers ::column
          * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\CreateTableQueryBuilder
+         * 
          * @dataProvider provideColumnNames
          * 
          * @small
@@ -87,6 +96,9 @@ use PHPUnit\Framework\TestCase;
          * @covers ::canBeNull
          * @covers ::getCurrentColumn
          * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
+         * 
          * @small
          *
          * @return void
@@ -102,10 +114,12 @@ use PHPUnit\Framework\TestCase;
         }
 
         /**
-         * @covers ::getTableDescription
          * @covers ::column
          * @covers ::autoIncrement
          * @covers ::getCurrentColumn
+         * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
          * 
          * @small
          *
@@ -123,6 +137,10 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::isPrimaryKey
+         * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\CreateTableQueryBuilder
          * 
          * @small
          *
@@ -148,6 +166,10 @@ use PHPUnit\Framework\TestCase;
         /**
          * @covers ::int
          * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\CreateTableQueryBuilder
+         * 
          * @small
          *
          * @return void
@@ -159,6 +181,10 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::varchar
+         * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\CreateTableQueryBuilder
          * 
          * @small
          *
@@ -172,6 +198,10 @@ use PHPUnit\Framework\TestCase;
         /**
          * @covers ::text
          * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\CreateTableQueryBuilder
+         * 
          * @small
          *
          * @return void
@@ -184,6 +214,10 @@ use PHPUnit\Framework\TestCase;
         /**
          * @covers ::timestamp
          * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\CreateTableQueryBuilder
+         * 
          * @small
          *
          * @return void
@@ -195,6 +229,12 @@ use PHPUnit\Framework\TestCase;
 
         /**
          * @covers ::build
+         * @covers ::getQueryString
+         * 
+         * @uses Components\TableColumn
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\CreateTableQueryBuilder
+         * @uses DBQueries\Query
          * 
          * @small
          *

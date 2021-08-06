@@ -19,15 +19,13 @@
          *
          * @var mysqli
          */
-        private static $connection = null;
+        private mysqli $connection;
 
         /**
          * Sets up a common MySQL connection if it has not been set up yet
          */
         public function __construct() {
-            if (!self::$connection) {
-                self::$connection = $this->establishConnection(include("./config/dbConfig.php"));
-            }
+            $this->connection = $this->establishConnection(include("./config/dbConfig.php"));
         }
 
         /**
@@ -71,7 +69,7 @@
          * @return mysqli_result|bool
          */
         public function query(IQueryBuilder $builder) {
-            return self::$connection->query($builder->build()->getQueryString());
+            return $this->connection->query($builder->build()->getQueryString());
         }
 
         /**

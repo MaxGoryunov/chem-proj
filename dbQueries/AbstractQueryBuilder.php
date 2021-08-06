@@ -2,8 +2,9 @@
 
     namespace DBQueries;
 
-    use Traits\TableNameTrait;
-    use Models\DomainModel;
+use Models\AbstractModel;
+use Models\IModel;
+use Traits\TableNameTrait;
 
     /**
      * Abstract class for different specific queries: Select, Update, Insert and Delete
@@ -13,10 +14,9 @@
         use TableNameTrait;
 
         /**
-         * @param AbstractModel $model
-         * @return void
+         * @param IModel $model
          */
-        public function __construct(DomainModel $model) {
+        public function __construct(IModel $model) {
             $this->tableName = $model->getTableName();
         }
 

@@ -17,9 +17,7 @@ use DBQueries\InsertQueryBuilder;
     /**
      * Base class for implementing other Models
      */
-    class DomainModel implements IModel {
-
-        use TableNameTrait;
+    class DomainModel extends AbstractModel implements IModel {
 
         /**
          * Pairings between table and domain names
@@ -66,6 +64,14 @@ use DBQueries\InsertQueryBuilder;
         }
 
         /**
+         * {@inheritDoc}
+         */
+        public function getTableName(): string
+        {
+            return $this->tableName;
+        }
+
+        /**
          * Returns domain name in singular
          *
          * @return string
@@ -83,15 +89,6 @@ use DBQueries\InsertQueryBuilder;
             $this->relatedMapper ??= $this->relatedFactory->getDataMapper();
 
             return $this->relatedMapper;
-        }
-
-        /**
-         * Returns the Database connection
-         *
-         * @return IDBConnection
-         */
-        protected function connectToDB():IDBConnection {
-            return (new DBServiceProvider())->getConnection();
         }
 
         /**

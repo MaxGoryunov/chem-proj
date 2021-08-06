@@ -12,21 +12,8 @@
          verbose="true"
          colors="true">
     <testsuites>
-        <testsuite name="Connection">
-            <file>./tests/components/DBServiceProviderTest.php</file>
-            <file>./tests/components/MySQLConnectionTest.php</file>
-        </testsuite>
-        <testsuite name="Components">
-            <directory suffix="Test.php">./tests/components/</directory>
-        </testsuite>
-        <testsuite name="DbQueries">
-            <directory suffix="Test.php">./tests/dbQueries/</directory>
-        </testsuite>
-        <testsuite name="Traits">
-            <directory suffix="Test.php">./tests/traits/</directory>
-        </testsuite>
         <testsuite name="Tests">
-            <directory suffix="Test.php">./tests/</directory>
+            <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
 

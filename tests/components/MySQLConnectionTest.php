@@ -119,26 +119,6 @@
          * @covers ::__construct
          * @covers ::establishConnection
          * 
-         * @small
-         *
-         * @return void
-         */
-        public function testConstructInvokesEstablishConnectionIfTheConnectionIsNotSet():void {
-            $reflection = new ReflectionClass($this->connection);
-            $mysqli     = $reflection->getProperty("connection");
-
-            $mysqli->setAccessible(true);
-            $mysqli->setValue($this->connection, null);
-
-            $connection = new MySQLConnection();
-
-            $this->assertInstanceOf(mysqli::class, $mysqli->getValue($connection));
-        }
-
-        /**
-         * @covers ::__construct
-         * @covers ::establishConnection
-         * 
          * @uses DBQueries\IQuery
          * @uses DBQueries\IQueryBuilder
          * @uses DBQueries\Query
@@ -182,6 +162,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::fail
          * 
          * @uses DBQueries\IQuery
@@ -199,6 +180,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::query
          * 
          * @uses DBQueries\IQuery
@@ -222,6 +204,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::query
          * @covers ::fetchAll
          * 
@@ -265,6 +248,10 @@
          * @covers ::query
          * @covers ::fetchAssoc
          * 
+         * @uses DBQueries\IQuery
+         * @uses DBQueries\IQueryBuilder
+         * @uses DBQueries\Query
+         * 
          * @small
          *
          * @return void
@@ -294,6 +281,7 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::query
          * @covers ::fetchObject
          * 
@@ -324,10 +312,11 @@
 
         /**
          * @covers ::__construct
+         * @covers ::establishConnection
          * @covers ::query
          * @covers ::fetchObjects
          * 
-         * @covers DBQueries\IEntity
+         * @uses Entities\IEntity
          * 
          * @small
          *

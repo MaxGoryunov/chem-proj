@@ -4,7 +4,8 @@
     
     use DBQueries\InsertQueryBuilder;
     use Models\AbstractModel;
-    use PHPUnit\Framework\TestCase;
+use Models\IModel;
+use PHPUnit\Framework\TestCase;
 
     /**
      * Testing InsertQueryBuilder class
@@ -26,7 +27,7 @@
          * @return void
          */
         protected function setUp():void {
-            $model = $this->getMockBuilder(AbstractModel::class)
+            $model = $this->getMockBuilder(IModel::class)
                             ->disableOriginalConstructor()
                             ->getMock();
 

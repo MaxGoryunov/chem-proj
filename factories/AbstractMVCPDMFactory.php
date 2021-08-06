@@ -7,4 +7,10 @@
      */
     abstract class AbstractMVCPDMFactory implements IModelFactory, IViewFactory, IControllerFactory, IProxyFactory, IDataMapperFactory, IDomainFactory {
         
+        /**
+         * Returns domain string.
+         *
+         * @return string
+         */
+        public abstract function domainString(): string;
     }

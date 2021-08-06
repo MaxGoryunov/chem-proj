@@ -9,7 +9,7 @@
     /**
      * Testing UsersModel class
      * 
-     * @coversDefaultClass UsersModel
+     * @coversDefaultClass Models\UsersModel
      */
     class UsersModelTest extends TestCase {
 
@@ -26,7 +26,7 @@
          * @return void
          */
         protected function setUp():void {
-            $this->usersModel = new UsersModel($this->getMockForAbstractClass(AbstractMVCPDMFactory::class));
+            $this->usersModel = new UsersModel("users", $this->getMockForAbstractClass(AbstractMVCPDMFactory::class));
         }
 
         /**
@@ -39,7 +39,17 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::getUserAdminStatus
+         * 
+         * @uses Components\DBServiceProvider
+         * @uses Components\MySQLConnection
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\IQueryBuilder
+         * @uses DBQueries\Query
+         * @uses DBQueries\SelectQueryBuilder
+         * @uses Models\AbstractModel
+         * @uses Models\DomainModel
          * 
          * @dataProvider provideUserIds
          *
@@ -51,7 +61,17 @@
         }
 
         /**
+         * @covers ::__construct
          * @covers ::calculateRegisteredCount
+         * 
+         * @uses Components\DBServiceProvider
+         * @uses Components\MySQLConnection
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\IQueryBuilder
+         * @uses DBQueries\Query
+         * @uses DBQueries\SelectQueryBuilder
+         * @uses Models\AbstractModel
+         * @uses Models\DomainModel
          * 
          * @dataProvider provideUserEmails
          *

@@ -2,7 +2,9 @@
 
     namespace Factories;
 
-    use Controllers\IController;
+use Components\Domain;
+use Components\DomainRegistry;
+use Controllers\IController;
     use Controllers\UsersController;
     use DataMappers\IDataMapper;
     use DataMappers\UsersMapper;
@@ -18,12 +20,20 @@
     class UsersFactory extends AbstractMVCPDMFactory {
 
         /**
+         * {@inheritDoc}
+         */
+        public function domainString(): string
+        {
+            return "users";
+        }
+
+        /**
          * Returns a Users Model
          *
          * @return UsersModel
          */
         public function getModel():IModel {
-            return new UsersModel($this);
+            return new UsersModel("users", $this);
         }
 
         public function getView():IView {
@@ -40,6 +50,11 @@
 
         public function getDataMapper():IDataMapper {
             return new UsersMapper();
+        }
+
+        public function getDomain(): Domain
+        {
+            return (new DomainRegistry())->getDomain("users");
         }
 
     }

@@ -5,17 +5,22 @@
     use DBQueries\DescribeQueryBuilder;
     use DBQueries\IQuery;
 use Models\AbstractModel;
+use Models\IModel;
 use PHPUnit\Framework\TestCase;
 
     /**
      * Testing DescribeQueryBuilder class
      * 
-     * @coversDefaultClass Components\DescribeQueryBuilder
+     * @coversDefaultClass DBQueries\DescribeQueryBuilder
      */
     class DescribeQueryBuilderTest extends TestCase {
 
         /**
          * @covers ::build
+         * @covers ::getQueryString
+         * 
+         * @uses DBQueries\AbstractQueryBuilder
+         * @uses DBQueries\Query
          * 
          * @dataProvider provideTableNames
          * 
@@ -25,7 +30,7 @@ use PHPUnit\Framework\TestCase;
          * @return void
          */
         public function testBuildBuildsCorrectQueryObject(string $tableName):void {
-            $model = $this->getMockBuilder(AbstractModel::class)
+            $model = $this->getMockBuilder(IModel::class)
                             ->disableOriginalConstructor()
                             ->getMock();
 

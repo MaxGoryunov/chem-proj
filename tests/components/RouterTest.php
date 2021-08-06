@@ -74,6 +74,7 @@
          * @return void
          */
         public function testRunSpeed():void {
+            $this->markTestIncomplete();
             $domains      = ["addresses", "genders", "user_statuses"];
             $actions      = ["list", "add", "edit/1", "delete/1"];
             $currTime     = microtime(true);

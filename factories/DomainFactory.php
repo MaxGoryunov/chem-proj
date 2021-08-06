@@ -4,10 +4,13 @@
 
 use Components\Domain;
 use Components\DomainRegistry;
+use Controllers\AdminCheckController;
 use Controllers\DomainController;
 use Controllers\IController;
 use DataMappers\DomainMapper;
 use DataMappers\IDataMapper;
+use Exception;
+use Fallbacks\Fallback;
 use Models\DomainModel;
 use Models\IModel;
 use ProxyControllers\DomainProxyController;
@@ -31,6 +34,14 @@ use Views\IView;
          */
         public function __construct(string $domain) {
             $this->domain = $domain;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function domainString(): string
+        {
+            return $this->domain;
         }
 
         /**
@@ -60,7 +71,17 @@ use Views\IView;
          * {@inheritDoc}
          */
         public function getProxy():IController {
-            return new DomainProxyController($this);
+            return new AdminCheckController(
+                $this->getController(),
+                (new UsersFactory())->getModel(),
+                new class() implements Fallback {
+
+                    public function call(): mixed
+                    {
+                        throw new Exception("Method was not found.");
+                    }
+                }
+            );
         }
 
         /**
