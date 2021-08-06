@@ -1,28 +1,28 @@
 <?php
 
-namespace Components;
+namespace Connections;
 
 use Connections\MethodNotFoundException;
 
 /**
  * Simple Redirection class.
  */
-final class BaseRedirection implements Redirection
+final class BaseResult implements Result
 {
 
     /**
      * Ctor.
      * 
-     * @param object                $origin       original object.
+     * @param mixed                 $origin       original object.
      * @param array<string, string> $redirections map of method redirections.
      */
     public function __construct(
         /**
          * Original object.
          * 
-         * @var object
+         * @var mixed
          */
-        private object $origin,
+        private mixed $origin,
         
         /**
          * Map of method redirections.

@@ -1,11 +1,11 @@
 <?php
 
-namespace Components;
+namespace Connections;
 
 /**
- * Redirection of method calls.
+ * database query result.
  */
-interface Redirection
+interface Result
 {
 
     /**
