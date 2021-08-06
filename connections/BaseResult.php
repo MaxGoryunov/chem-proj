@@ -32,9 +32,18 @@ final class BaseResult implements Result
 
     /**
      * {@inheritdoc}
+     * @throws MethodNotFoundException if origin does not have this method.
      */
     public function fetchAssoc(): array
     {
-        return $this->origin->{$this->redirections[__FUNCTION__]}();
+        return $this->origin->{
+            $this->redirections[__FUNCTION__] ??
+            throw new MethodNotFoundException(
+                sprintf(
+                    "Method %s was not found in list of allowed methods: [%s]",__FUNCTION__,
+                    implode(", ", $this->redirections)
+                )
+            )
+        }();
     }
 }

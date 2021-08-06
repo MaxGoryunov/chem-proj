@@ -10,6 +10,8 @@ interface Result
 
     /**
      * Returns assoc result array.
+     * 
+     * @throws Exception if error.
      *
      * @return array<string, string>
      */

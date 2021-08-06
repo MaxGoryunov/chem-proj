@@ -3,6 +3,7 @@
 namespace Tests\Connections;
 
 use Connections\BaseResult;
+use Connections\MethodNotFoundException;
 use mysqli_result;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -10,11 +11,12 @@ use stdClass;
 /**
  * @coversDefaultClass Connections\Result
  */
-final class ResultTest extends TestCase
+final class BaseResultTest extends TestCase
 {
 
     /**
      * @covers ::__construct
+     * @covers ::fetchAssoc
      * 
      * @small
      *
@@ -38,5 +40,18 @@ final class ResultTest extends TestCase
                 ["fetchAssoc" => "fetch_assoc"]
             ))->fetchAssoc()
         );
+    }
+
+    /**
+     * @covers ::__construct
+     * 
+     * @small
+     *
+     * @return void
+     */
+    public function testFailsIfMethodIsNotFound(): void
+    {
+        $this->expectException(MethodNotFoundException::class);
+        (new BaseResult(new stdClass(), []))->fetchAssoc();
     }
 }
