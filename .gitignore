@@ -5,7 +5,7 @@
 assets/libs/
 
 #Ignore composer files
-composer.*
+composer.lock
 
 #Ignore vendor/files
 vendor/
