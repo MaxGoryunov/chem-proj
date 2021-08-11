@@ -4,6 +4,8 @@ namespace Entities;
 
 use Components\Connection;
 use DBQueries\SelectQueryBuilder;
+use Entities\Queries\ColumnQuery;
+use Entities\Queries\Loyalty;
 
 /**
  * Base gender implementation.
@@ -12,10 +14,18 @@ final class BaseGender implements Gender
 {
 
     /**
+     * Database query.
+     * 
+     * @var ColumnQuery
+     */
+    private ColumnQuery $query;
+
+    /**
      * Ctor.
      * 
      * @param Connection $connection database connection.
      * @param int        $id         id.
+     * @param Loyalty    $loyalty    query loyalty.
      */
     public function __construct(
         /**
@@ -30,8 +40,14 @@ final class BaseGender implements Gender
          * 
          * @var int
          */
-        private int $id
+        private int $id,
+        Loyalty $loyalty
     ) {
+        $this->query = $loyalty->loyalTo(
+            $connection,
+            "genders",
+            $id
+        );
     }
 
     /**
@@ -47,10 +63,7 @@ final class BaseGender implements Gender
      */
     public function name(): string
     {
-        return $this->connection->query(
-            (new SelectQueryBuilder("genders", ["name"]))
-            ->where("`gender_id` = {$this->id}")
-        )->fetchAssoc();
+        return $this->query->result("name");
     }
 
     /**
@@ -58,9 +71,6 @@ final class BaseGender implements Gender
      */
     public function shortName(): string
     {
-        return $this->connection->query(
-            (new SelectQueryBuilder("genders", ["short_name"]))
-            ->where("`gender_id` = {$this->id}")
-        )->fetchAssoc();
+        return $this->query->result("short_name");
     }
 }
