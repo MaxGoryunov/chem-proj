@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Http\Request;
 use Models\Deleting;
 
 /**
@@ -13,9 +14,17 @@ final class BaseDeleteController implements DeleteController
     /**
      * Ctor.
      * 
-     * @param Deleting $model
+     * @param Request  $request page request.
+     * @param Deleting $model   deleting model.
      */
     public function __construct(
+        /**
+         * Page request.
+         *
+         * @var Request
+         */
+        private Request $request,
+
         /**
          * Deleting model.
          * 
@@ -31,7 +40,7 @@ final class BaseDeleteController implements DeleteController
     public function model(): Deleting
     {
         return $this->model->deleted(
-            end(explode("/", $_SERVER["REQUEST_URI"]))
+            end(explode("/", $this->request->uri()))
         );
     }
 }

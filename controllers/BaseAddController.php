@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Http\Request;
 use Models\Adding;
 
 /**
@@ -13,9 +14,17 @@ final class BaseAddController implements AddController
     /**
      * Ctor.
      * 
-     * @param Adding $model
+     * @param Request $request page request.
+     * @param Adding  $model   adding model.
      */
     public function __construct(
+        /**
+         * Page request.
+         *
+         * @var Request
+         */
+        private Request $request,
+
         /**
          * Adding model.
          * 
@@ -30,6 +39,6 @@ final class BaseAddController implements AddController
      */
     public function model(): Adding
     {
-        return $this->model->added($_POST);
+        return $this->model->added($this->request->storage("post"));
     }
 }

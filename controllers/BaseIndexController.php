@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Components\CurrentPage;
+use Http\Request;
 use Models\Listing;
 
 /**
@@ -14,9 +15,17 @@ final class BaseIndexController implements IndexController
     /**
      * Ctor.
      * 
-     * @param Listing $model
+     * @param Request $request page request.
+     * @param Listing $model   listing model.
      */
     public function __construct(
+        /**
+         * Page request.
+         *
+         * @var Request
+         */
+        private Request $request,
+
         /**
          * Listing model.
          * 
@@ -33,7 +42,7 @@ final class BaseIndexController implements IndexController
     {
         return $this->model
             ->withOffset(
-                (new CurrentPage($_SERVER["REQUEST_URI"]))->value()
+                (new CurrentPage($this->request->uri()))->value()
             );
     }
 }
