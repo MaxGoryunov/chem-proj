@@ -5,7 +5,7 @@ namespace Components;
 /**
  * Current page in browser.
  */
-final class CurrentPage
+final class CurrentPage implements Scalar
 {
     public function __construct(
         /**
