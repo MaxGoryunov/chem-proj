@@ -4,6 +4,8 @@ namespace Entities;
 
 use Components\Connection;
 use DBQueries\SelectQueryBuilder;
+use Entities\Queries\ColumnQuery;
+use Entities\Queries\Loyalty;
 
 /**
  * Base address implementation.
@@ -12,10 +14,18 @@ final class BaseAddress implements Address
 {
 
     /**
+     * Database query.
+     * 
+     * @var ColumnQuery
+     */
+    private ColumnQuery $query;
+
+    /**
      * Ctor.
      * 
      * @param Connection $connection database connection.
      * @param int        $id         id.
+     * @param Loyalty    $loyalty    query loyalty.
      */
     public function __construct(
         /**
@@ -30,8 +40,14 @@ final class BaseAddress implements Address
          * 
          * @var int
          */
-        private int $id
+        private int $id,
+        Loyalty $loyalty
     ) {
+        $this->query = $loyalty->loyalTo(
+            $connection,
+            "addresses",
+            $id
+        );
     }
 
     /**
@@ -47,9 +63,6 @@ final class BaseAddress implements Address
      */
     public function name(): string
     {
-        return $this->connection->query(
-            (new SelectQueryBuilder("addresses", ["name"]))
-            ->where("`address_id` = {$this->id}")
-        )->fetchAssoc();
+        return $this->query->result("name");
     }
 }
