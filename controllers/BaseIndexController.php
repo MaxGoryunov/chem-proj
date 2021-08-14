@@ -32,9 +32,8 @@ final class BaseIndexController implements IndexController
     public function model(): Listing
     {
         return $this->model
-        ->withCount(5)
-        ->withOffset(
-            (new CurrentPage($_SERVER["REQUEST_URI"]))->value()
-        );
+            ->withOffset(
+                (new CurrentPage($_SERVER["REQUEST_URI"]))->value()
+            );
     }
 }
