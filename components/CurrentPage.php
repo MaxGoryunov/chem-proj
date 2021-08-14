@@ -24,9 +24,11 @@ final class CurrentPage
      */
     public function value(): int
     {
-        return explode(
-            "=",
-            end(explode("/", $this->uri))
-        ) ?? 1;
+        preg_match(
+            "/(page=)([1-9][0-9]*)/",
+            explode("?", $this->uri)[1],
+            $matches
+        );
+        return $matches[2];
     }
 }
