@@ -65,8 +65,6 @@ use Factories\AbstractMVCPDMFactory;
 
         /**
          * Returns a list of parameters needed for the model
-         * 
-         * @todo Refactor useless string keys
          *
          * @return string[]
          */
