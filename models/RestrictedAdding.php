@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Models\Exceptions\RestrictionNotPassedException;
+
 /**
  * Adding model which only adds values if all of them are present in a
  * predefined list.
@@ -39,6 +41,25 @@ final class RestrictedAdding implements Adding
      */
     public function added(array $data): static
     {
+        if (
+            array_intersect(
+                array_keys($data),
+                $this->restrictions
+            ) !== $this->restrictions
+        ) {
+            throw new RestrictionNotPassedException(
+                join(
+                    "",
+                    [
+                        "Given data set [",
+                        join(", ", $data),
+                        "] does not contain values from list [",
+                        join(", ", $this->restrictions),
+                        "]"
+                    ]
+                )
+            );
+        }
         return new self($this->origin->added($data), $this->restrictions);
     }
 }

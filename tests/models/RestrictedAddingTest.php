@@ -3,6 +3,7 @@
 namespace Tests\Models;
 
 use Models\Adding;
+use Models\Exceptions\RestrictionNotPassedException;
 use Models\RestrictedAdding;
 use PHPUnit\Framework\TestCase;
 
@@ -37,16 +38,26 @@ final class RestrictedAddingTest extends TestCase
             );
     }
 
-    // /**
-    //  * @covers ::__construct
-    //  * @covers ::added
-    //  * 
-    //  * @small
-    //  *
-    //  * @return void
-    //  */
-    // public function testThrowsExceptionIfSomeValuesAreNotInTheGivenDataArray(): void
-    // {
-    //     $this->expectException(RestrictionNotPassedException::class);
-    // }
+    /**
+     * @covers ::__construct
+     * @covers ::added
+     * 
+     * @small
+     *
+     * @return void
+     */
+    public function testThrowsExceptionIfSomeValuesAreNotInTheGivenDataArray(): void
+    {
+        $this->expectException(RestrictionNotPassedException::class);
+        (new RestrictedAdding(
+            $this->createMock(Adding::class),
+            ["name", "email", "address"]
+        ))
+            ->added(
+                [
+                    "name"    => "Jane",
+                    "address" => "New York"
+                ]
+            );
+    }
 }
