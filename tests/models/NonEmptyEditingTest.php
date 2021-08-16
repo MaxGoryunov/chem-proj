@@ -2,20 +2,20 @@
 
 namespace Tests\Models;
 
-use Models\Adding;
+use Models\Editing;
 use Models\Exceptions\EmptyDataException;
-use Models\NonEmptyAdding;
+use Models\NonEmptyEditing;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass Models\NonEmptyAdding
+ * @coversDefaultClass Models\NonEmptyEditing
  */
-final class NonEmptyAddingTest extends TestCase
+final class NonEmptyEditingTest extends TestCase
 {
 
     /**
      * @covers ::__construct
-     * @covers ::added
+     * @covers ::edited
      * 
      * @small
      *
@@ -23,14 +23,14 @@ final class NonEmptyAddingTest extends TestCase
      */
     public function testCallsOriginMethodIfDataIsNotEmpty(): void
     {
-        $origin = $this->createMock(Adding::class);
-        $origin->expects($this->once())->method("added")->willReturn($origin);
-        (new NonEmptyAdding($origin))->added(["id" => 142]);
+        $origin = $this->createMock(Editing::class);
+        $origin->expects($this->once())->method("edited")->willReturn($origin);
+        (new NonEmptyEditing($origin))->edited(["name" => "Bob"]);
     }
 
     /**
      * @covers ::__construct
-     * @covers ::added
+     * @covers ::edited
      * 
      * @small
      *
@@ -39,6 +39,6 @@ final class NonEmptyAddingTest extends TestCase
     public function testThrowsExceptionIfDataIsEmpty(): void
     {
         $this->expectException(EmptyDataException::class);
-        (new NonEmptyAdding($this->createMock(Adding::class)))->added([]);
+        (new NonEmptyEditing($this->createMock(Editing::class)))->edited([]);
     }
 }
