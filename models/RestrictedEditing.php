@@ -5,28 +5,28 @@ namespace Models;
 use Models\Exceptions\RestrictionNotPassedException;
 
 /**
- * Adding model which only adds values if all of them are present in a
- * predefined list.
+ * Editing model which restricts editing values if some of them are not
+ * present.
  */
-final class RestrictedAdding implements Adding
+final class RestrictedEditing implements Editing
 {
 
     /**
      * Ctor.
      * 
-     * @param Adding   $origin  original adding model.
-     * @param string[] $demands array of required fields.
+     * @param Editing  $origin  original model.
+     * @param string[] $demands values which must be present.
      */
     public function __construct(
         /**
-         * Original adding model.
+         * Original model.
          *
-         * @var Adding
+         * @var Editing
          */
-        private Adding $origin,
+        private Editing $origin,
 
         /**
-         * Array of required fields.
+         * Values which must be in data array.
          *
          * @var string[]
          */
@@ -35,12 +35,11 @@ final class RestrictedAdding implements Adding
     }
 
     /**
-     * Only adds values if they all of values in demands are present in a
-     * given array of data.
+     * Only edits values if all values from demands are present.
      * {@inheritDoc}
-     * @throws RestrictionNotPassedException if some values are not present.
+     * @throws RestrictionNotPassedException if some value is not present.
      */
-    public function added(array $data): static
+    public function edited(array $data): static
     {
         if (
             count(
@@ -55,7 +54,7 @@ final class RestrictedAdding implements Adding
                     "",
                     [
                         "Given data set [",
-                        join(", ", $data),
+                        join(", ", array_keys($data)),
                         "] does not contain values from list [",
                         join(", ", $this->demands),
                         "]"
@@ -63,6 +62,14 @@ final class RestrictedAdding implements Adding
                 )
             );
         }
-        return new self($this->origin->added($data), $this->demands);
+        return new self($this->origin->edited($data), $this->demands);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function entity(): object
+    {
+        return $this->origin->entity();
     }
 }
