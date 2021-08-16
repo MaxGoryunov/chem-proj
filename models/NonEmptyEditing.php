@@ -28,6 +28,7 @@ final class NonEmptyEditing implements Editing
     /**
      * Does not edit values if data is empty.
      * {@inheritDoc}
+     * @throws EmptyDataException if data is empty.
      */
     public function edited(array $data): static
     {
