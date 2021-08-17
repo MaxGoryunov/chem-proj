@@ -3,7 +3,11 @@
 namespace Connections;
 
 /**
- * database query result.
+ * Database query result.
+ * @method array<int, array<string, string>> fetchAll(...$args) fetches all
+ * rows.
+ * @method array<string, string> fetchAssoc() fetches one row in the form of
+ * associative array.
  */
 interface Result
 {
