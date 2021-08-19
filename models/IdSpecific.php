@@ -9,9 +9,10 @@ interface IdSpecific
 {
 
     /**
-     * Returns an entity.
+     * returns an entity.
      *
+     * @param int $id
      * @return object
      */
-    public function entity(): object;
+    public function entity(int $id): object;
 }
