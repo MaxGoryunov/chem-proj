@@ -9,7 +9,7 @@ interface IdSpecific
 {
 
     /**
-     * Returns an entity.
+     * returns an entity.
      *
      * @param int $id entity id.
      * @return object
