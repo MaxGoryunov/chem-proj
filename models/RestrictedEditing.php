@@ -68,8 +68,8 @@ final class RestrictedEditing implements Editing
     /**
      * {@inheritDoc}
      */
-    public function entity(): object
+    public function entity(int $id): object
     {
-        return $this->origin->entity();
+        return $this->origin->entity($id);
     }
 }
