@@ -47,12 +47,4 @@ final class BaseDeleting implements Deleting
         );
         return $this;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function entity(int $id): object
-    {
-        return new stdClass();
-    }
 }

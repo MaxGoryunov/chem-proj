@@ -47,12 +47,4 @@ final class BaseEditing implements Editing
         );
         return $this;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function entity(int $id): object
-    {
-        return new stdClass();
-    }
 }

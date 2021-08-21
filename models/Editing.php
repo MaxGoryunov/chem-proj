@@ -5,7 +5,7 @@ namespace Models;
 /**
  * Model for editing values.
  */
-interface Editing extends IdSpecific
+interface Editing
 {
 
     /**

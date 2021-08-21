@@ -5,7 +5,7 @@ namespace Models;
 /**
  * Model for deleting values.
  */
-interface Deleting extends IdSpecific
+interface Deleting
 {
 
     /**
