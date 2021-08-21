@@ -14,4 +14,4 @@
     include_once("./config/constants.php");
 
     (new Autoloader())->register();
-    (new Router())->run();
+    (new Router())->run($_SERVER["REQUEST_URI"]);
