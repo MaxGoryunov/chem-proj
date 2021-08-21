@@ -64,12 +64,4 @@ final class RestrictedEditing implements Editing
         }
         return new self($this->origin->edited($data), $this->demands);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function entity(int $id): object
-    {
-        return $this->origin->entity($id);
-    }
 }

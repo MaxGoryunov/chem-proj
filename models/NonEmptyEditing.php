@@ -39,12 +39,4 @@ final class NonEmptyEditing implements Editing
         }
         return new self($this->origin->edited($data));
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function entity(int $id): object
-    {
-        return $this->origin->entity($id);
-    }
 }
