@@ -19,4 +19,4 @@ include_once("./config/constants.php");
 (new NonEmptyRouter(
     new BsRouter()
 ))
-    ->run($_SERVER["REQUEST_URI"]);
+    ->run($_SERVER["REQUEST_URI"] ?? "");
