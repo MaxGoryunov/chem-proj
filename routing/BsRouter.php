@@ -15,21 +15,26 @@ class BsRouter implements Router
 {
 
 	/**
+	 * Ctor.
+	 * 
+	 * @param array<string, Endpoint> $endpoints list of available endpoints.
+	 */
+	public function __construct(
+		/**
+		 * List of available endpoints.
+		 *
+		 * @var array<string, Endpoint>
+		 */
+		private array $endpoints
+	) {
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function run(string $uri): void
 	{
-		if ($uri === "") {
-			throw new InvalidArgumentException("User URI must not be empty");
-		}
-
-		$handler = new FactoryHandler();
-
-		$handler->setNextHandler(new ActionHandler())->setNextHandler(new IdHandler());
-
-		$action = $handler->handle(explode("/", $uri), new ControllerAction());
-
-		$action->execute();
+		
 	}
 
 	/**
